@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  background-color: ${(props) => props.theme.text};
-  color: ${(props) => props.theme.pri};
+  background-color: transparent;
+  color: ${(props) => props.theme.main};
   height: 50px;
 `;
 const Left = styled.div``;

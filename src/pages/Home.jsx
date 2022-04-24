@@ -8,7 +8,7 @@ import Sidebar from "../components/Sidebar";
 import TopBar from "../components/TopBar";
 
 const MainConatiner = styled.div`
-  background-color: ${(props) => props.theme.body};
+  background: ${(props) => props.theme.body};
   color: ${(props) => props.theme.text};
   display: flex;
   flex-direction: column;
