@@ -8,22 +8,23 @@ import Sidebar from "../components/Sidebar";
 import TopBar from "../components/TopBar";
 
 const MainConatiner = styled.div`
-  background: ${(props) => props.theme.body};
+  background: transparent;
   color: ${(props) => props.theme.text};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
   width: 100vw;
+  z-index: 1;
 `;
 const Container = styled.div`
-  height: calc(100vh - 50px);
+  height: calc(100vh - 120px);
 `;
 
-const Home = () => {
+const Home = ({ theme, setThemeDark }) => {
   return (
     <MainConatiner>
-      <TopBar />
+      <TopBar setThemeDark={setThemeDark} theme={theme} />
       <Container>
         <NavBar />
         <Feed />
