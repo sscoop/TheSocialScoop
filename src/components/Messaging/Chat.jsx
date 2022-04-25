@@ -4,26 +4,31 @@ import { user1, user2 } from "../../assets/images";
 import Message from "./Message";
 
 const ChatSectionWrapper = styled.div`
-  flex: 9;
+  flex: 5;
 
-  /* height: 100%; */
-  /* width: 100%; */
-  /* background-color: ${(props) => props.theme.body}; */
-  margin: 0 45px;
+  height: 100%;
+  width: 70%;
+  background-color: ${(props) => props.theme.body};
+  border-radius: 10px;
+  color: ${(props) => props.theme.main};
+  margin: 0 10px;
+  /* padding: 20px; */
+  /* border: 1px solid #fff; */
+  /* overflow: hidden; */
 
   .chat-section {
-    height: 85%;
+    height: 500px;
     overflow-y: scroll;
 
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     padding: 20px;
   }
 
   .lower-section {
-    height: 50px;
+    height: 90px;
 
     display: flex;
     justify-content: flex-start;
@@ -42,7 +47,7 @@ const ChatSectionWrapper = styled.div`
     }
 
     .msgInput:focus {
-      /* border-bottom: 1px solid steelblue; */
+      border-top: 1px solid #dacc87;
     }
 
     .sendBtn {
@@ -59,6 +64,10 @@ const Chat = () => {
   return (
     <ChatSectionWrapper>
       <div className="chat-section">
+        <Message userPic={user1} />
+        <Message userPic={user2} own={true} />
+        <Message userPic={user1} />
+        <Message userPic={user2} own={true} />
         <Message userPic={user1} />
         <Message userPic={user2} own={true} />
         <Message userPic={user1} />

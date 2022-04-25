@@ -34,16 +34,16 @@ const Text = styled.div`
 
   .text {
     /* background: linear-gradient(90deg, #415dcb, #0f35ce); */
-    background-color: #dacc87;
-    color: #111;
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.text};
     padding: 1rem;
     border-radius: 5px;
   }
 
   .text.own {
     /* background: linear-gradient(90deg, #a4a4a4, #e4e4e4); */
-    background-color: #4a4a4a;
-    color: #dacc87;
+    background-color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.text};
   }
 `;
 

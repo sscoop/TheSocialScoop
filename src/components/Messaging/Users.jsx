@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { user, user1, user2 } from "../../assets/images";
 
 const UsersSectionWrapper = styled.div`
-  flex: 3;
+  flex: 1;
 
-  border: 1px solid steelblue;
+  background-color: ${(props) => props.theme.body};
+  border-radius: 10px;
+  color: ${(props) => props.theme.main};
   height: 100%;
+  width: 20%;
   padding: 0 10px;
   overflow-y: scroll;
+  margin: 0 10px;
 
   .userDiv {
     display: flex;
@@ -58,10 +62,10 @@ const UsersSectionWrapper = styled.div`
     }
   }
 
-  .userDiv:hover {
+  /* .userDiv:hover {
     transition: 0.5s ease-in;
     background-color: #1a1a1a;
-  }
+  } */
 `;
 
 const Users = () => {
