@@ -33,17 +33,17 @@ const Text = styled.div`
   }
 
   .text {
-    /* background: linear-gradient(90deg, #415dcb, #0f35ce); */
-    background-color: ${(props) => props.theme.main};
-    color: ${(props) => props.theme.text};
-    padding: 1rem;
-    border-radius: 5px;
+    background-color: ${(props) => `rgba(${props.theme.mainRgba},.15)`};
+    color: ${(props) => `rgba(${props.theme.mainRgba},.7)`};
+    padding: 20px;
+    border-radius: 0 20px 20px 20px;
+    font-weight: 200;
   }
 
   .text.own {
-    /* background: linear-gradient(90deg, #a4a4a4, #e4e4e4); */
-    background-color: ${(props) => props.theme.main};
+    background: ${(props) => props.theme.accent};
     color: ${(props) => props.theme.text};
+    border-radius: 20px 0 20px 20px;
   }
 `;
 

@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 const Container = styled.div`
   background-color: ${(props) => props.theme.body};
   padding: 0px 30px;
-  margin: 20px 20px;
+  margin: 40px 40px;
   color: ${(props) => props.theme.main};
   border-radius: 20px;
   height: 100px;
@@ -25,6 +25,7 @@ const Container = styled.div`
     margin: 20px 15px;
   }
 `;
+
 const Left = styled(Link)`
   display: flex;
   align-items: center;
@@ -32,9 +33,10 @@ const Left = styled(Link)`
   color: ${(props) => props.theme.main};
   text-decoration: none;
   h1 {
-    text-transform: uppercase;
-    font-size: 25px;
-    font-family: "Cinzel Decorative", cursive;
+    /* text-transform: uppercase; */
+    font-size: 30px;
+    font-family: "Italiana", serif;
+    font-weight: 400;
     /* font-family: "Anurati", sans-serif; */
     @media (max-width: 768px) {
       font-size: 15px;
@@ -96,12 +98,16 @@ const Right = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    .icon {
-      width: 70%;
-      height: 70%;
+    .iconContainer {
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    .icon {
+      width: 50%;
+      height: 50%;
     }
   }
   .profile {
@@ -150,23 +156,17 @@ const TopBar = ({ theme, setThemeDark }) => {
       </Center>
       <Right shadowColor={theme}>
         <span className="theme" onClick={() => setThemeDark((p) => !p)}>
-          {theme === "dark" ? (
-            <motion.span
-              className="icon"
-              transition={{ duration: 0.3 }}
-              whileTap={{ rotate: 1000, scale: [1, 0, 1] }}
-            >
+          <motion.span
+            className="iconContainer"
+            transition={{ duration: 0.3 }}
+            whileTap={{ rotate: [0, 360, 360, 0], scale: [1, 0, 1] }}
+          >
+            {theme === "dark" ? (
               <FontAwesomeIcon className="icon" icon={faSun} />
-            </motion.span>
-          ) : (
-            <motion.span
-              className="icon"
-              transition={{ duration: 0.5 }}
-              whileTap={{ rotate: 1000, scale: [1, 0, 1] }}
-            >
+            ) : (
               <FontAwesomeIcon className="icon" icon={faMoon} />
-            </motion.span>
-          )}
+            )}
+          </motion.span>
         </span>
         <div className="profile">
           <img

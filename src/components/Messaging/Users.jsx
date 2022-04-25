@@ -3,16 +3,13 @@ import styled from "styled-components";
 import { user, user1, user2 } from "../../assets/images";
 
 const UsersSectionWrapper = styled.div`
-  flex: 1;
-
   background-color: ${(props) => props.theme.body};
-  border-radius: 10px;
-  color: ${(props) => props.theme.main};
-  height: 100%;
-  width: 20%;
-  padding: 0 10px;
+  height: 90%;
+  width: 250px;
+  padding: 30px 30px;
+  border-radius: 20px;
   overflow-y: scroll;
-  margin: 0 10px;
+  flex-shrink: 0;
 
   .userDiv {
     display: flex;

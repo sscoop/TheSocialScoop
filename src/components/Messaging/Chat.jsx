@@ -1,53 +1,62 @@
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
 import { user1, user2 } from "../../assets/images";
 import Message from "./Message";
 
 const ChatSectionWrapper = styled.div`
-  flex: 5;
-
-  height: 100%;
-  width: 70%;
   background-color: ${(props) => props.theme.body};
-  border-radius: 10px;
-  color: ${(props) => props.theme.main};
-  margin: 0 10px;
-  /* padding: 20px; */
-  /* border: 1px solid #fff; */
-  /* overflow: hidden; */
-
+  height: calc(90% + 60px);
+  width: 65%;
+  margin: 0 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  &::before {
+    content: "";
+    top: -5px;
+    left: 0;
+    width: 100%;
+    height: 0px;
+    position: absolute;
+    box-shadow: ${(props) => `0px 5px 60px 60px ${props.theme.body}`};
+  }
   .chat-section {
-    height: 500px;
+    height: calc(100% - 90px);
     overflow-y: scroll;
-
+    margin: 0 30px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
-    padding: 20px;
+    padding: 40px 20px;
   }
 
   .lower-section {
     height: 90px;
-
+    width: 100%;
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    justify-content: space-between;
+    box-shadow: ${(props) =>
+      `0px -5px 15px 5px rgba(${props.theme.mainRgba},.15)`};
+    transition: all 0.2s ease;
 
     .msgInput {
       width: 80%;
       background: transparent;
       border: none;
       padding: 20px;
-      color: #fff;
+      color: #ffffff;
       outline: none;
-
       margin: 0 20px;
       font-size: 17px;
-    }
-
-    .msgInput:focus {
-      border-top: 1px solid #dacc87;
+      color: ${(props) => props.theme.main};
     }
 
     .sendBtn {
@@ -56,6 +65,8 @@ const ChatSectionWrapper = styled.div`
       border-radius: 10px;
       width: 15%;
       margin: 20px;
+      background-color: ${(props) => props.theme.accent};
+      color: ${(props) => props.theme.text};
     }
   }
 `;
@@ -80,7 +91,9 @@ const Chat = () => {
           placeholder="Enter your message..."
           className="msgInput"
         />
-        <button className="sendBtn">Send</button>
+        <button className="sendBtn">
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
       </div>
     </ChatSectionWrapper>
   );
