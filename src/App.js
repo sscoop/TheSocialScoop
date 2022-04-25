@@ -4,6 +4,7 @@ import { darkTheme, lightTheme } from "./components/Themes";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import { useState } from "react";
+import Messages from "./pages/Messages";
 
 const Main = styled.div`
   height: 100vh;
@@ -42,6 +43,15 @@ function App() {
             path="/"
             element={
               <Home
+                setThemeDark={setThemeDark}
+                theme={themeDark ? "dark" : "light"}
+              />
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <Messages
                 setThemeDark={setThemeDark}
                 theme={themeDark ? "dark" : "light"}
               />
