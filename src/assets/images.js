@@ -10,3 +10,6 @@ export const user1 =
 
 export const user2 =
   "https://www.aucshow.com/assets/frontend/global/img/users/9.jpg";
+
+export const loginPageImg =
+  "https://banner2.cleanpng.com/20180728/uru/kisspng-business-process-connecting-people-5b5c603c80d878.5276110815327806045278.jpg";

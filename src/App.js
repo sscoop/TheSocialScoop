@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import { darkTheme, lightTheme } from "./components/Themes";
 import styled, { ThemeProvider } from "styled-components";
@@ -6,6 +6,7 @@ import GlobalStyles from "./GlobalStyles";
 import { useState } from "react";
 import Messages from "./pages/Messages";
 import TopBar from "./components/TopBar";
+import Login from "./pages/Login";
 
 const Main = styled.div`
   height: 100vh;
@@ -55,16 +56,20 @@ const Container = styled.div`
 
 function App() {
   const [themeDark, setThemeDark] = useState(true);
+  const location = useLocation();
+  const hideTopBar = location.pathname === "/login";
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>
       <GlobalStyles />
       <ThemeProvider theme={themeDark ? darkTheme : lightTheme}>
         <MainConatiner>
-          <TopBar
-            setThemeDark={setThemeDark}
-            theme={themeDark ? "dark" : "light"}
-          />
+          {!hideTopBar && (
+            <TopBar
+              setThemeDark={setThemeDark}
+              theme={themeDark ? "dark" : "light"}
+            />
+          )}
 
           <Container>
             <Routes>
@@ -86,6 +91,8 @@ function App() {
                   />
                 }
               />
+
+              <Route path="/login" element={<Login />} />
             </Routes>
           </Container>
         </MainConatiner>
