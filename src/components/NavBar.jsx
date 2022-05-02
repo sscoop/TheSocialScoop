@@ -11,7 +11,7 @@ import styled from "styled-components";
 const MainContainer = styled.div`
   background-color: ${(props) => props.theme.body};
   height: 90%;
-  width: 120px;
+  width: 55px;
   padding: 30px 30px;
   border-radius: 20px;
   display: flex;
@@ -35,7 +35,7 @@ const MainContainer = styled.div`
   }
 `;
 const IconContainer = styled(Link)`
-  width: 55%;
+  width: 65%;
   height: calc(120px * 0.55);
   position: relative;
   margin: 5px 0;

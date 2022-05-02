@@ -24,7 +24,11 @@ const ChatSectionWrapper = styled.div`
     width: 100%;
     height: 0px;
     position: absolute;
+<<<<<<< HEAD
     box-shadow: ${(props) => `0px 5px 50px 45px ${props.theme.body}`};
+=======
+    box-shadow: ${(props) => `0px 5px 50px 20px ${props.theme.body}`};
+>>>>>>> a0eeb1130bb26cf7fcc4ff424a2dfe5159ca9694
   }
 
   .chat-section {
