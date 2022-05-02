@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { signUpImg } from "../assets/images";
 
 const MainWrapper = styled.div`
   display: flex;
@@ -17,11 +18,43 @@ const MainWrapper = styled.div`
 `;
 
 const ImageSectionWrapper = styled.div`
-  border: 1px solid yellow;
   flex: 3;
 
   height: 100%;
   margin: 25px;
+  margin-top: 50px;
+  /* padding: 15px; */
+  background-image: ${`url(${signUpImg})`};
+  background-repeat: repeat-y;
+  border-radius: 20px;
+  background-size: 100%;
+  text-align: center;
+
+  .card {
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 75%;
+    height: 45%;
+    /* padding: 50px; */
+    margin: auto;
+    margin-top: 150px;
+
+    h2 {
+      margin-top: 50px;
+      font-size: 50px;
+      font-weight: 700;
+      color: ${(props) => props.theme.body};
+    }
+
+    p {
+      font-size: 20px;
+      font-weight: 600;
+      color: ${(props) => props.theme.main};
+      text-align: center;
+      margin: 25px;
+    }
+  }
 `;
 
 const FormSectionWrapper = styled.div`
@@ -37,13 +70,17 @@ const FormSectionWrapper = styled.div`
   background-color: #1d1d1d;
   border-radius: 10px;
 
+  h2 {
+    margin: 10px 0 50px 0;
+  }
+
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    margin: 50px 0;
+    margin: 20px 0;
     width: 100%;
     height: 100%;
 
@@ -58,7 +95,7 @@ const FormSectionWrapper = styled.div`
       color: #f3f4fa;
       padding: 15px;
       outline: 1px solid #656565;
-      margin: 25px 0;
+      margin: 10px 0;
       text-align: center;
 
       &:focus {
@@ -66,14 +103,15 @@ const FormSectionWrapper = styled.div`
       }
     }
 
-    .login-btn {
+    .sign-up-btn {
       width: 85%;
+      margin: 15px 0;
       padding: 15px;
       font-size: 15px;
       font-weight: 600;
       border: none;
       border-radius: 5px;
-      background-color: #18de36;
+      background-color: #1867de;
       cursor: pointer;
     }
   }
@@ -86,19 +124,19 @@ const FormSectionWrapper = styled.div`
     background-color: #656565;
   }
 
-  .sign-up-wrapper {
+  .login-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: 10px 0 40px 0;
+    margin: 25px 0;
 
-    .sign-up-text {
+    .login-text {
       color: ${(props) => props.theme.main};
       margin-right: 20px;
     }
 
-    .sign-up-btn {
+    .login-btn {
       margin: 15px 0;
       width: 100%;
       padding: 15px;
@@ -113,31 +151,54 @@ const FormSectionWrapper = styled.div`
   }
 `;
 
-const Login = () => {
+const SignUp = () => {
   return (
     <MainWrapper>
-      <ImageSectionWrapper>Image Section Wrapper</ImageSectionWrapper>
+      <ImageSectionWrapper>
+        <div className="card">
+          <h2>Glad to have you here!</h2>
+          <p>
+            Hey Abhishek! This is a mess. But I know you can fix it mate. After
+            looking at it I beleive that you have got the idea (the backdrop
+            content to be showed on that background), jsut fix this mate!
+          </p>
+        </div>
+      </ImageSectionWrapper>
       <FormSectionWrapper>
         <form action="">
+          <input type="text" name="name" placeholder="Enter your Name" />
+
+          <input
+            type="text"
+            name="username"
+            placeholder="Set your unique Username"
+          />
+
           <input type="text" name="email" placeholder="Enter your Email ID" />
 
           <input
             type="password"
             name="password"
-            placeholder="Enter your Account Password"
+            placeholder="Create your Account Password"
           />
 
-          <button type="submit" className="login-btn">
-            Log In
+          {/* <input
+            type="password"
+            name="password"
+            placeholder="Confirm your Account Password"
+          /> */}
+
+          <button type="submit" className="sign-up-btn">
+            Sign Up
           </button>
         </form>
 
         <div className="divider" />
 
-        <div className="sign-up-wrapper">
-          <p className="sign-up-text">Don't have an Account? Sign Up Now! </p>
-          <Link to="/sign-up">
-            <button className="sign-up-btn">Sign Up</button>
+        <div className="login-wrapper">
+          <p className="login-text">Already have an Account? Login Now! </p>
+          <Link to="/login">
+            <button className="login-btn">Login</button>
           </Link>
         </div>
       </FormSectionWrapper>
@@ -145,4 +206,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

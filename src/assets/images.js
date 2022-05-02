@@ -13,3 +13,6 @@ export const user2 =
 
 export const loginPageImg =
   "https://banner2.cleanpng.com/20180728/uru/kisspng-business-process-connecting-people-5b5c603c80d878.5276110815327806045278.jpg";
+
+export const signUpImg =
+  "https://www.stockvault.net/data/2019/04/19/264053/preview16.jpg";
