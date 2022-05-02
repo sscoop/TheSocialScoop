@@ -19,6 +19,20 @@ const MainContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   flex-shrink: 0;
+  @media (max-width: 1250px) {
+    width: 100px;
+  }
+  @media (max-width: 1000px) {
+    height: 80px;
+    width: 100%;
+    padding: 30px 0px;
+    flex-direction: row;
+  }
+  @media (max-width: 600px) {
+    height: 20px;
+    width: 100%;
+    padding: 30px 0px;
+  }
 `;
 const IconContainer = styled(Link)`
   width: 55%;
@@ -33,6 +47,14 @@ const IconContainer = styled(Link)`
   .navIcon {
     width: 100%;
     height: 100%;
+  }
+  @media (max-width: 770px) {
+    height: 35%;
+    height: calc(120px * 0.35);
+  }
+  @media (max-width: 600px) {
+    width: 20%;
+    height: calc(120px * 0.2);
   }
 `;
 

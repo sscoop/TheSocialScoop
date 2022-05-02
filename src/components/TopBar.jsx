@@ -20,7 +20,7 @@ const Container = styled.div`
   justify-content: space-between;
   position: relative;
 
-  @media (max-width: 425px) {
+  @media (max-width: 475px) {
     padding: 0px 15px;
     margin: 20px 15px;
   }

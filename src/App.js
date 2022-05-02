@@ -51,6 +51,12 @@ const Container = styled.div`
   align-items: flex-start;
   overflow-x: hidden;
   overflow-y: auto;
+  @media (max-width: 1000px) {
+    flex-direction: column-reverse;
+  }
+  @media (max-width: 475px) {
+    padding: 0px 15px 20px;
+  }
 `;
 
 function App() {

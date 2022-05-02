@@ -24,8 +24,9 @@ const ChatSectionWrapper = styled.div`
     width: 100%;
     height: 0px;
     position: absolute;
-    box-shadow: ${(props) => `0px 5px 60px 60px ${props.theme.body}`};
+    box-shadow: ${(props) => `0px 5px 50px 45px ${props.theme.body}`};
   }
+
   .chat-section {
     height: calc(100% - 90px);
     overflow-y: scroll;
@@ -35,6 +36,9 @@ const ChatSectionWrapper = styled.div`
     align-items: center;
     flex-direction: column;
     padding: 40px 20px;
+    @media (max-width: 1250px) {
+      padding: 40px 0px;
+    }
   }
 
   .lower-section {
