@@ -7,7 +7,6 @@ import { useState } from "react";
 import Messages from "./pages/Messages";
 import TopBar from "./components/TopBar";
 import Login from "./pages/Login";
-import SignUp from "./pages/SignUp";
 
 const Main = styled.div`
   height: 100vh;
@@ -64,8 +63,7 @@ const Container = styled.div`
 function App() {
   const [themeDark, setThemeDark] = useState(true);
   const location = useLocation();
-  const hideTopBar =
-    location.pathname === "/login" || location.pathname === "/sign-up";
+  const hideTopBar = location.pathname === "/login";
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>
@@ -101,7 +99,6 @@ function App() {
               />
 
               <Route path="/login" element={<Login />} />
-              <Route path="/sign-up" element={<SignUp />} />
             </Routes>
           </Container>
         </MainConatiner>

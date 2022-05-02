@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const MainWrapper = styled.div`
@@ -37,6 +36,10 @@ const FormSectionWrapper = styled.div`
   background-color: #1d1d1d;
   border-radius: 10px;
 
+  h2 {
+    margin: 10px 0 50px 0;
+  }
+
   form {
     display: flex;
     flex-direction: column;
@@ -51,8 +54,7 @@ const FormSectionWrapper = styled.div`
       font-size: 15px;
       font-weight: 600;
       width: 80%;
-      /* background: #2a2a2a; */
-      background-color: transparent;
+      background: #2a2a2a;
       border: none;
       border-radius: 5px;
       color: #f3f4fa;
@@ -60,30 +62,25 @@ const FormSectionWrapper = styled.div`
       outline: 1px solid #656565;
       margin: 25px 0;
       text-align: center;
-
-      &:focus {
-        outline: 1px solid #9d9da0;
-      }
     }
 
-    .login-btn {
+    .submit-btn {
       width: 85%;
       padding: 15px;
       font-size: 15px;
       font-weight: 600;
       border: none;
       border-radius: 5px;
-      background-color: #18de36;
-      cursor: pointer;
+      background-color: #098a1c;
     }
   }
 
   .divider {
-    margin: 0 0 10px 0;
+    margin: 10px 0;
     width: 90%;
     height: 0.75px;
     border-radius: 1px;
-    background-color: #656565;
+    background-color: #e2e2e2;
   }
 
   .sign-up-wrapper {
@@ -91,7 +88,6 @@ const FormSectionWrapper = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin: 10px 0 40px 0;
 
     .sign-up-text {
       color: ${(props) => props.theme.main};
@@ -100,7 +96,7 @@ const FormSectionWrapper = styled.div`
 
     .sign-up-btn {
       margin: 15px 0;
-      width: 100%;
+      width: 30%;
       padding: 15px;
       font-size: 15px;
       font-weight: 700;
@@ -108,7 +104,6 @@ const FormSectionWrapper = styled.div`
       border-radius: 5px;
       background-color: ${(props) => props.theme.accent};
       align-self: flex-end;
-      cursor: pointer;
     }
   }
 `;
@@ -127,7 +122,7 @@ const Login = () => {
             placeholder="Enter your Account Password"
           />
 
-          <button type="submit" className="login-btn">
+          <button type="submit" className="submit-btn">
             Log In
           </button>
         </form>
@@ -136,9 +131,7 @@ const Login = () => {
 
         <div className="sign-up-wrapper">
           <p className="sign-up-text">Don't have an Account? Sign Up Now! </p>
-          <Link to="/sign-up">
-            <button className="sign-up-btn">Sign Up</button>
-          </Link>
+          <button className="sign-up-btn">Sign Up</button>
         </div>
       </FormSectionWrapper>
     </MainWrapper>
