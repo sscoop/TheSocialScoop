@@ -18,14 +18,13 @@ const ChatSectionWrapper = styled.div`
     position: absolute;
     background: ${(props) =>
       props.themeCurrent === "dark"
-        ? `rgba(${props.theme.bodyRgba},.3)`
-        : `rgba(${props.theme.bodyRgba},.6)`};
+        ? `rgba(${props.theme.bodyRgba},.4)`
+        : `rgba(${props.theme.mainRgba},.4)`};
     height: 100%;
     width: 100%;
     top: 0;
     left: 0;
     z-index: -1;
-
     border-radius: 30px;
   }
 

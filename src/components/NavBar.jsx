@@ -15,8 +15,8 @@ const MainContainer = styled.div`
   z-index: 1;
   background: ${(props) =>
     props.themeCurrent === "dark"
-      ? `rgba(${props.theme.bodyRgba},.6)`
-      : `rgba(${props.theme.bodyRgba},.3)`};
+      ? `rgba(${props.theme.bodyRgba},.7)`
+      : `rgba(${props.theme.mainRgba},.2)`};
   height: 90%;
   width: 70px;
   padding: 30px 30px;
@@ -28,15 +28,13 @@ const MainContainer = styled.div`
   flex-shrink: 0;
 
   @media (max-width: 1000px) {
-    height: 70px;
+    height: 45px;
     width: 100%;
     padding: 30px 0px;
     flex-direction: row;
   }
-  @media (max-width: 770px) {
-    height: 60px;
-  }
-  @media (max-width: 600px) {
+
+  @media (max-width: 650px) {
     height: 20px;
     width: 100%;
     padding: 30px 0px;

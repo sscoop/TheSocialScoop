@@ -25,21 +25,6 @@ const Main = styled.div`
   background-repeat: no-repeat;
   background-position: left top;
   background-size: 100vw 100vh;
-
-  &::after {
-    content: "";
-    position: absolute;
-    background: inherit;
-    height: 100vw;
-    width: 100vw;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    filter: blur(7px);
-    background-size: 100vw 100vh;
-    background-position: left top;
-    background-repeat: no-repeat;
-  }
 `;
 const MainConatiner = styled.div`
   color: ${(props) => props.theme.text};
@@ -54,7 +39,7 @@ const MainConatiner = styled.div`
 `;
 const Container = styled.div`
   height: calc(100vh - 180px);
-  padding: 0px 40px 40px;
+  padding: 40px 40px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -72,7 +57,7 @@ const Container = styled.div`
 
 function App() {
   const [themeDark, setThemeDark] = useState(true);
-  const user = false;
+  const user = true;
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>

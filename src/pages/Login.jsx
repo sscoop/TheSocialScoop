@@ -7,8 +7,10 @@ const MainContainer = styled.span`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.3)`
-      : `rgba(${props.theme.bodyRgba},.5)`};
-
+      : `rgba(${props.theme.mainRgba},.2)`};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
   height: 90%;
   width: 90%;
   padding: 30px 50px;
@@ -18,6 +20,7 @@ const MainContainer = styled.span`
   justify-content: space-between;
   border-radius: 30px;
 
+  backdrop-filter: blur(7px);
   @media (max-width: 1300px) {
     padding: 30px;
   }
@@ -212,17 +215,13 @@ const Login = ({ themeCurrent }) => {
         <FormSectionWrapper>
           <form>
             <label htmlFor="username">
-              <input
-                type="text"
-                name="username"
-                placeholder="Please enter your Username"
-              />
+              <input type="text" name="username" placeholder="Username..." />
             </label>
             <label htmlFor="password">
               <input
                 type="password"
                 name="password"
-                placeholder="Please enter your Password"
+                placeholder="Password..."
               />
             </label>
             <button type="submit" className="submit-btn">

@@ -6,9 +6,9 @@ import Sidebar from "../components/Sidebar";
 const Home = ({ themeCurrent }) => {
   return (
     <>
-      <NavBar />
-      <Feed />
-      <Sidebar />
+      <NavBar themeCurrent={themeCurrent} />
+      <Feed themeCurrent={themeCurrent} />
+      <Sidebar themeCurrent={themeCurrent} />
     </>
   );
 };

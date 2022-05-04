@@ -25,12 +25,12 @@ const Text = styled.div`
 
   .text {
     background-color: ${(props) =>
-      !props.own ? `rgba(${props.theme.mainRgba},.15)` : props.theme.accent};
+      !props.own ? `rgba(${props.theme.bodyRgba},.4)` : props.theme.accent};
     color: ${(props) =>
-      !props.own ? `rgba(${props.theme.mainRgba},.7)` : props.theme.text};
-    padding: 20px;
+      !props.own ? `rgba(${props.theme.mainRgba},.8)` : props.theme.text};
     border-radius: ${(props) =>
       !props.own ? "0 20px 20px 20px" : "20px 0 20px 20px"};
+    padding: 20px;
     font-weight: 200;
     margin-top: 25px;
   }

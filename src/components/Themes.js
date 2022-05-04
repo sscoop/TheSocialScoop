@@ -4,7 +4,7 @@ export const lightTheme = {
   main: "#25342B",
   accent: "#66ffbd",
   fontFamily: "'Source Sans Pro', sans-serif",
-  bodyRgba: "243, 244, 250",
+  bodyRgba: "255, 255, 255",
   mainRgba: "29, 29, 29",
 };
 export const darkTheme = {

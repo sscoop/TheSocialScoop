@@ -9,8 +9,8 @@ const UsersSectionWrapper = styled.div`
   z-index: 1;
   background: ${(props) =>
     props.themeCurrent === "dark"
-      ? `rgba(${props.theme.bodyRgba},.6)`
-      : `rgba(${props.theme.bodyRgba},.3)`};
+      ? `rgba(${props.theme.bodyRgba},.7)`
+      : `rgba(${props.theme.mainRgba},.2)`};
 
   height: 90%;
   width: 15%;

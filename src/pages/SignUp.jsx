@@ -7,8 +7,10 @@ const MainContainer = styled.span`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.3)`
-      : `rgba(${props.theme.bodyRgba},.5)`};
-
+      : `rgba(${props.theme.mainRgba},.2)`};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
   height: 90%;
   width: 90%;
   padding: 30px 50px;
@@ -18,6 +20,7 @@ const MainContainer = styled.span`
   justify-content: space-between;
   border-radius: 30px;
 
+  backdrop-filter: blur(7px);
   @media (max-width: 1300px) {
     padding: 30px;
   }
@@ -69,7 +72,7 @@ const FormSectionWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px 0 40px;
+    margin: 0 0 40px;
     width: 100%;
     height: 100%;
 
@@ -113,6 +116,7 @@ const FormSectionWrapper = styled.div`
       @media (max-width: 1000px) {
         font-size: 12px;
         padding: 12px 30px;
+        margin: 5px 0;
       }
     }
 
@@ -191,6 +195,10 @@ const FormSectionWrapper = styled.div`
       align-items: center;
       box-sizing: border-box;
 
+      @media (max-width: 1000px) {
+        margin: 5px 0 0;
+      }
+
       p {
         margin: 0;
         text-align: center;
@@ -236,28 +244,24 @@ const SignUp = ({ themeCurrent }) => {
               <input type="text" name="name" placeholder="Name..." />
             </label>
             <label htmlFor="username">
-              <input
-                type="text"
-                name="username"
-                placeholder="Username (unique)..."
-              />
+              <input type="text" name="username" placeholder="Username... " />
             </label>
             <label htmlFor="">
               <input type="email" name="email" placeholder="Email..." />
             </label>
             <div className="password">
-              <label htmlFor="password">
+              <label htmlFor="password1">
                 <input
                   type="password"
-                  name="password"
+                  name="password1"
                   placeholder="Password..."
                 />
               </label>
-              <label htmlFor="password">
+              <label htmlFor="password2">
                 <input
                   type="password"
-                  name="password"
-                  placeholder="Confirm your Password"
+                  name="password2"
+                  placeholder="Confirm Password"
                 />
               </label>
             </div>
