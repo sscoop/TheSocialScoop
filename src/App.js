@@ -39,7 +39,7 @@ const MainConatiner = styled.div`
 `;
 const Container = styled.div`
   height: calc(100vh - 180px);
-  padding: 40px 40px;
+  padding: 40px 40px 30px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

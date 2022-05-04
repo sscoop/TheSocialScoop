@@ -20,7 +20,7 @@ const UsersSectionWrapper = styled.div`
   flex-shrink: 0;
   h2 {
     margin: 10px 0px;
-    color: ${(props) => props.theme.accent};
+    color: ${(props) => props.theme.main};
   }
 
   .userDiv {

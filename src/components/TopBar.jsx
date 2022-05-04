@@ -18,11 +18,11 @@ const Container = styled.div`
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.7)`
       : `rgba(${props.theme.mainRgba},.2)`};
-  padding: 0px 30px;
-  margin: 40px 40px 0;
+  padding: 0px 40px;
+  margin: 30px 40px 0;
   color: ${(props) => props.theme.main};
-  border-radius: 20px;
-  height: 100px;
+  border-radius: 30px;
+  height: 120px;
   display: flex;
   justify-content: space-between;
   position: relative;
@@ -43,7 +43,7 @@ const Left = styled(Link)`
     /* text-transform: uppercase; */
     font-size: 30px;
     font-family: "Italiana", serif;
-    font-weight: 400;
+    font-weight: 100;
     /* font-family: "Anurati", sans-serif; */
     @media (max-width: 768px) {
       font-size: 15px;
@@ -55,7 +55,7 @@ const Left = styled(Link)`
   }
 `;
 const Center = styled.form`
-  width: 20vw;
+  width: 25vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -64,11 +64,11 @@ const Center = styled.form`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  background-color: ${(props) => `rgba(${props.theme.mainRgba},0.2)`};
-  padding: 10px 20px;
-  border-radius: 20px;
+  background-color: ${(props) => `rgba(${props.theme.mainRgba},0.1)`};
+  padding: 15px 20px;
+  border-radius: 30px;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     display: none;
   }
 
@@ -78,6 +78,9 @@ const Center = styled.form`
     outline: none;
     width: 17vw;
     color: ${(props) => props.theme.main};
+    &::placeholder {
+      color: ${(props) => `rgba(${props.theme.mainRgba},0.4)`};
+    }
   }
   button {
     background-color: transparent;
@@ -91,9 +94,9 @@ const Right = styled.div`
   align-items: center;
   justify-content: flex-end;
   .theme {
-    height: 40px;
-    width: 40px;
-    margin-right: 20px;
+    height: 50px;
+    width: 50px;
+    margin-right: 30px;
     background-color: ${(props) => `rgba(${props.theme.mainRgba},0.1)`};
     color: ${(props) => props.theme.main};
     box-shadow: ${(props) =>
@@ -113,8 +116,8 @@ const Right = styled.div`
       justify-content: center;
     }
     .icon {
-      width: 50%;
-      height: 50%;
+      width: 40%;
+      height: 40%;
     }
   }
   .profile {

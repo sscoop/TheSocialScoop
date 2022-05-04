@@ -53,7 +53,7 @@ const ChatSectionWrapper = styled.div`
   }
 
   .lower-section {
-    height: 90px;
+    height: 100px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -72,33 +72,35 @@ const ChatSectionWrapper = styled.div`
       margin: 0 20px;
       font-size: 17px;
       color: ${(props) => props.theme.main};
+      &::placeholder {
+        color: ${(props) => `rgba(${props.theme.mainRgba},.7)`};
+      }
     }
 
     .sendBtn {
       border: none;
-      padding: 10px;
-      border-radius: 10px;
-      width: 15%;
+      padding: 15px 60px;
+      border-radius: 30px;
       margin: 20px;
       background-color: ${(props) => props.theme.accent};
-      color: ${(props) => props.theme.text};
+      color: ${(props) =>
+        props.themeCurrent === "dark" ? props.theme.body : props.theme.main};
     }
   }
 `;
 
 const Chat = ({ themeCurrent }) => {
-  console.log(themeCurrent);
   return (
     <ChatSectionWrapper themeCurrent={themeCurrent}>
       <div className="chat-section">
         <Message userPic={user1} />
-        <Message userPic={user2} own={true} />
+        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
         <Message userPic={user1} />
-        <Message userPic={user2} own={true} />
+        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
         <Message userPic={user1} />
-        <Message userPic={user2} own={true} />
+        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
         <Message userPic={user1} />
-        <Message userPic={user2} own={true} />
+        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
       </div>
 
       <div className="lower-section">

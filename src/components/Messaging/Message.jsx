@@ -27,18 +27,22 @@ const Text = styled.div`
     background-color: ${(props) =>
       !props.own ? `rgba(${props.theme.bodyRgba},.4)` : props.theme.accent};
     color: ${(props) =>
-      !props.own ? `rgba(${props.theme.mainRgba},.8)` : props.theme.text};
+      !props.own
+        ? `rgba(${props.theme.mainRgba},.8)`
+        : props.themeCurrent === "dark"
+        ? props.theme.body
+        : props.theme.main};
     border-radius: ${(props) =>
-      !props.own ? "0 20px 20px 20px" : "20px 0 20px 20px"};
-    padding: 20px;
+      !props.own ? "0 30px 30px 30px" : "30px 0 30px 30px"};
+    padding: 30px;
     font-weight: 200;
     margin-top: 25px;
   }
 `;
 
-const Message = ({ userPic, own = false }) => {
+const Message = ({ userPic, own = false, themeCurrent }) => {
   return (
-    <Text own={own}>
+    <Text own={own} themeCurrent={themeCurrent}>
       <div className="message">
         <img src={userPic} alt="" className="userImg" />
         <p className="text">
