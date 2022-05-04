@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Search from "./components/Search";
 import bgDark from "./assets/bgDark.jpg";
 import bgLight from "./assets/bgLight.jpg";
+import SignUp from "./pages/SignUp";
 
 const Main = styled.div`
   height: 100vh;
@@ -126,13 +127,13 @@ function App() {
                 }
               />
               <Route
-                path="/register"
+                path="/signup"
                 themeCurrent={themeDark ? "dark" : "light"}
                 element={
                   user ? (
                     <Navigate to="/" replace />
                   ) : (
-                    <Login themeCurrent={themeDark ? "dark" : "light"} />
+                    <SignUp themeCurrent={themeDark ? "dark" : "light"} />
                   )
                 }
               />

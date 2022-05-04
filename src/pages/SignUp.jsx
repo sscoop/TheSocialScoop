@@ -116,16 +116,37 @@ const FormSectionWrapper = styled.div`
       }
     }
 
+    .password {
+      width: 82%;
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+
+      input {
+        width: 95%;
+
+        @media (max-width: 1000px) {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 1000px) {
+        flex-direction: column;
+        width: 100%;
+      }
+    }
+
     .submit-btn {
       width: 80%;
       padding: 20px 30px;
-      margin: 30px 0;
+      margin: 20px 0 5px 0;
       font-size: 15px;
       font-weight: 600;
       border: none;
       outline: none;
       border-radius: 30px;
       background-color: ${(props) => props.theme.accent};
+      /* cursor: pointer; */
 
       &:hover {
         background-color: ${(props) => `${props.theme.accent}df`};
@@ -139,7 +160,7 @@ const FormSectionWrapper = styled.div`
     }
   }
 
-  .sign-up-wrapper {
+  .login-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -162,7 +183,7 @@ const FormSectionWrapper = styled.div`
       border-radius: 1px;
       background-color: ${(props) => props.theme.main};
     }
-    .sign-up {
+    .login {
       color: ${(props) => props.theme.main};
       width: 90%;
       display: flex;
@@ -184,7 +205,7 @@ const FormSectionWrapper = styled.div`
         align-items: center;
       }
 
-      .sign-up-btn {
+      .login-btn {
         padding: 15px 30px;
         font-size: 15px;
         border-radius: 30px;
@@ -202,7 +223,7 @@ const FormSectionWrapper = styled.div`
   }
 `;
 
-const Login = ({ themeCurrent }) => {
+const SignUp = ({ themeCurrent }) => {
   console.log("themeCurrent", themeCurrent);
   return (
     <>
@@ -212,30 +233,45 @@ const Login = ({ themeCurrent }) => {
         <FormSectionWrapper>
           <form>
             <label htmlFor="username">
+              <input type="text" name="name" placeholder="Name..." />
+            </label>
+            <label htmlFor="username">
               <input
                 type="text"
                 name="username"
-                placeholder="Please enter your Username"
+                placeholder="Username (unique)..."
               />
             </label>
-            <label htmlFor="password">
-              <input
-                type="password"
-                name="password"
-                placeholder="Please enter your Password"
-              />
+            <label htmlFor="">
+              <input type="email" name="email" placeholder="Email..." />
             </label>
+            <div className="password">
+              <label htmlFor="password">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password..."
+                />
+              </label>
+              <label htmlFor="password">
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Confirm your Password"
+                />
+              </label>
+            </div>
             <button type="submit" className="submit-btn">
-              Log In
+              Sign Up
             </button>
           </form>
 
-          <div className="sign-up-wrapper">
+          <div className="login-wrapper">
             <div className="divider" />
-            <p className="sign-up">
-              <p>Don't have an Account? Sign Up Now!</p>
-              <Link to="/signup">
-                <button className="sign-up-btn">Sign Up</button>
+            <p className="login">
+              <p>Already have an Account? Login Now!</p>
+              <Link to="/login">
+                <button className="login-btn">Login</button>
               </Link>
             </p>
           </div>
@@ -245,4 +281,4 @@ const Login = ({ themeCurrent }) => {
   );
 };
 
-export default Login;
+export default SignUp;
