@@ -1,43 +1,66 @@
 import React from "react";
 import styled from "styled-components";
+import NavBar from "../components/NavBar";
 
-const MainWrapper = styled.div`
+const MainContainer = styled.span`
+  background: ${(props) =>
+    props.themeCurrent === "dark"
+      ? `rgba(${props.theme.bodyRgba},.3)`
+      : `rgba(${props.theme.bodyRgba},.5)`};
+
+  height: 90%;
+  width: 90%;
+  padding: 30px 50px;
+  margin-left: 30px;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
+  border-radius: 30px;
 
-  height: 600px;
-  width: 100vw;
-  margin: 45px;
-  padding: 20px;
-
-  font-family: ${(props) => props.theme.fontFamily};
-  /* font-family: "Source Sans Pro"; */
+  @media (max-width: 1300px) {
+    padding: 30px;
+  }
+  @media (max-width: 1000px) {
+    margin-left: 0;
+    width: calc(100% - 60px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
 `;
-
 const ImageSectionWrapper = styled.div`
-  border: 1px solid yellow;
-  flex: 3;
-
   height: 100%;
-  margin: 25px;
+  width: 45%;
+  @media (max-width: 1300px) {
+    width: 30%;
+  }
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 const FormSectionWrapper = styled.div`
-  flex: 2;
-
-  margin: 15px;
-  padding: 10px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  background-color: #1d1d1d;
-  border-radius: 10px;
+  justify-content: space-between;
+  width: 50%;
+  height: 100%;
 
-  h2 {
-    margin: 10px 0 50px 0;
+  @media (max-width: 1300px) {
+    width: 65%;
+  }
+
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
+
+  h1 {
+    margin: 10px 0;
+    color: ${(props) => props.theme.accent};
+    font-size: 50px;
+    @media (max-width: 1000px) {
+      font-size: 40px;
+    }
   }
 
   form {
@@ -45,96 +68,169 @@ const FormSectionWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-    margin: 50px 0;
+    margin: 20px 0 40px;
     width: 100%;
     height: 100%;
 
+    @media (max-width: 1000px) {
+      width: 90%;
+      margin: 10px 0;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 80%;
+      margin: 10px 0;
+      h2 {
+        color: ${(props) => props.theme.main};
+        @media (max-width: 1000px) {
+          font-size: 15px;
+          margin: 5px 0;
+        }
+      }
+    }
     input {
       font-size: 15px;
-      font-weight: 600;
-      width: 80%;
-      background: #2a2a2a;
+      font-weight: 400;
+      width: 100%;
+      background: transparent;
       border: none;
-      border-radius: 5px;
-      color: #f3f4fa;
-      padding: 15px;
-      outline: 1px solid #656565;
-      margin: 25px 0;
-      text-align: center;
+      border-radius: 30px;
+      color: ${(props) => props.theme.main};
+      outline: 1px solid ${(props) => props.theme.text};
+      padding: 15px 30px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      @media (max-width: 1000px) {
+        font-size: 12px;
+        padding: 12px 30px;
+      }
     }
 
     .submit-btn {
-      width: 85%;
-      padding: 15px;
+      width: 80%;
+      padding: 20px 30px;
+      margin: 20px 0;
       font-size: 15px;
       font-weight: 600;
       border: none;
-      border-radius: 5px;
-      background-color: #098a1c;
+      outline: none;
+      border-radius: 30px;
+      background-color: ${(props) => props.theme.accent};
+      @media (max-width: 1000px) {
+        font-size: 12px;
+        padding: 12px 30px;
+        margin: 10px 0;
+      }
     }
-  }
-
-  .divider {
-    margin: 10px 0;
-    width: 90%;
-    height: 0.75px;
-    border-radius: 1px;
-    background-color: #e2e2e2;
   }
 
   .sign-up-wrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
-
-    .sign-up-text {
-      color: ${(props) => props.theme.main};
-      margin-right: 20px;
+    box-sizing: border-box;
+    @media (max-width: 1300px) {
+      width: 90%;
+    }
+    @media (max-width: 1000px) {
+      font-size: 12px;
+      padding: 12px 30px;
+      margin: 0;
     }
 
-    .sign-up-btn {
-      margin: 15px 0;
-      width: 30%;
-      padding: 15px;
-      font-size: 15px;
-      font-weight: 700;
-      border: none;
-      border-radius: 5px;
-      background-color: ${(props) => props.theme.accent};
-      align-self: flex-end;
+    .divider {
+      margin: 0 0 10px 0;
+      width: 100%;
+      height: 0.75px;
+      border-radius: 1px;
+      background-color: ${(props) => props.theme.main};
+    }
+    .sign-up {
+      color: ${(props) => props.theme.main};
+      width: 90%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+
+      p {
+        margin: 0;
+        text-align: center;
+        @media (max-width: 650px) {
+          margin: 0 0 15px;
+        }
+      }
+
+      @media (max-width: 650px) {
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+      }
+
+      .sign-up-btn {
+        padding: 15px 30px;
+        font-size: 15px;
+        border-radius: 30px;
+        background-color: transparent;
+        border: 2px solid ${(props) => props.theme.text};
+        color: ${(props) => props.theme.main};
+        @media (max-width: 1300px) {
+          font-size: 12px;
+          padding: 10px 30px;
+        }
+      }
     }
   }
 `;
 
-const Login = () => {
+const Login = ({ themeCurrent }) => {
+  console.log("themeCurrent", themeCurrent);
   return (
-    <MainWrapper>
-      <ImageSectionWrapper>Image Section Wrapper</ImageSectionWrapper>
-      <FormSectionWrapper>
-        <form action="">
-          <input type="text" name="email" placeholder="Enter your Email ID" />
+    <>
+      <NavBar themeCurrent={themeCurrent} />
+      <MainContainer themeCurrent={themeCurrent}>
+        <ImageSectionWrapper>Image Section Wrapper</ImageSectionWrapper>
+        <FormSectionWrapper>
+          <h1>Login</h1>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter your Account Password"
-          />
+          <form>
+            <label htmlFor="username">
+              <h2>Username</h2>
+              <input
+                type="text"
+                name="username"
+                placeholder="Please enter your Username"
+              />
+            </label>
+            <label htmlFor="password">
+              <h2>Password</h2>
+              <input
+                type="password"
+                name="password"
+                placeholder="Please enter your Password"
+              />
+            </label>
+            <button type="submit" className="submit-btn">
+              Log In
+            </button>
+          </form>
 
-          <button type="submit" className="submit-btn">
-            Log In
-          </button>
-        </form>
-
-        <div className="divider" />
-
-        <div className="sign-up-wrapper">
-          <p className="sign-up-text">Don't have an Account? Sign Up Now! </p>
-          <button className="sign-up-btn">Sign Up</button>
-        </div>
-      </FormSectionWrapper>
-    </MainWrapper>
+          <div className="sign-up-wrapper">
+            <div className="divider" />
+            <p className="sign-up">
+              <p>Don't have an Account? Sign Up Now!</p>
+              <button className="sign-up-btn">Sign Up</button>
+            </p>
+          </div>
+        </FormSectionWrapper>
+      </MainContainer>
+    </>
   );
 };
 

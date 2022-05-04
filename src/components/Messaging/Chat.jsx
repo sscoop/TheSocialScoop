@@ -6,30 +6,38 @@ import { user1, user2 } from "../../assets/images";
 import Message from "./Message";
 
 const ChatSectionWrapper = styled.div`
-  background-color: ${(props) => props.theme.body};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  background: transparent;
+
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    background: ${(props) =>
+      props.themeCurrent === "dark"
+        ? `rgba(${props.theme.bodyRgba},.3)`
+        : `rgba(${props.theme.bodyRgba},.6)`};
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    border-radius: 30px;
+  }
+
   height: calc(90% + 60px);
   width: 65%;
   margin: 0 40px;
-  border-radius: 20px;
+  border-radius: 30px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  &::before {
-    content: "";
-    top: -5px;
-    left: 0;
-    width: 100%;
-    height: 0px;
-    position: absolute;
-<<<<<<< HEAD
-    box-shadow: ${(props) => `0px 5px 50px 45px ${props.theme.body}`};
-=======
-    box-shadow: ${(props) => `0px 5px 50px 20px ${props.theme.body}`};
->>>>>>> a0eeb1130bb26cf7fcc4ff424a2dfe5159ca9694
-  }
 
   .chat-section {
     height: calc(100% - 90px);
@@ -79,9 +87,10 @@ const ChatSectionWrapper = styled.div`
   }
 `;
 
-const Chat = () => {
+const Chat = ({ themeCurrent }) => {
+  console.log(themeCurrent);
   return (
-    <ChatSectionWrapper>
+    <ChatSectionWrapper themeCurrent={themeCurrent}>
       <div className="chat-section">
         <Message userPic={user1} />
         <Message userPic={user2} own={true} />

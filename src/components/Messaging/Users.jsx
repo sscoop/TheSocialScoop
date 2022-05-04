@@ -3,11 +3,19 @@ import styled from "styled-components";
 import { user, user1, user2 } from "../../assets/images";
 
 const UsersSectionWrapper = styled.div`
-  background-color: ${(props) => props.theme.body};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  background: ${(props) =>
+    props.themeCurrent === "dark"
+      ? `rgba(${props.theme.bodyRgba},.6)`
+      : `rgba(${props.theme.bodyRgba},.3)`};
+
   height: 90%;
-  width: 250px;
-  padding: 30px 30px;
-  border-radius: 20px;
+  width: 15%;
+  padding: 30px 50px;
+  border-radius: 30px;
   overflow-y: scroll;
   flex-shrink: 0;
   h2 {
@@ -79,11 +87,15 @@ const UsersSectionWrapper = styled.div`
       height: 40px;
     }
   }
+  @media (max-width: 1000px) {
+    height: 85%;
+    margin-bottom: 20px;
+  }
 `;
 
-const Users = () => {
+const Users = ({ themeCurrent }) => {
   return (
-    <UsersSectionWrapper>
+    <UsersSectionWrapper themeCurrent={themeCurrent}>
       <h2>Messages</h2>
       <div className="userDiv">
         <div className="userImg">

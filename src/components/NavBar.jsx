@@ -9,9 +9,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 const MainContainer = styled.div`
-  background-color: ${(props) => props.theme.body};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  background: ${(props) =>
+    props.themeCurrent === "dark"
+      ? `rgba(${props.theme.bodyRgba},.6)`
+      : `rgba(${props.theme.bodyRgba},.3)`};
   height: 90%;
-  width: 55px;
+  width: 70px;
   padding: 30px 30px;
   border-radius: 20px;
   display: flex;
@@ -19,14 +26,15 @@ const MainContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   flex-shrink: 0;
-  @media (max-width: 1250px) {
-    width: 100px;
-  }
+
   @media (max-width: 1000px) {
-    height: 80px;
+    height: 70px;
     width: 100%;
     padding: 30px 0px;
     flex-direction: row;
+  }
+  @media (max-width: 770px) {
+    height: 60px;
   }
   @media (max-width: 600px) {
     height: 20px;
@@ -35,7 +43,7 @@ const MainContainer = styled.div`
   }
 `;
 const IconContainer = styled(Link)`
-  width: 65%;
+  width: 55%;
   height: calc(120px * 0.55);
   position: relative;
   margin: 5px 0;
@@ -48,6 +56,11 @@ const IconContainer = styled(Link)`
     width: 100%;
     height: 100%;
   }
+
+  @media (max-width: 1000px) {
+    height: 4%;
+    height: calc(120px * 0.4);
+  }
   @media (max-width: 770px) {
     height: 35%;
     height: calc(120px * 0.35);
@@ -58,9 +71,9 @@ const IconContainer = styled(Link)`
   }
 `;
 
-const NavBar = () => {
+const NavBar = ({ themeCurrent }) => {
   return (
-    <MainContainer>
+    <MainContainer themeCurrent={themeCurrent}>
       <IconContainer to="/">
         <FontAwesomeIcon className="navIcon" icon={faHome} />
       </IconContainer>

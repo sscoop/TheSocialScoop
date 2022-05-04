@@ -3,7 +3,7 @@ import NavBar from "../components/NavBar";
 import Feed from "../components/Feed";
 import Sidebar from "../components/Sidebar";
 
-const Home = ({ theme, setThemeDark }) => {
+const Home = ({ themeCurrent }) => {
   return (
     <>
       <NavBar />

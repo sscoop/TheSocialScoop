@@ -10,7 +10,14 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const Container = styled.div`
-  background-color: ${(props) => props.theme.body};
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  background: ${(props) =>
+    props.themeCurrent === "dark"
+      ? `rgba(${props.theme.bodyRgba},.6)`
+      : `rgba(${props.theme.bodyRgba},.3)`};
   padding: 0px 30px;
   margin: 40px 40px;
   color: ${(props) => props.theme.main};
@@ -142,9 +149,9 @@ const Right = styled.div`
   }
 `;
 
-const TopBar = ({ theme, setThemeDark }) => {
+const TopBar = ({ themeCurrent, setThemeDark }) => {
   return (
-    <Container>
+    <Container themeCurrent={themeCurrent}>
       <Left to="/">
         <h1>The Social Scoop</h1>
       </Left>
@@ -154,14 +161,14 @@ const TopBar = ({ theme, setThemeDark }) => {
           <FontAwesomeIcon icon={faMagnifyingGlass} />
         </button>
       </Center>
-      <Right shadowColor={theme}>
+      <Right shadowColor={themeCurrent}>
         <span className="theme" onClick={() => setThemeDark((p) => !p)}>
           <motion.span
             className="iconContainer"
             transition={{ duration: 0.3 }}
             whileTap={{ rotate: [0, 360, 360, 0], scale: [1, 0, 1] }}
           >
-            {theme === "dark" ? (
+            {themeCurrent === "dark" ? (
               <FontAwesomeIcon className="icon" icon={faSun} />
             ) : (
               <FontAwesomeIcon className="icon" icon={faMoon} />
