@@ -16,7 +16,7 @@ const MainContainer = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.7)`
-      : `rgba(${props.theme.mainRgba},.2)`};
+      : `rgba(${props.theme.bodyRgba},.4)`};
   height: 90%;
   width: 70px;
   padding: 30px 30px;

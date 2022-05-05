@@ -2,12 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
+import heroDark from "../assets/heroDark.png";
+import heroLight from "../assets/heroLight.png";
 
 const MainContainer = styled.span`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.3)`
-      : `rgba(${props.theme.mainRgba},.2)`};
+      : `rgba(${props.theme.bodyRgba},.3)`};
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -19,8 +21,8 @@ const MainContainer = styled.span`
   align-items: center;
   justify-content: space-between;
   border-radius: 30px;
+  backdrop-filter: blur(5px);
 
-  backdrop-filter: blur(7px);
   @media (max-width: 1300px) {
     padding: 30px;
   }
@@ -34,6 +36,12 @@ const MainContainer = styled.span`
 const ImageSectionWrapper = styled.div`
   height: 100%;
   width: 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img {
+    width: 90%;
+  }
   @media (max-width: 1300px) {
     width: 30%;
   }
@@ -206,12 +214,16 @@ const FormSectionWrapper = styled.div`
 `;
 
 const Login = ({ themeCurrent }) => {
-  console.log("themeCurrent", themeCurrent);
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
       <MainContainer themeCurrent={themeCurrent}>
-        <ImageSectionWrapper>Image Section Wrapper</ImageSectionWrapper>
+        <ImageSectionWrapper>
+          <img
+            src={themeCurrent === "dark" ? heroDark : heroLight}
+            alt="the social scoop logo"
+          />
+        </ImageSectionWrapper>
         <FormSectionWrapper>
           <form>
             <label htmlFor="username">

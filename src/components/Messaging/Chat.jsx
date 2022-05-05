@@ -19,7 +19,7 @@ const ChatSectionWrapper = styled.div`
     background: ${(props) =>
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.4)`
-        : `rgba(${props.theme.mainRgba},.4)`};
+        : `rgba(${props.theme.bodyRgba},.1)`};
     height: 100%;
     width: 100%;
     top: 0;
@@ -73,7 +73,9 @@ const ChatSectionWrapper = styled.div`
       font-size: 17px;
       color: ${(props) => props.theme.main};
       &::placeholder {
-        color: ${(props) => `rgba(${props.theme.mainRgba},.7)`};
+        /* color: ${(props) => `rgba(${props.theme.mainRgba},.9)`};
+        */
+        color: #bbb;
       }
     }
 
@@ -83,8 +85,7 @@ const ChatSectionWrapper = styled.div`
       border-radius: 30px;
       margin: 20px;
       background-color: ${(props) => props.theme.accent};
-      color: ${(props) =>
-        props.themeCurrent === "dark" ? props.theme.body : props.theme.main};
+      color: ${(props) => props.theme.body};
     }
   }
 `;

@@ -8,6 +8,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import logoDark from "../assets/logoDark.png";
+import logoLight from "../assets/logoLight.png";
+import logoDarkM from "../assets/logoDarkM.png";
+import logoLightM from "../assets/logoLightM.png";
 
 const Container = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.7);
@@ -17,8 +21,8 @@ const Container = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.7)`
-      : `rgba(${props.theme.mainRgba},.2)`};
-  padding: 0px 40px;
+      : `rgba(${props.theme.bodyRgba},.4)`};
+  padding: 0px 30px;
   margin: 30px 40px 0;
   color: ${(props) => props.theme.main};
   border-radius: 30px;
@@ -39,18 +43,13 @@ const Left = styled(Link)`
   justify-content: center;
   color: ${(props) => props.theme.main};
   text-decoration: none;
-  h1 {
-    /* text-transform: uppercase; */
-    font-size: 30px;
-    font-family: "Italiana", serif;
-    font-weight: 100;
-    /* font-family: "Anurati", sans-serif; */
-    @media (max-width: 768px) {
-      font-size: 15px;
+  img {
+    height: 55%;
+    @media (max-width: 1000px) {
+      height: 45%;
     }
-    @media (max-width: 425px) {
-      font-size: 13px;
-      width: 15px;
+    @media (max-width: 750px) {
+      height: 75%;
     }
   }
 `;
@@ -153,10 +152,23 @@ const Right = styled.div`
 `;
 
 const TopBar = ({ themeCurrent, setThemeDark }) => {
+  let mobile =
+    (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
   return (
     <Container themeCurrent={themeCurrent}>
       <Left to="/">
-        <h1>The Social Scoop</h1>
+        <img
+          src={
+            themeCurrent === "dark"
+              ? mobile
+                ? logoDarkM
+                : logoDark
+              : mobile
+              ? logoLightM
+              : logoLight
+          }
+          alt="logo"
+        />
       </Left>
       <Center>
         <input type="text" placeholder="Search..." />

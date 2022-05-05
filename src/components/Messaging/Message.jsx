@@ -25,13 +25,9 @@ const Text = styled.div`
 
   .text {
     background-color: ${(props) =>
-      !props.own ? `rgba(${props.theme.bodyRgba},.4)` : props.theme.accent};
+      !props.own ? `rgba(${props.theme.bodyRgba},.5)` : props.theme.accent};
     color: ${(props) =>
-      !props.own
-        ? `rgba(${props.theme.mainRgba},.8)`
-        : props.themeCurrent === "dark"
-        ? props.theme.body
-        : props.theme.main};
+      !props.own ? `rgba(${props.theme.mainRgba},.8)` : props.theme.body};
     border-radius: ${(props) =>
       !props.own ? "0 30px 30px 30px" : "30px 0 30px 30px"};
     padding: 30px;

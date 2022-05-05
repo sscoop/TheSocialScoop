@@ -57,7 +57,7 @@ const Container = styled.div`
 
 function App() {
   const [themeDark, setThemeDark] = useState(true);
-  const user = true;
+  const user = false;
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>

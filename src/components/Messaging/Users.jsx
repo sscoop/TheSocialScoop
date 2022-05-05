@@ -10,7 +10,7 @@ const UsersSectionWrapper = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.7)`
-      : `rgba(${props.theme.mainRgba},.2)`};
+      : `rgba(${props.theme.bodyRgba},.3)`};
 
   height: 90%;
   width: 15%;
@@ -20,7 +20,7 @@ const UsersSectionWrapper = styled.div`
   flex-shrink: 0;
   h2 {
     margin: 10px 0px;
-    color: ${(props) => props.theme.main};
+    color: ${(props) => props.theme.accent};
   }
 
   .userDiv {

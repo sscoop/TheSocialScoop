@@ -1,16 +1,16 @@
 export const lightTheme = {
-  body: "#D3E5EF",
+  body: "#D3EFDF",
   text: "#4d5751",
-  main: "#25342B",
-  accent: "#38ffb3",
+  main: "#182E21",
+  accent: "#006363",
   fontFamily: "'Source Sans Pro', sans-serif",
   bodyRgba: "255, 255, 255",
   mainRgba: "29, 29, 29",
 };
 export const darkTheme = {
-  body: "#1d1d1d",
+  body: "#182E21",
   text: "#a5a5a5",
-  main: "#f3f4fa",
+  main: "#D3EFDF",
   accent: "#38ffb3",
   fontFamily: "'Source Sans Pro', sans-serif",
   mainRgba: "243, 244, 250",
