@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,7 +7,7 @@ import {
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoDark from "../assets/logoDark.png";
 import logoLight from "../assets/logoLight.png";
 import logoDarkM from "../assets/logoDarkM.png";
@@ -68,7 +68,13 @@ const Center = styled.form`
   border-radius: 30px;
 
   @media (max-width: 1000px) {
-    display: none;
+    top: 180%;
+    width: 65vw;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: ${(props) => `rgba(${props.theme.bodyRgba},0.1)`};
+    display: ${(props) => (props.url ? "flex" : "none")};
   }
 
   input {
@@ -81,7 +87,7 @@ const Center = styled.form`
       color: ${(props) => `rgba(${props.theme.mainRgba},0.4)`};
     }
   }
-  button {
+  .searchBtn {
     background-color: transparent;
     border: none;
     outline: none;
@@ -96,12 +102,12 @@ const Right = styled.div`
     height: 50px;
     width: 50px;
     margin-right: 30px;
-    background-color: ${(props) => `rgba(${props.theme.mainRgba},0.1)`};
+    background-color: ${(props) => `rgba(${props.theme.bodyRgba},0.1)`};
     color: ${(props) => props.theme.main};
     box-shadow: ${(props) =>
       props.shadowColor === "dark"
-        ? `inset -1px -1px 2px 1px ${props.theme.text}`
-        : `inset 0px 1px 2px 0.01px ${props.theme.main}`};
+        ? `inset  -1px -1px 2px 0.5px ${props.theme.text}`
+        : `inset 0px 2px 1px 0.01px ${props.theme.main}`};
     box-sizing: border-box;
     border-radius: 50%;
     display: flex;
@@ -152,8 +158,10 @@ const Right = styled.div`
 `;
 
 const TopBar = ({ themeCurrent, setThemeDark }) => {
+  const url = useLocation().pathname.split("/")[1] === "search";
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
+  const [search, setSearch] = useState("");
   return (
     <Container themeCurrent={themeCurrent}>
       <Left to="/">
@@ -170,11 +178,15 @@ const TopBar = ({ themeCurrent, setThemeDark }) => {
           alt="logo"
         />
       </Left>
-      <Center>
-        <input type="text" placeholder="Search..." />
-        <button type="submit">
+      <Center url={url}>
+        <input
+          type="text"
+          placeholder="Search..."
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Link className="searchBtn" to={`/search/${search}`}>
           <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </button>
+        </Link>
       </Center>
       <Right shadowColor={themeCurrent}>
         <span className="theme" onClick={() => setThemeDark((p) => !p)}>

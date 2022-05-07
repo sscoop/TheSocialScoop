@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
+import axios from "axios";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -21,7 +22,6 @@ const MainContainer = styled.span`
   align-items: center;
   justify-content: space-between;
   border-radius: 30px;
-  backdrop-filter: blur(5px);
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -40,7 +40,7 @@ const ImageSectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 90%;
+    width: 80%;
   }
   @media (max-width: 1300px) {
     width: 30%;
@@ -108,17 +108,27 @@ const FormSectionWrapper = styled.div`
       font-size: 15px;
       font-weight: 400;
       width: 100%;
-      background: transparent;
+      background: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
       border: none;
       border-radius: 30px;
       color: ${(props) => props.theme.main};
-      outline: 1px solid ${(props) => props.theme.text};
+      outline: none;
+      border: 1.5px solid ${(props) => props.theme.text};
       padding: 15px 30px;
       margin: 10px 0;
       box-sizing: border-box;
+      transition: width 0.15s ease;
+      &:hover {
+        width: 101%;
+        border: 1.5px solid ${(props) => props.theme.accent};
+      }
+      &:focus {
+        border: 1.5px solid ${(props) => props.theme.accent};
+        width: 101%;
+      }
 
       &::placeholder {
-        color: ${(props) => `rgba(${props.theme.mainRgba}, 0.5)`};
+        color: ${(props) => `rgba(${props.theme.mainRgba}, 0.6)`};
       }
 
       @media (max-width: 1000px) {
@@ -136,9 +146,23 @@ const FormSectionWrapper = styled.div`
 
       input {
         width: 95%;
+        &:hover {
+          width: 96%;
+        }
+        &:focus {
+          border: 1.5px solid ${(props) => props.theme.accent};
+          width: 96%;
+        }
 
         @media (max-width: 1000px) {
           width: 100%;
+          &:hover {
+            width: 101%;
+          }
+          &:focus {
+            border: 1.5px solid ${(props) => props.theme.accent};
+            width: 101%;
+          }
         }
       }
 
@@ -150,20 +174,22 @@ const FormSectionWrapper = styled.div`
 
     .submit-btn {
       width: 80%;
-      padding: 20px 30px;
-      margin: 20px 0 5px 0;
+      padding: 15px 30px;
+      margin: 30px 0;
       font-size: 15px;
       font-weight: 600;
       border: none;
       outline: none;
       border-radius: 30px;
       background-color: ${(props) => props.theme.accent};
-      /* cursor: pointer; */
+      color: ${(props) => props.theme.body};
+      box-sizing: border-box;
+      transition: width 0.15s ease;
 
       &:hover {
-        background-color: ${(props) => `${props.theme.accent}df`};
+        width: 81%;
+        color: ${(props) => props.theme.body};
       }
-
       @media (max-width: 1000px) {
         font-size: 12px;
         padding: 12px 30px;
@@ -225,10 +251,16 @@ const FormSectionWrapper = styled.div`
         padding: 15px 30px;
         font-size: 15px;
         border-radius: 30px;
-        background-color: transparent;
-        border: 2px solid ${(props) => props.theme.text};
-        color: ${(props) => props.theme.main};
+        background-color: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
+        border: 2px solid ${(props) => props.theme.accent};
+        color: ${(props) => props.theme.accent};
         cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: ${(props) => props.theme.accent};
+          color: ${(props) => props.theme.body};
+        }
 
         @media (max-width: 1300px) {
           font-size: 12px;
@@ -239,7 +271,25 @@ const FormSectionWrapper = styled.div`
   }
 `;
 
-const SignUp = ({ themeCurrent }) => {
+const SignUp = ({ themeCurrent, setUser }) => {
+  const [userData, setUserData] = useState({});
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:8800/api/auth/signup", {
+        ...userData,
+      });
+      console.log(res);
+      setUser(true);
+    } catch (error) {
+      console.log(error.msg);
+    }
+  };
+
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
@@ -251,29 +301,46 @@ const SignUp = ({ themeCurrent }) => {
           />
         </ImageSectionWrapper>
         <FormSectionWrapper>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <label htmlFor="username">
-              <input type="text" name="name" placeholder="Name..." />
+              <input
+                type="text"
+                name="name"
+                placeholder="Name..."
+                onChange={(e) => handleChange(e)}
+              />
             </label>
             <label htmlFor="username">
-              <input type="text" name="username" placeholder="Username... " />
+              <input
+                type="text"
+                name="username"
+                placeholder="Username... "
+                onChange={(e) => handleChange(e)}
+              />
             </label>
             <label htmlFor="">
-              <input type="email" name="email" placeholder="Email..." />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email..."
+                onChange={(e) => handleChange(e)}
+              />
             </label>
             <div className="password">
               <label htmlFor="password1">
                 <input
                   type="password"
-                  name="password1"
+                  name="password"
                   placeholder="Password..."
+                  onChange={(e) => handleChange(e)}
                 />
               </label>
               <label htmlFor="password2">
                 <input
                   type="password"
                   name="password2"
-                  placeholder="Confirm Password"
+                  placeholder="Confirm Password..."
+                  onChange={(e) => handleChange(e)}
                 />
               </label>
             </div>

@@ -81,7 +81,7 @@ const NavBar = ({ themeCurrent }) => {
       <IconContainer to="/messages">
         <FontAwesomeIcon className="navIcon" icon={faMessage} />
       </IconContainer>
-      <IconContainer to="settings">
+      <IconContainer to="/settings">
         <FontAwesomeIcon className="navIcon" icon={faGear} />
       </IconContainer>
     </MainContainer>

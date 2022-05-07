@@ -7,10 +7,11 @@ import { useState } from "react";
 import Messages from "./pages/Messages";
 import TopBar from "./components/TopBar";
 import Login from "./pages/Login";
-import Search from "./components/Search";
+import Search from "./pages/Search";
 import bgDark from "./assets/bgDark.jpg";
 import bgLight from "./assets/bgLight.jpg";
 import SignUp from "./pages/SignUp";
+import Settings from "./pages/Settings";
 
 const Main = styled.div`
   height: 100vh;
@@ -57,7 +58,7 @@ const Container = styled.div`
 
 function App() {
   const [themeDark, setThemeDark] = useState(true);
-  const user = false;
+  const [user, setUser] = useState(false);
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>
@@ -72,6 +73,7 @@ function App() {
             <Routes>
               <Route
                 path="/"
+                exact
                 element={
                   user ? (
                     <Home themeCurrent={themeDark ? "dark" : "light"} />
@@ -81,17 +83,27 @@ function App() {
                 }
               />
               <Route
-                path="/search/:query"
+                path="/settings"
+                exact
                 element={
                   user ? (
-                    <Search themeCurrent={themeDark ? "dark" : "light"} />
+                    <Settings themeCurrent={themeDark ? "dark" : "light"} />
                   ) : (
                     <Navigate to="/login" replace />
                   )
                 }
               />
               <Route
+                path={"/search/:query"}
+                element={<Search themeCurrent={themeDark ? "dark" : "light"} />}
+              />
+              <Route
+                path={"/search"}
+                element={<Search themeCurrent={themeDark ? "dark" : "light"} />}
+              />
+              <Route
                 path="/messages"
+                exact
                 element={
                   user ? (
                     <Messages themeCurrent={themeDark ? "dark" : "light"} />
@@ -102,23 +114,29 @@ function App() {
               />
               <Route
                 path="/login"
-                themeCurrent={themeDark ? "dark" : "light"}
+                exact
                 element={
                   user ? (
                     <Navigate to="/" replace />
                   ) : (
-                    <Login themeCurrent={themeDark ? "dark" : "light"} />
+                    <Login
+                      themeCurrent={themeDark ? "dark" : "light"}
+                      setUser={setUser}
+                    />
                   )
                 }
               />
               <Route
                 path="/signup"
-                themeCurrent={themeDark ? "dark" : "light"}
+                exact
                 element={
                   user ? (
                     <Navigate to="/" replace />
                   ) : (
-                    <SignUp themeCurrent={themeDark ? "dark" : "light"} />
+                    <SignUp
+                      themeCurrent={themeDark ? "dark" : "light"}
+                      setUser={setUser}
+                    />
                   )
                 }
               />

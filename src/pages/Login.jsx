@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
+import axios from "axios";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -21,7 +22,6 @@ const MainContainer = styled.span`
   align-items: center;
   justify-content: space-between;
   border-radius: 30px;
-  backdrop-filter: blur(5px);
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -40,7 +40,7 @@ const ImageSectionWrapper = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 90%;
+    width: 80%;
   }
   @media (max-width: 1300px) {
     width: 30%;
@@ -108,17 +108,26 @@ const FormSectionWrapper = styled.div`
       font-size: 15px;
       font-weight: 400;
       width: 100%;
-      background: transparent;
       border: none;
       border-radius: 30px;
       color: ${(props) => props.theme.main};
-      outline: 1px solid ${(props) => props.theme.text};
+      background: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
+      outline: none;
+      border: 1.5px solid ${(props) => props.theme.text};
       padding: 15px 30px;
       margin: 10px 0;
       box-sizing: border-box;
-
+      transition: width 0.15s ease;
+      &:hover {
+        width: 101%;
+        border: 1.5px solid ${(props) => props.theme.accent};
+      }
+      &:focus {
+        border: 1.5px solid ${(props) => props.theme.accent};
+        width: 101%;
+      }
       &::placeholder {
-        color: ${(props) => `rgba(${props.theme.mainRgba}, 0.5)`};
+        color: ${(props) => `rgba(${props.theme.mainRgba}, 0.6)`};
       }
 
       @media (max-width: 1000px) {
@@ -129,7 +138,7 @@ const FormSectionWrapper = styled.div`
 
     .submit-btn {
       width: 80%;
-      padding: 20px 30px;
+      padding: 15px 30px;
       margin: 30px 0;
       font-size: 15px;
       font-weight: 600;
@@ -137,9 +146,13 @@ const FormSectionWrapper = styled.div`
       outline: none;
       border-radius: 30px;
       background-color: ${(props) => props.theme.accent};
+      color: ${(props) => props.theme.body};
+      box-sizing: border-box;
+      transition: width 0.15s ease;
 
       &:hover {
-        background-color: ${(props) => `${props.theme.accent}df`};
+        width: 81%;
+        color: ${(props) => props.theme.body};
       }
 
       @media (max-width: 1000px) {
@@ -199,10 +212,16 @@ const FormSectionWrapper = styled.div`
         padding: 15px 30px;
         font-size: 15px;
         border-radius: 30px;
-        background-color: transparent;
-        border: 2px solid ${(props) => props.theme.text};
-        color: ${(props) => props.theme.main};
+        background-color: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
+        border: 2px solid ${(props) => props.theme.accent};
+        color: ${(props) => props.theme.accent};
         cursor: pointer;
+        transition: all 0.15s ease;
+
+        &:hover {
+          background-color: ${(props) => props.theme.accent};
+          color: ${(props) => props.theme.body};
+        }
 
         @media (max-width: 1300px) {
           font-size: 12px;
@@ -213,7 +232,24 @@ const FormSectionWrapper = styled.div`
   }
 `;
 
-const Login = ({ themeCurrent }) => {
+const Login = ({ themeCurrent, setUser }) => {
+  const [userData, setUserData] = useState({});
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("http://localhost:8800/api/auth/login", {
+        ...userData,
+      });
+      console.log(res);
+      setUser(true);
+    } catch (error) {
+      console.log(error.msg);
+    }
+  };
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
@@ -225,15 +261,21 @@ const Login = ({ themeCurrent }) => {
           />
         </ImageSectionWrapper>
         <FormSectionWrapper>
-          <form>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <label htmlFor="username">
-              <input type="text" name="username" placeholder="Username..." />
+              <input
+                type="text"
+                name="username"
+                placeholder="Username..."
+                onChange={(e) => handleChange(e)}
+              />
             </label>
             <label htmlFor="password">
               <input
                 type="password"
                 name="password"
                 placeholder="Password..."
+                onChange={(e) => handleChange(e)}
               />
             </label>
             <button type="submit" className="submit-btn">
