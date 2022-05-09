@@ -4,7 +4,8 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
-import axios from "axios";
+import { login } from "../redux/apiCalls";
+import { useDispatch } from "react-redux";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -232,23 +233,26 @@ const FormSectionWrapper = styled.div`
   }
 `;
 
-const Login = ({ themeCurrent, setUser }) => {
+const Login = ({ themeCurrent }) => {
   const [userData, setUserData] = useState({});
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
-
+  const dispatch = useDispatch();
   const handleSubmit = async (e) => {
+    // e.preventDefault();
+    // try {
+    //   const res = await axios.post("http://localhost:8800/api/auth/login", {
+    //     ...userData,
+    //   });
+    //   console.log(res);
+    //   setUser(true);
+    // } catch (error) {
+    //   console.log(error.msg);
+    // }
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:8800/api/auth/login", {
-        ...userData,
-      });
-      console.log(res);
-      setUser(true);
-    } catch (error) {
-      console.log(error.msg);
-    }
+    console.log("object", { ...userData });
+    login(dispatch, { ...userData });
   };
   return (
     <>

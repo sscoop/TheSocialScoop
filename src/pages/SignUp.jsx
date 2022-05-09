@@ -4,7 +4,9 @@ import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
-import axios from "axios";
+import { publicRequest } from "../requestMethods";
+import { login } from "../redux/apiCalls";
+import { useDispatch } from "react-redux";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -273,21 +275,18 @@ const FormSectionWrapper = styled.div`
 
 const SignUp = ({ themeCurrent, setUser }) => {
   const [userData, setUserData] = useState({});
+  const dispatch = useDispatch();
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:8800/api/auth/signup", {
-        ...userData,
-      });
-      console.log(res);
-      setUser(true);
-    } catch (error) {
-      console.log(error.msg);
-    }
+    await publicRequest.post("/auth/signup", { ...userData });
+    login(dispatch, {
+      username: userData.username,
+      password: userData.password,
+    });
   };
 
   return (

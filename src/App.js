@@ -12,6 +12,7 @@ import bgDark from "./assets/bgDark.jpg";
 import bgLight from "./assets/bgLight.jpg";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
+import { useSelector } from "react-redux";
 
 const Main = styled.div`
   height: 100vh;
@@ -58,7 +59,7 @@ const Container = styled.div`
 
 function App() {
   const [themeDark, setThemeDark] = useState(true);
-  const [user, setUser] = useState(false);
+  const user = useSelector((state) => state.user.currentUser);
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>
@@ -87,7 +88,10 @@ function App() {
                 exact
                 element={
                   user ? (
-                    <Settings themeCurrent={themeDark ? "dark" : "light"} />
+                    <Settings
+                      themeCurrent={themeDark ? "dark" : "light"}
+                      user={user}
+                    />
                   ) : (
                     <Navigate to="/login" replace />
                   )
@@ -119,10 +123,7 @@ function App() {
                   user ? (
                     <Navigate to="/" replace />
                   ) : (
-                    <Login
-                      themeCurrent={themeDark ? "dark" : "light"}
-                      setUser={setUser}
-                    />
+                    <Login themeCurrent={themeDark ? "dark" : "light"} />
                   )
                 }
               />
@@ -133,10 +134,7 @@ function App() {
                   user ? (
                     <Navigate to="/" replace />
                   ) : (
-                    <SignUp
-                      themeCurrent={themeDark ? "dark" : "light"}
-                      setUser={setUser}
-                    />
+                    <SignUp themeCurrent={themeDark ? "dark" : "light"} />
                   )
                 }
               />

@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
+import { logOut } from "../redux/userSlice";
 
 const MainContainer = styled.div`
   background: ${(props) =>
@@ -30,11 +32,19 @@ const MainContainer = styled.div`
   }
 `;
 
-const Settings = () => {
+const Settings = ({ user }) => {
+  const dispatch = useDispatch();
+  const signOut = () => {
+    if (user) {
+      dispatch(logOut());
+    }
+  };
   return (
     <>
       <NavBar />
-      <MainContainer>zxc</MainContainer>
+      <MainContainer>
+        <span onClick={signOut}>LogOut</span>
+      </MainContainer>
     </>
   );
 };
