@@ -69,6 +69,7 @@ function App() {
           <TopBar
             setThemeDark={setThemeDark}
             themeCurrent={themeDark ? "dark" : "light"}
+            user={user}
           />
           <Container>
             <Routes>

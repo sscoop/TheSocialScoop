@@ -157,7 +157,7 @@ const Right = styled.div`
   }
 `;
 
-const TopBar = ({ themeCurrent, setThemeDark }) => {
+const TopBar = ({ themeCurrent, setThemeDark, user }) => {
   const url = useLocation().pathname.split("/")[1] === "search";
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
@@ -203,10 +203,13 @@ const TopBar = ({ themeCurrent, setThemeDark }) => {
           </motion.span>
         </span>
         <div className="profile">
-          <img
-            src="https://media.istockphoto.com/photos/protective-antiviral-mask-on-the-cats-face-protective-face-mask-for-picture-id1214907564?k=20&m=1214907564&s=612x612&w=0&h=PmjmDkPCAqE0aKz3mr_uzfJ0q40FUWQLrZ1Ugy7dMPk="
-            alt=""
-          />
+          {user && <img src={user.profilePicture} alt="" />}
+          {!user && (
+            <img
+              src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+              alt=""
+            />
+          )}
         </div>
       </Right>
     </Container>

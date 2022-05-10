@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
@@ -7,6 +6,14 @@ import heroLight from "../assets/heroLight.png";
 import { publicRequest } from "../requestMethods";
 import { login } from "../redux/apiCalls";
 import { useDispatch } from "react-redux";
+import Form from "../components/Sign Up/Form";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -52,242 +59,78 @@ const ImageSectionWrapper = styled.div`
   }
 `;
 
-const FormSectionWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  width: 50%;
-  height: 100%;
-
-  @media (max-width: 1300px) {
-    width: 65%;
-  }
-
-  @media (max-width: 1000px) {
-    width: 100%;
-  }
-
-  h1 {
-    margin: 10px 0;
-    color: ${(props) => props.theme.accent};
-    font-size: 50px;
-    @media (max-width: 1000px) {
-      font-size: 40px;
-    }
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin: 0 0 40px;
-    width: 100%;
-    height: 100%;
-
-    @media (max-width: 1000px) {
-      width: 90%;
-      margin: 10px 0;
-    }
-
-    label {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 80%;
-      margin: 10px 0;
-      h2 {
-        color: ${(props) => props.theme.main};
-        @media (max-width: 1000px) {
-          font-size: 15px;
-          margin: 5px 0;
-        }
-      }
-    }
-    input {
-      font-size: 15px;
-      font-weight: 400;
-      width: 100%;
-      background: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
-      border: none;
-      border-radius: 30px;
-      color: ${(props) => props.theme.main};
-      outline: none;
-      border: 1.5px solid ${(props) => props.theme.text};
-      padding: 15px 30px;
-      margin: 10px 0;
-      box-sizing: border-box;
-      transition: width 0.15s ease;
-      &:hover {
-        width: 101%;
-        border: 1.5px solid ${(props) => props.theme.accent};
-      }
-      &:focus {
-        border: 1.5px solid ${(props) => props.theme.accent};
-        width: 101%;
-      }
-
-      &::placeholder {
-        color: ${(props) => `rgba(${props.theme.mainRgba}, 0.6)`};
-      }
-
-      @media (max-width: 1000px) {
-        font-size: 12px;
-        padding: 12px 30px;
-        margin: 5px 0;
-      }
-    }
-
-    .password {
-      width: 82%;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-
-      input {
-        width: 95%;
-        &:hover {
-          width: 96%;
-        }
-        &:focus {
-          border: 1.5px solid ${(props) => props.theme.accent};
-          width: 96%;
-        }
-
-        @media (max-width: 1000px) {
-          width: 100%;
-          &:hover {
-            width: 101%;
-          }
-          &:focus {
-            border: 1.5px solid ${(props) => props.theme.accent};
-            width: 101%;
-          }
-        }
-      }
-
-      @media (max-width: 1000px) {
-        flex-direction: column;
-        width: 100%;
-      }
-    }
-
-    .submit-btn {
-      width: 80%;
-      padding: 15px 30px;
-      margin: 30px 0;
-      font-size: 15px;
-      font-weight: 600;
-      border: none;
-      outline: none;
-      border-radius: 30px;
-      background-color: ${(props) => props.theme.accent};
-      color: ${(props) => props.theme.body};
-      box-sizing: border-box;
-      transition: width 0.15s ease;
-
-      &:hover {
-        width: 81%;
-        color: ${(props) => props.theme.body};
-      }
-      @media (max-width: 1000px) {
-        font-size: 12px;
-        padding: 12px 30px;
-        margin: 10px 0;
-      }
-    }
-  }
-
-  .login-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    @media (max-width: 1300px) {
-      width: 90%;
-    }
-    @media (max-width: 1000px) {
-      font-size: 12px;
-      padding: 12px 30px;
-      margin: 0;
-    }
-
-    .divider {
-      margin: 0 0 10px 0;
-      width: 100%;
-      height: 0.75px;
-      border-radius: 1px;
-      background-color: ${(props) => props.theme.main};
-    }
-    .login {
-      color: ${(props) => props.theme.main};
-      width: 90%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-sizing: border-box;
-
-      @media (max-width: 1000px) {
-        margin: 5px 0 0;
-      }
-
-      p {
-        margin: 0;
-        text-align: center;
-        @media (max-width: 650px) {
-          margin: 0 0 15px;
-        }
-      }
-
-      @media (max-width: 650px) {
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-      }
-
-      .login-btn {
-        padding: 15px 30px;
-        font-size: 15px;
-        border-radius: 30px;
-        background-color: ${(props) => `rgba(${props.theme.bodyRgba}, 0.1)`};
-        border: 2px solid ${(props) => props.theme.accent};
-        color: ${(props) => props.theme.accent};
-        cursor: pointer;
-        transition: all 0.15s ease;
-
-        &:hover {
-          background-color: ${(props) => props.theme.accent};
-          color: ${(props) => props.theme.body};
-        }
-
-        @media (max-width: 1300px) {
-          font-size: 12px;
-          padding: 10px 30px;
-        }
-      }
-    }
-  }
-`;
-
 const SignUp = ({ themeCurrent, setUser }) => {
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
+
+  const [file, setFile] = useState({});
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await publicRequest.post("/auth/signup", { ...userData });
-    login(dispatch, {
-      username: userData.username,
-      password: userData.password,
-    });
+
+    // ||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    try {
+      const fileName = new Date().getTime() + file.name;
+
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      await uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              console.log("default");
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error.message);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+
+            await setUserData((p) => ({ ...p, profilePicture: downloadURL }));
+          });
+        }
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+  useEffect(() => {
+    const submit = async () => {
+      userData.profilePicture && console.log(userData);
+      userData.profilePicture &&
+        (await publicRequest.post("/auth/signup", { ...userData }));
+
+      userData.profilePicture &&
+        login(dispatch, {
+          username: userData.username,
+          password: userData.password,
+        });
+    };
+    submit();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userData.profilePicture]);
 
   return (
     <>
@@ -299,65 +142,12 @@ const SignUp = ({ themeCurrent, setUser }) => {
             alt="the social scoop logo"
           />
         </ImageSectionWrapper>
-        <FormSectionWrapper>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <label htmlFor="username">
-              <input
-                type="text"
-                name="name"
-                placeholder="Name..."
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-            <label htmlFor="username">
-              <input
-                type="text"
-                name="username"
-                placeholder="Username... "
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-            <label htmlFor="">
-              <input
-                type="email"
-                name="email"
-                placeholder="Email..."
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-            <div className="password">
-              <label htmlFor="password1">
-                <input
-                  type="password"
-                  name="password"
-                  placeholder="Password..."
-                  onChange={(e) => handleChange(e)}
-                />
-              </label>
-              <label htmlFor="password2">
-                <input
-                  type="password"
-                  name="password2"
-                  placeholder="Confirm Password..."
-                  onChange={(e) => handleChange(e)}
-                />
-              </label>
-            </div>
-            <button type="submit" className="submit-btn">
-              Sign Up
-            </button>
-          </form>
-
-          <div className="login-wrapper">
-            <div className="divider" />
-            <p className="login">
-              <p>Already have an Account? Login Now!</p>
-              <Link to="/login">
-                <button className="login-btn">Login</button>
-              </Link>
-            </p>
-          </div>
-        </FormSectionWrapper>
+        <Form
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+          userData={userData}
+          setFile={setFile}
+        />
       </MainContainer>
     </>
   );
