@@ -31,9 +31,14 @@ const Container = styled.div`
   justify-content: space-between;
   position: relative;
 
+  @media (max-width: 1000px) {
+    height: 100px;
+  }
   @media (max-width: 475px) {
     padding: 0px 15px;
     margin: 20px 15px;
+
+    height: 80px;
   }
 `;
 
@@ -43,6 +48,7 @@ const Left = styled(Link)`
   justify-content: center;
   color: ${(props) => props.theme.main};
   text-decoration: none;
+  overflow: hidden;
   img {
     height: 55%;
     @media (max-width: 1000px) {
@@ -68,7 +74,7 @@ const Center = styled.form`
   border-radius: 30px;
 
   @media (max-width: 1000px) {
-    top: 180%;
+    top: 190%;
     width: 65vw;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.4);
     border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -98,6 +104,7 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  overflow: hidden;
   .theme {
     height: 50px;
     width: 50px;
@@ -203,7 +210,16 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
           </motion.span>
         </span>
         <div className="profile">
-          {user && <img src={user.profilePicture} alt="" />}
+          {user && (
+            <img
+              src={
+                user.profilePicture
+                  ? user.profilePicture
+                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+              }
+              alt=""
+            />
+          )}
           {!user && (
             <img
               src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"

@@ -112,13 +112,13 @@ const SignUp = ({ themeCurrent, setUser }) => {
           });
         }
       );
+      // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     } catch (error) {
       console.log(error.message);
     }
   };
   useEffect(() => {
     const submit = async () => {
-      userData.profilePicture && console.log(userData);
       userData.profilePicture &&
         (await publicRequest.post("/auth/signup", { ...userData }));
 

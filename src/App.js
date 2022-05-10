@@ -27,20 +27,23 @@ const Main = styled.div`
   background-repeat: no-repeat;
   background-position: left top;
   background-size: 100vw 100vh;
+  @media (max-width: 1000px) {
+    height: ${`${window.innerHeight}px`};
+  }
 `;
 const MainConatiner = styled.div`
   color: ${(props) => props.theme.text};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   overflow-y: auto;
   z-index: 10;
   background: transparent;
 `;
 const Container = styled.div`
-  height: calc(100vh - 180px);
+  height: calc(100% - 180px);
   padding: 40px 40px 30px;
   display: flex;
   justify-content: space-between;
