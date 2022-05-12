@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import Users from "../components/FindUsers/Users";
 import NavBar from "../components/NavBar";
+// import Sidebar from "../components/Sidebar";
+import { publicRequest } from "../requestMethods";
 
 const SearchContainer = styled.div`
   background: ${(props) =>
@@ -15,6 +18,7 @@ const SearchContainer = styled.div`
   width: 90%;
   padding: 30px 50px;
   margin-left: 30px;
+  margin-right: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -26,7 +30,8 @@ const SearchContainer = styled.div`
   }
   @media (max-width: 1000px) {
     margin-left: 0;
-    width: calc(100% - 60px);
+    padding: 15px;
+    width: calc(100% - 30px);
     margin-bottom: 20px;
     overflow-y: scroll;
   }
@@ -38,22 +43,44 @@ const Query = styled.h2`
   font-size: 40px;
   @media (max-width: 1000px) {
     margin-top: 80px;
+    font-size: 25px;
   }
 `;
 const Results = styled.div`
-  background-color: #ad2727;
+  width: 100%;
+  overflow-y: scroll;
+  padding: 10px;
+
+  @media (max-width: 1000px) {
+    margin-top: 30px;
+  }
 `;
 
 const Search = ({ themeCurrent }) => {
   const query = useLocation().pathname.split("/")[2];
+  const [users, setUsers] = useState({});
+
+  useEffect(() => {
+    const showResults = async () => {
+      const res = await publicRequest.get(`/users/${query}`);
+
+      setUsers(res.data);
+    };
+    showResults();
+  }, [query]);
 
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
       <SearchContainer>
         {query && <Query>Showing Results for: {query}</Query>}
-        <Results></Results>
+        <Results>
+          {Object.keys(users).map((key) => (
+            <Users key={key} user={users[key]} />
+          ))}
+        </Results>
       </SearchContainer>
+      {/* <Sidebar /> */}
     </>
   );
 };
