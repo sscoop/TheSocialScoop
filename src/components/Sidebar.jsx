@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-// import axios from "axios";f0
+import { publicRequest } from "../requestMethods";
 
 const MainContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -10,7 +11,7 @@ const MainContainer = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.7)`
-      : `rgba(${props.theme.bodyRgba},.3)`};
+      : `rgba(${props.theme.bodyRgba},.4)`};
 
   height: 90%;
   width: 15%;
@@ -40,18 +41,34 @@ const MainContainer = styled.div`
   @media (max-width: 1000px) {
     height: 85%;
     margin-bottom: 20px;
+    display: none;
   }
 `;
 
 const Sidebar = ({ themeCurrent }) => {
-  // const getFriends = async () => {
-  //   try {
-  //     const res = await axios.get(`http://localhost:8800/api/friends/`);
-  //   } catch (error) {}
-  // };
+  const userName = useSelector((state) => state.user.currentUser.name);
+  const [friendsList, setFriendsList] = useState([]);
+  const getFriends = async () => {
+    try {
+      const res = await publicRequest.get(`users/friends/${userName}`);
+      setFriendsList(res.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+  useEffect(() => {
+    getFriends();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <MainContainer>
+    <MainContainer themeCurrent={themeCurrent}>
       <h2>Friends</h2>
+      <ul>
+        {friendsList.map((friend) => (
+          <li>friend.name</li>
+        ))}
+      </ul>
     </MainContainer>
   );
 };

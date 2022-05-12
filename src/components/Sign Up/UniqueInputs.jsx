@@ -4,6 +4,7 @@ const Messages = styled.span`
   color: ${(props) => props.theme.accent};
   font-size: 12px;
   margin-bottom: 15px;
+  visibility: ${(props) => (props.err ? "visible" : "hidden")};
   @media (max-width: 800px) {
     font-size: 10px;
   }
@@ -33,11 +34,17 @@ const UniqueInput = ({ handleChange, setSignupProgression, userData }) => {
 
   return (
     <>
-      {!error.state ? (
-        <Messages className="error">Please enter your details...</Messages>
-      ) : (
-        <Messages className="error" style={{ color: "violet" }}>
+      {error.state ? (
+        <Messages
+          err={error.state}
+          className="error"
+          style={{ color: "violet" }}
+        >
           {error.msg}
+        </Messages>
+      ) : (
+        <Messages err={error.state} className="error">
+          Please enter your details...
         </Messages>
       )}
       <label htmlFor="email">

@@ -48,8 +48,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   background: transparent;
   @media (max-width: 1000px) {
     flex-direction: column-reverse;

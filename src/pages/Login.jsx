@@ -149,11 +149,11 @@ const FormSectionWrapper = styled.div`
       background-color: ${(props) => props.theme.accent};
       color: ${(props) => props.theme.body};
       box-sizing: border-box;
-      transition: width 0.15s ease;
+      transition: all 0.3s ease;
 
       &:hover {
-        width: 81%;
-        color: ${(props) => props.theme.body};
+        color: ${(props) => props.theme.accent};
+        background-color: ${(props) => props.theme.body};
       }
 
       @media (max-width: 1000px) {
