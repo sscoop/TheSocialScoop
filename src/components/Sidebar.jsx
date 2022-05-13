@@ -24,6 +24,48 @@ const MainContainer = styled.div`
     color: ${(props) => props.theme.accent};
   }
 
+  ul {
+    width: 100%;
+    padding: 0;
+    li {
+      list-style: none;
+      height: 75px;
+      /* padding: 5px; */
+      margin: 15px 0;
+      border-right: ${(props) => `1px solid rgba(${props.theme.mainRgba}, .3)`};
+
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      cursor: pointer;
+
+      .profilePicture {
+        height: 50px;
+        width: 50px;
+        margin-right: 10px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 1px solid ${(props) => props.theme.main};
+        box-sizing: border-box;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+          cursor: pointer;
+        }
+      }
+
+      .details {
+        margin-left: 5px;
+        font-size: 15px;
+      }
+
+      &:hover {
+        border-right: ${(props) => `1px solid ${props.theme.accent}`};
+      }
+    }
+  }
+
   @media (max-width: 1445px) {
     width: 180px;
   }
@@ -67,7 +109,19 @@ const Sidebar = ({ themeCurrent }) => {
       <h2>Friends</h2>
       <ul>
         {friendsList.map((friend) => (
-          <li>{friend.name}</li>
+          <li key={friend._id}>
+            <div className="profilePicture">
+              <img
+                src={
+                  friend.profilePicture
+                    ? friend.profilePicture
+                    : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                }
+                alt=""
+              />
+            </div>
+            <div className="details">{friend.name}</div>
+          </li>
         ))}
       </ul>
     </MainContainer>
