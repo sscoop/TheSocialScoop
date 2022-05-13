@@ -169,6 +169,7 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
   const [search, setSearch] = useState("");
+
   return (
     <Container themeCurrent={themeCurrent}>
       <Left to="/">
@@ -191,8 +192,10 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
           placeholder="Search..."
           onChange={(e) => setSearch(e.target.value)}
         />
-        <Link className="searchBtn" to={`/search/${search}`}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
+        <Link to={`/search/${search}`}>
+          <button type="submit" className="searchBtn">
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
         </Link>
       </Center>
       <Right shadowColor={themeCurrent}>

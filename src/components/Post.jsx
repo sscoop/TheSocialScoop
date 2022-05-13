@@ -52,7 +52,13 @@ const SideContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  /* background-color: #000; */
+`;
+const Section = styled.div`
+  width: 100%;
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
 const TopSection = styled.div`
   height: 50px;
@@ -77,19 +83,26 @@ const TopSection = styled.div`
     }
   }
 `;
-const Caption = styled.p`
+const Caption = styled.div`
   width: 100%;
-  max-height: 35%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  max-height: 100%;
+  overflow: hidden;
   background-color: ${(props) => `rgba(${props.theme.bodyRgba},.3)`};
   box-sizing: border-box;
-  padding: 10px 20px;
   border-radius: 15px;
+  box-sizing: border-box;
+  p {
+    max-width: calc(100% - 60px);
+    height: calc(100% - 30px);
+    margin: 15px 30px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    text-align: justify;
+  }
 `;
 const Comments = styled.div`
   width: 100%;
-  height: 45%;
+  max-height: 50%;
   position: relative;
   overflow-y: hidden;
   .commentList {
@@ -110,40 +123,45 @@ const Post = ({ themeCurrent }) => {
         />
       </Media>
       <SideContainer>
-        <TopSection>
-          <div className="left">
-            <img
-              src="https://media.istockphoto.com/photos/profile-of-a-female-doctor-picture-id1313720249?b=1&k=20&m=1313720249&s=170667a&w=0&h=Z13IkuY6kFGRX1dnsMsTbE6Mvsp9a85OCu-Slr9ECr8="
-              alt=""
-            />
-            <h3>Username</h3>
-          </div>
-          <FontAwesomeIcon icon={faEllipsisV} />
-        </TopSection>
-        <Caption>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi
-          molestiae cupiditate dignissimos quas, rerum quo quod laborum
-          inventore iure expedita molestias illo soluta impedit similique natus
-          aperiam minima. Quia, dicta rerum reiciendis recusandae aut odio
-          dignissimos sed eveniet, odit ad soluta non magnam minus facilis
-          perferendis, totam error voluptatum! Amet. Lorem, ipsum dolor sit amet
-          consectetur adipisicing elit. Dolorum corrupti ut ad accusantium, at
-          voluptate provident facilis harum esse dignissimos optio temporibus
-          aliquid, blanditiis sapiente sed neque reiciendis? Animi, aut?Lorem
-          ipsum dolor sit amet consectetur adipisicing elit. Illo, qui
-          provident. Ullam explicabo nesciunt, sint earum architecto amet soluta
-          quos quam itaque repudiandae eveniet velit enim omnis ducimus
-          quibusdam quas eum a hic minus sapiente, numquam aspernatur deleniti
-          minima! Quis maxime nobis laudantium voluptas nulla explicabo
-          consequuntur hic magni, eum exercitationem itaque vel minima adipisci
-          architecto tenetur unde odio excepturi? Inventore, commodi dolorem
-          aliquid quam consequatur optio, magni praesentium quasi et quod ad?
-          Nihil accusantium cumque omnis iste rem quod quos sapiente minus
-          tempore facilis temporibus quidem provident adipisci architecto nemo
-          error molestiae, ex sint at excepturi harum porro ipsum.
-        </Caption>
+        <Section>
+          <TopSection>
+            <div className="left">
+              <img
+                src="https://media.istockphoto.com/photos/profile-of-a-female-doctor-picture-id1313720249?b=1&k=20&m=1313720249&s=170667a&w=0&h=Z13IkuY6kFGRX1dnsMsTbE6Mvsp9a85OCu-Slr9ECr8="
+                alt=""
+              />
+              <h3>Username</h3>
+            </div>
+            <FontAwesomeIcon icon={faEllipsisV} />
+          </TopSection>
+          <Caption>
+            <p>
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eligendi
+              molestiae cupiditate dignissimos quas, rerum quo quod laborum
+              inventore iure expedita molestias illo soluta impedit similique
+              natus aperiam minima. Quia, dicta rerum reiciendis recusandae aut
+              odio dignissimos sed eveniet, odit ad soluta non magnam minus
+              facilis perferendis, totam error voluptatum! Amet. Lorem, ipsum
+              dolor sit amet consectetur adipisicing elit. Dolorum corrupti ut
+              ad accusantium, at voluptate provident facilis harum esse
+              dignissimos optio temporibus aliquid, blanditiis sapiente sed
+              neque reiciendis? Animi, aut?Lorem ipsum dolor sit amet
+              consectetur adipisicing elit. Illo, qui provident. Ullam explicabo
+              nesciunt, sint earum architecto amet soluta quos quam itaque
+              repudiandae eveniet velit enim omnis ducimus quibusdam quas eum a
+              hic minus sapiente, numquam aspernatur deleniti minima! Quis
+              maxime nobis laudantium voluptas nulla explicabo consequuntur hic
+              magni, eum exercitationem itaque vel minima adipisci architecto
+              tenetur unde odio excepturi? Inventore, commodi dolorem aliquid
+              quam consequatur optio, magni praesentium quasi et quod ad? Nihil
+              accusantium cumque omnis iste rem quod quos sapiente minus tempore
+              facilis temporibus quidem provident adipisci architecto nemo error
+              molestiae, ex sint at excepturi harum porro ipsum.
+            </p>
+          </Caption>
+        </Section>
         <Comments>
-          <h3>Comments</h3>
+          <h4>Comments</h4>
           <div className="commentList">
             <Comment />
             <Comment />

@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 const CommentContainer = styled.div`
-  height: 50px;
+  height: 60px;
   display: flex;
   align-items: center;
   margin: 10px 0;
   background-color: ${(props) => `rgba(${props.theme.bodyRgba},.3)`};
   box-sizing: border-box;
-  padding: 5px 10px;
+  padding: 10px 20px;
   border-radius: 15px;
   img {
     height: 100%;
@@ -18,6 +18,7 @@ const CommentContainer = styled.div`
     margin-right: 10px;
   }
   p {
+    font-size: 12px;
   }
 `;
 const Comment = () => {
