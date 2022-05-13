@@ -1,8 +1,16 @@
 import { faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import app from "../firebase";
+import { publicRequest } from "../requestMethods";
 
 const MakePostContainer = styled.form`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -71,6 +79,9 @@ const BottomContainer = styled.div`
   }
   label {
   }
+  p {
+    max-width: 200px;
+  }
   button {
     padding: 10px 30px;
     font-size: 15px;
@@ -95,24 +106,93 @@ const BottomContainer = styled.div`
 `;
 
 const MakePost = ({ themeCurrent }) => {
-  const { profilePicture, name } = useSelector(
+  const { profilePicture, name, _id } = useSelector(
     (state) => state.user.currentUser
   );
+
+  const [postData, setPostData] = useState({ userId: _id });
+  const [file, setFile] = useState({});
+  console.log("object", file.name);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // ||||||||||||||||||||||||||||||||||||||||||||||||||
+
+    try {
+      const fileName = new Date().getTime() + file.name;
+
+      const storage = getStorage(app);
+      const storageRef = ref(storage, fileName);
+
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      await uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              console.log("default");
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error.message);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
+            console.log("File available at", downloadURL);
+
+            await setPostData((p) => ({ ...p, postImage: downloadURL }));
+            postData.postImage &&
+              (await publicRequest.post("/posts/create-post", { ...postData }));
+          });
+        }
+      );
+      // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
-    <MakePostContainer themeCurrent={themeCurrent}>
+    <MakePostContainer
+      themeCurrent={themeCurrent}
+      onSubmit={(e) => handleSubmit(e)}
+    >
       <TopContainer>
         <img src={profilePicture} alt="" />
         <input
           type="text"
+          name="description"
           placeholder={`What's on your mind ${name.toUpperCase()}?`}
+          onChange={(e) =>
+            setPostData((p) => ({ ...p, [e.target.name]: e.target.value }))
+          }
         />
       </TopContainer>
       <span />
       <BottomContainer className="bottomContainer">
-        <input type="file" name="media" id="media" />
+        <input
+          type="file"
+          name="media"
+          id="media"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
         <label htmlFor="media">
           <FontAwesomeIcon icon={faPhotoVideo} /> Photo or Video
         </label>
+        <p>{file.name}</p>
         <button type="submit">Post</button>
       </BottomContainer>
     </MakePostContainer>
