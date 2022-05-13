@@ -46,11 +46,11 @@ const TopContainer = styled.div`
     height: 70px;
     width: 70px;
     border-radius: 50%;
-    margin-right: 20px;
   }
   input {
     width: 100%;
     height: 50px;
+    padding: 20px;
     background-color: transparent;
     border: none;
     outline: none;
