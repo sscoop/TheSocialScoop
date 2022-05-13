@@ -1,6 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-// import { publicRequest } from "../../requestMethods";
+import { publicRequest } from "../../requestMethods";
 
 const UserWrapper = styled.div`
   width: 95%;
@@ -12,8 +13,8 @@ const UserWrapper = styled.div`
       : `rgba(${props.theme.bodyRgba},.5)`};
   color: ${(props) => props.theme.accent};
   border-radius: 10px;
-  border-top: ${(props) => `1px solid rgba(${props.theme.mainRgba}, 0.5)`};
-  border-left: ${(props) => `1px solid rgba(${props.theme.mainRgba}, 0.5)`};
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
 
   display: flex;
   justify-content: space-between;
@@ -34,7 +35,9 @@ const UserWrapper = styled.div`
 
 const Left = styled.div`
   flex: 1;
+  align-self: center;
   margin-left: 15px;
+
   .profilePicture {
     height: 50px;
     width: 50px;
@@ -49,14 +52,22 @@ const Left = styled.div`
       cursor: pointer;
     }
   }
+  @media (max-width: 1000px) {
+    margin-left: 5px;
+    .profilePicture {
+      height: 35px;
+      width: 35px;
+    }
+  }
 `;
 
 const Center = styled.div`
   flex: 5;
 
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
   cursor: pointer;
 
   h4 {
@@ -65,14 +76,16 @@ const Center = styled.div`
   }
 
   @media (max-width: 1000px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     margin-left: 15px;
 
     h4 {
       width: 100%;
+      font-size: 15px;
       margin-right: 0;
+    }
+
+    p {
+      font-size: 10px;
     }
   }
 `;
@@ -82,34 +95,58 @@ const Right = styled.div`
 
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+  align-self: center;
 
   button {
-    width: 45%;
-    border: none;
+    width: 65%;
+    border: ${(props) =>
+      !props.isFollowing ? "none" : ` 1px solid ${props.theme.accent}`};
     border-radius: 10px;
     font-size: 15px;
     font-weight: 700;
     padding: 10px;
-    background: ${(props) => props.theme.accent};
-    color: ${(props) => props.theme.body};
+    background: ${(props) =>
+      !props.isFollowing ? props.theme.accent : "transparent"};
+    color: ${(props) =>
+      !props.isFollowing ? props.theme.body : props.theme.accent};
     cursor: pointer;
+  }
+  @media (max-width: 1000px) {
+    margin-right: 5px;
 
-    @media (max-width: 1000px) {
-      display: none;
+    button {
+      width: 100%;
+      border-radius: 5px;
+      font-size: 11px;
+      padding: 5px;
     }
   }
 `;
 
 const Users = ({ user }) => {
-  //   const followUser = async (id) => {
-  //     try {
-  //         await publicRequest.put(`/users/follow/${id}`, )
-  //     } catch (error) {
+  const { _id: userId, following } = useSelector(
+    (state) => state.user.currentUser
+  );
 
-  //     }
-  //   };
-  // onClick={() => followUser(user._id)}
+  const isFollowing = following.includes(user._id);
+  // const isFollowing = true;
+
+  const followUser = async (id) => {
+    try {
+      await publicRequest.put(`users/follow/${id}`, { userId });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const unfollowUser = async (id) => {
+    try {
+      await publicRequest.put(`user/unfollow/${id}`, { userId });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <UserWrapper>
@@ -129,8 +166,14 @@ const Users = ({ user }) => {
         <h4>{user.name}</h4>
         <p>({user.username})</p>
       </Center>
-      <Right>
-        <button>Follow</button>
+      <Right isFollowing={isFollowing}>
+        <button
+          onClick={() =>
+            !isFollowing ? followUser(user._id) : unfollowUser(user._id)
+          }
+        >
+          {!isFollowing ? "Follow" : "Following"}
+        </button>
       </Right>
     </UserWrapper>
   );

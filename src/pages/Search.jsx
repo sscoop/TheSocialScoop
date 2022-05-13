@@ -22,7 +22,7 @@ const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   border-radius: 30px;
 
   @media (max-width: 1300px) {
@@ -62,7 +62,8 @@ const Search = ({ themeCurrent }) => {
 
   useEffect(() => {
     const showResults = async () => {
-      const res = await publicRequest.get(`/users/${query}`);
+      if (!query) return setUsers({});
+      const res = await publicRequest.get(`users/${query}`);
 
       setUsers(res.data);
     };
@@ -75,9 +76,13 @@ const Search = ({ themeCurrent }) => {
       <SearchContainer>
         {query && <Query>Showing Results for: {query}</Query>}
         <Results>
-          {Object.keys(users).map((key) => (
-            <Users key={key} user={users[key]} />
-          ))}
+          {users ? (
+            Object.keys(users).map((key) => (
+              <Users key={key} user={users[key]} />
+            ))
+          ) : (
+            <h2>Hey! User feeling alone find some friends now</h2>
+          )}
         </Results>
       </SearchContainer>
       {/* <Sidebar /> */}

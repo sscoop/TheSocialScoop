@@ -46,7 +46,7 @@ const MainContainer = styled.div`
 `;
 
 const Sidebar = ({ themeCurrent }) => {
-  const userName = useSelector((state) => state.user.currentUser.name);
+  const userName = useSelector((state) => state.user.currentUser.username);
   const [friendsList, setFriendsList] = useState([]);
   const getFriends = async () => {
     try {
@@ -60,13 +60,14 @@ const Sidebar = ({ themeCurrent }) => {
     getFriends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(friendsList);
 
   return (
     <MainContainer themeCurrent={themeCurrent}>
       <h2>Friends</h2>
       <ul>
         {friendsList.map((friend) => (
-          <li>friend.name</li>
+          <li>{friend.name}</li>
         ))}
       </ul>
     </MainContainer>
