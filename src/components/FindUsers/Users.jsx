@@ -91,7 +91,7 @@ const Center = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 2;
+  flex: 1;
 
   display: flex;
   justify-content: center;
@@ -99,13 +99,13 @@ const Right = styled.div`
   align-self: center;
 
   button {
-    width: 65%;
+    /* width: 100%; */
     border: ${(props) =>
       !props.isFollowing ? "none" : ` 1px solid ${props.theme.accent}`};
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 15px;
     font-weight: 700;
-    padding: 10px;
+    padding: 15px 30px;
     background: ${(props) =>
       !props.isFollowing ? props.theme.accent : "transparent"};
     color: ${(props) =>
@@ -135,6 +135,7 @@ const Users = ({ user }) => {
   const followUser = async (id) => {
     try {
       await publicRequest.put(`users/follow/${id}`, { userId });
+      console.log("followed: " + id);
     } catch (error) {
       console.log(error);
     }
@@ -143,6 +144,7 @@ const Users = ({ user }) => {
   const unfollowUser = async (id) => {
     try {
       await publicRequest.put(`user/unfollow/${id}`, { userId });
+      console.log("unfollowed: " + id);
     } catch (error) {
       console.log(error);
     }
