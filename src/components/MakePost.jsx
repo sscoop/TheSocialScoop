@@ -1,7 +1,7 @@
-import { faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleNodes, faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
   getStorage,
@@ -10,7 +10,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
-import { publicRequest } from "../requestMethods";
+import { postStart } from "../redux/postSlice";
+import { createPosts } from "../redux/apiCalls";
 
 const MakePostContainer = styled.form`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -31,6 +32,22 @@ const MakePostContainer = styled.form`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    margin: auto;
+    animation: rotation 1.5s infinite linear;
+    height: 30px;
+    color: ${(props) => props.theme.accent};
+  }
 
   span {
     background-color: ${(props) => props.theme.main};
@@ -81,8 +98,10 @@ const BottomContainer = styled.div`
   }
   p {
     max-width: 200px;
+    margin: 0;
   }
   button {
+    width: 100px;
     padding: 10px 30px;
     font-size: 15px;
     font-weight: 600;
@@ -109,13 +128,13 @@ const MakePost = ({ themeCurrent }) => {
   const { profilePicture, name, _id } = useSelector(
     (state) => state.user.currentUser
   );
-
+  const dispatch = useDispatch();
+  const isFetching = useSelector((state) => state.posts.isFetching);
   const [postData, setPostData] = useState({ userId: _id });
   const [file, setFile] = useState({});
-  console.log("object", file.name);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    dispatch(postStart());
     // ||||||||||||||||||||||||||||||||||||||||||||||||||
 
     try {
@@ -153,9 +172,7 @@ const MakePost = ({ themeCurrent }) => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
 
-            await setPostData((p) => ({ ...p, postImage: downloadURL }));
-            postData.postImage &&
-              (await publicRequest.post("/posts/create-post", { ...postData }));
+            setPostData((p) => ({ ...p, postMedia: downloadURL }));
           });
         }
       );
@@ -165,36 +182,52 @@ const MakePost = ({ themeCurrent }) => {
     }
   };
 
+  useEffect(() => {
+    // publicRequest.post("/posts/create-post", { ...postData });
+    postData.postMedia && createPosts(dispatch, postData);
+    setPostData({ userId: _id });
+    setFile({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postData.postMedia]);
+
   return (
     <MakePostContainer
       themeCurrent={themeCurrent}
       onSubmit={(e) => handleSubmit(e)}
     >
-      <TopContainer>
-        <img src={profilePicture} alt="" />
-        <input
-          type="text"
-          name="description"
-          placeholder={`What's on your mind ${name.toUpperCase()}?`}
-          onChange={(e) =>
-            setPostData((p) => ({ ...p, [e.target.name]: e.target.value }))
-          }
-        />
-      </TopContainer>
-      <span />
-      <BottomContainer className="bottomContainer">
-        <input
-          type="file"
-          name="media"
-          id="media"
-          onChange={(e) => setFile(e.target.files[0])}
-        />
-        <label htmlFor="media">
-          <FontAwesomeIcon icon={faPhotoVideo} /> Photo or Video
-        </label>
-        <p>{file.name}</p>
-        <button type="submit">Post</button>
-      </BottomContainer>
+      {isFetching && (
+        <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+      )}
+
+      {!isFetching && (
+        <>
+          <TopContainer>
+            <img src={profilePicture} alt="" />
+            <input
+              type="text"
+              name="description"
+              placeholder={`What's on your mind ${name.toUpperCase()}?`}
+              onChange={(e) =>
+                setPostData((p) => ({ ...p, [e.target.name]: e.target.value }))
+              }
+            />
+          </TopContainer>
+          <span />
+          <BottomContainer className="bottomContainer">
+            <input
+              type="file"
+              name="media"
+              id="media"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
+            <label htmlFor="media">
+              <FontAwesomeIcon icon={faPhotoVideo} /> Photo or Video
+            </label>
+            {file.name && <p>"{file.name}"</p>}
+            <button type="submit">Post</button>
+          </BottomContainer>
+        </>
+      )}
     </MakePostContainer>
   );
 };

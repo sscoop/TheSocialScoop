@@ -5,7 +5,7 @@ import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
 import { publicRequest } from "../requestMethods";
 import { login } from "../redux/apiCalls";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Form from "../components/Sign Up/Form";
 import {
   getStorage,
@@ -14,6 +14,9 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
+import { loginStart } from "../redux/userSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -31,6 +34,22 @@ const MainContainer = styled.span`
   align-items: center;
   justify-content: space-between;
   border-radius: 30px;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    margin: auto;
+    animation: rotation 1.5s infinite linear;
+    height: 40px;
+    color: ${(props) => props.theme.accent};
+  }
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -62,7 +81,7 @@ const ImageSectionWrapper = styled.div`
 const SignUp = ({ themeCurrent, setUser }) => {
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
-
+  const isFetching = useSelector((state) => state.user.isFetching);
   const [file, setFile] = useState({});
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -70,7 +89,7 @@ const SignUp = ({ themeCurrent, setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    dispatch(loginStart());
     // ||||||||||||||||||||||||||||||||||||||||||||||||||
 
     try {
@@ -136,18 +155,25 @@ const SignUp = ({ themeCurrent, setUser }) => {
     <>
       <NavBar themeCurrent={themeCurrent} />
       <MainContainer themeCurrent={themeCurrent}>
-        <ImageSectionWrapper>
-          <img
-            src={themeCurrent === "dark" ? heroDark : heroLight}
-            alt="the social scoop logo"
-          />
-        </ImageSectionWrapper>
-        <Form
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-          userData={userData}
-          setFile={setFile}
-        />
+        {isFetching && (
+          <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+        )}
+        {!isFetching && (
+          <>
+            <ImageSectionWrapper>
+              <img
+                src={themeCurrent === "dark" ? heroDark : heroLight}
+                alt="the social scoop logo"
+              />
+            </ImageSectionWrapper>
+            <Form
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              userData={userData}
+              setFile={setFile}
+            />
+          </>
+        )}
       </MainContainer>
     </>
   );

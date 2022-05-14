@@ -1,7 +1,9 @@
+import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { publicRequest } from "../../requestMethods";
+import { follow, unfollow } from "../../redux/apiCalls";
 
 const UserWrapper = styled.div`
   width: 95%;
@@ -98,14 +100,28 @@ const Right = styled.div`
   align-items: center;
   align-self: center;
 
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loader {
+    animation: rotation 1.5s infinite linear;
+  }
+
   button {
     width: 65%;
     border: ${(props) =>
       !props.isFollowing ? "none" : ` 1px solid ${props.theme.accent}`};
-    border-radius: 10px;
+    border-radius: 30px;
     font-size: 15px;
     font-weight: 700;
-    padding: 10px;
+    padding: 15px;
     background: ${(props) =>
       !props.isFollowing ? props.theme.accent : "transparent"};
     color: ${(props) =>
@@ -128,23 +144,25 @@ const Users = ({ user }) => {
   const { _id: userId, following } = useSelector(
     (state) => state.user.currentUser
   );
+  const dispatch = useDispatch();
+  const isFetching = useSelector((state) => state.user.isFetching);
 
   const isFollowing = following.includes(user._id);
   // const isFollowing = true;
 
   const followUser = async (id) => {
     try {
-      await publicRequest.put(`users/follow/${id}`, { userId });
+      follow(dispatch, id, userId);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
   const unfollowUser = async (id) => {
     try {
-      await publicRequest.put(`user/unfollow/${id}`, { userId });
+      unfollow(dispatch, id, userId);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -167,13 +185,20 @@ const Users = ({ user }) => {
         <p>({user.username})</p>
       </Center>
       <Right isFollowing={isFollowing}>
-        <button
-          onClick={() =>
-            !isFollowing ? followUser(user._id) : unfollowUser(user._id)
-          }
-        >
-          {!isFollowing ? "Follow" : "Following"}
-        </button>
+        {isFetching && (
+          <button>
+            <FontAwesomeIcon className="loader" icon={faCircleNodes} />
+          </button>
+        )}
+        {!isFetching && (
+          <button
+            onClick={() =>
+              !isFollowing ? followUser(user._id) : unfollowUser(user._id)
+            }
+          >
+            {!isFollowing ? "Follow" : "Following"}
+          </button>
+        )}
       </Right>
     </UserWrapper>
   );

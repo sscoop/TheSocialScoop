@@ -1,3 +1,5 @@
+import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -19,6 +21,22 @@ const MainContainer = styled.div`
   border-radius: 30px;
   overflow-y: scroll;
   flex-shrink: 0;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    margin: auto;
+    animation: rotation 1.5s infinite linear;
+    height: 30px;
+    color: ${(props) => props.theme.accent};
+  }
   h2 {
     margin: 10px 0px;
     color: ${(props) => props.theme.accent};
@@ -102,28 +120,33 @@ const Sidebar = ({ themeCurrent }) => {
     getFriends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(friendsList);
 
   return (
     <MainContainer themeCurrent={themeCurrent}>
       <h2>Friends</h2>
-      <ul>
-        {friendsList.map((friend) => (
-          <li key={friend._id}>
-            <div className="profilePicture">
-              <img
-                src={
-                  friend.profilePicture
-                    ? friend.profilePicture
-                    : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                }
-                alt=""
-              />
-            </div>
-            <div className="details">{friend.name}</div>
-          </li>
-        ))}
-      </ul>
+      <>
+        <ul>
+          {!friendsList.length > 0 && (
+            <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+          )}
+          {friendsList.length > 0 &&
+            friendsList.map((friend) => (
+              <li key={friend._id}>
+                <div className="profilePicture">
+                  <img
+                    src={
+                      friend.profilePicture
+                        ? friend.profilePicture
+                        : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                    }
+                    alt=""
+                  />
+                </div>
+                <div className="details">{friend.name}</div>
+              </li>
+            ))}
+        </ul>
+      </>
     </MainContainer>
   );
 };

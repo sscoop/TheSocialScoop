@@ -5,7 +5,9 @@ import NavBar from "../components/NavBar";
 import heroDark from "../assets/heroDark.png";
 import heroLight from "../assets/heroLight.png";
 import { login } from "../redux/apiCalls";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 
 const MainContainer = styled.span`
   background: ${(props) =>
@@ -23,6 +25,22 @@ const MainContainer = styled.span`
   align-items: center;
   justify-content: space-between;
   border-radius: 30px;
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    margin: auto;
+    animation: rotation 1.5s infinite linear;
+    height: 40px;
+    color: ${(props) => props.theme.accent};
+  }
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -235,68 +253,66 @@ const FormSectionWrapper = styled.div`
 
 const Login = ({ themeCurrent }) => {
   const [userData, setUserData] = useState({});
+  const isFetching = useSelector((state) => state.user.isFetching);
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
   const dispatch = useDispatch();
   const handleSubmit = async (e) => {
-    // e.preventDefault();
-    // try {
-    //   const res = await axios.post("http://localhost:8800/api/auth/login", {
-    //     ...userData,
-    //   });
-    //   console.log(res);
-    //   setUser(true);
-    // } catch (error) {
-    //   console.log(error.msg);
-    // }
     e.preventDefault();
-    console.log("object", { ...userData });
     login(dispatch, { ...userData });
   };
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainContainer themeCurrent={themeCurrent}>
-        <ImageSectionWrapper>
-          <img
-            src={themeCurrent === "dark" ? heroDark : heroLight}
-            alt="the social scoop logo"
-          />
-        </ImageSectionWrapper>
-        <FormSectionWrapper>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <label htmlFor="username">
-              <input
-                type="text"
-                name="username"
-                placeholder="Username..."
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-            <label htmlFor="password">
-              <input
-                type="password"
-                name="password"
-                placeholder="Password..."
-                onChange={(e) => handleChange(e)}
-              />
-            </label>
-            <button type="submit" className="submit-btn">
-              Log In
-            </button>
-          </form>
 
-          <div className="sign-up-wrapper">
-            <div className="divider" />
-            <p className="sign-up">
-              <p>Don't have an Account? Sign Up Now!</p>
-              <Link to="/signup">
-                <button className="sign-up-btn">Sign Up</button>
-              </Link>
-            </p>
-          </div>
-        </FormSectionWrapper>
+      <MainContainer themeCurrent={themeCurrent}>
+        {isFetching && (
+          <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+        )}
+        {!isFetching && (
+          <>
+            <ImageSectionWrapper>
+              <img
+                src={themeCurrent === "dark" ? heroDark : heroLight}
+                alt="the social scoop logo"
+              />
+            </ImageSectionWrapper>
+            <FormSectionWrapper>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <label htmlFor="username">
+                  <input
+                    type="text"
+                    name="username"
+                    placeholder="Username..."
+                    onChange={(e) => handleChange(e)}
+                  />
+                </label>
+                <label htmlFor="password">
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password..."
+                    onChange={(e) => handleChange(e)}
+                  />
+                </label>
+                <button type="submit" className="submit-btn">
+                  Log In
+                </button>
+              </form>
+
+              <div className="sign-up-wrapper">
+                <div className="divider" />
+                <p className="sign-up">
+                  <p>Don't have an Account? Sign Up Now!</p>
+                  <Link to="/signup">
+                    <button className="sign-up-btn">Sign Up</button>
+                  </Link>
+                </p>
+              </div>
+            </FormSectionWrapper>
+          </>
+        )}
       </MainContainer>
     </>
   );

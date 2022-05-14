@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { getPosts } from "../redux/apiCalls";
 import MakePost from "./MakePost";
 import Post from "./Post";
 const MainContainer = styled.div`
@@ -26,15 +28,31 @@ const Container = styled.div`
 `;
 
 const Feed = ({ themeCurrent }) => {
+  const [posts, setPosts] = useState([]);
+  const postsList = useSelector((state) => state.posts.postsList);
+  const { _id: userId } = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // const getPosts = async () => {
+    //   const { data } = await publicRequest.get(`/posts/${userId}`);
+    //   setPosts(data);
+    // };
+    getPosts(dispatch, userId);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setPosts([...postsList]);
+  }, [postsList]);
+
   return (
     <MainContainer>
       <Container>
         <MakePost themeCurrent={themeCurrent} />
-        <Post themeCurrent={themeCurrent} />
-        <Post themeCurrent={themeCurrent} />
-        <Post themeCurrent={themeCurrent} />
-        <Post themeCurrent={themeCurrent} />
-        <Post themeCurrent={themeCurrent} />
+        {posts.map((post) => (
+          <Post themeCurrent={themeCurrent} post={post} />
+        ))}
       </Container>
     </MainContainer>
   );

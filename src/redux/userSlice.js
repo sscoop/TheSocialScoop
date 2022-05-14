@@ -24,9 +24,34 @@ const userSlice = createSlice({
       state.error = false;
       state.currentUser = null;
     },
+    followingStart: (state) => {
+      state.isFetching = true;
+    },
+    followSuccess: (state, action) => {
+      state.isFetching = false;
+      state.currentUser.following.push(action.payload);
+    },
+    unFollowSuccess: (state, action) => {
+      state.isFetching = false;
+      state.currentUser.following = state.currentUser.following.filter(
+        (user) => user !== action.payload
+      );
+    },
+    followingFailure: (state) => {
+      state.isFetching = false;
+      state.error = true;
+    },
   },
 });
 
-export const { loginStart, loginFailure, loginSuccess, logOut } =
-  userSlice.actions;
+export const {
+  loginStart,
+  loginFailure,
+  loginSuccess,
+  logOut,
+  followingFailure,
+  followingStart,
+  followSuccess,
+  unFollowSuccess,
+} = userSlice.actions;
 export default userSlice.reducer;
