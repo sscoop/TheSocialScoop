@@ -93,7 +93,7 @@ const Center = styled.div`
 `;
 
 const Right = styled.div`
-  flex: 2;
+  flex: 1;
 
   display: flex;
   justify-content: center;
@@ -115,13 +115,13 @@ const Right = styled.div`
   }
 
   button {
-    width: 65%;
+    /* width: 100%; */
     border: ${(props) =>
       !props.isFollowing ? "none" : ` 1px solid ${props.theme.accent}`};
     border-radius: 30px;
     font-size: 15px;
     font-weight: 700;
-    padding: 15px;
+    padding: 15px 30px;
     background: ${(props) =>
       !props.isFollowing ? props.theme.accent : "transparent"};
     color: ${(props) =>
