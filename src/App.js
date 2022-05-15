@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import { darkTheme, lightTheme } from "./components/Themes";
 import styled, { ThemeProvider } from "styled-components";
 import GlobalStyles from "./GlobalStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Messages from "./pages/Messages";
 import TopBar from "./components/TopBar";
 import Login from "./pages/Login";
@@ -60,8 +60,13 @@ const Container = styled.div`
 `;
 
 function App() {
-  const [themeDark, setThemeDark] = useState(true);
+  const [themeDark, setThemeDark] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
   const user = useSelector((state) => state.user.currentUser);
+  useEffect(() => {
+    user ? setThemeDark(user.prefersDarkTheme) : setThemeDark((p) => p);
+  }, [user]);
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>

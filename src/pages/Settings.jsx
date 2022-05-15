@@ -7,10 +7,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
+import { changeTheme } from "../redux/apiCalls";
 import { logOut } from "../redux/userSlice";
 
 const MainContainer = styled.div`
@@ -119,122 +120,131 @@ const MiddleSection = styled.div`
       display: flex;
       justify-content: flex-start;
       align-items: center;
-
+      margin-top: 10px;
       .choice {
-        margin-left: 5px;
-
-        label {
-          margin: 0 15px;
-
+        margin-left: 20px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        button {
+          background-color: transparent;
+          color: ${(props) => props.theme.accent};
+          border: 1px solid ${(props) => props.theme.accent};
+          border-radius: 30px;
+          padding: 10px 30px;
+          margin: 10px;
           .icon {
-            width: 20px;
-            height: 20px;
-            margin: 0 5px;
-            color: ${(props) => props.theme.main};
-          }
-
-          .current {
-            color: ${(props) => props.theme.accent};
+            margin-right: 5px;
           }
         }
-      }
 
+        .dark {
+          background-color: ${(props) =>
+            props.prefersDarkTheme ? props.theme.accent : "transparent"};
+          color: ${(props) =>
+            props.prefersDarkTheme ? props.theme.body : props.theme.accent};
+        }
+        .light {
+          background-color: ${(props) =>
+            !props.prefersDarkTheme ? props.theme.accent : "transparent"};
+          color: ${(props) =>
+            !props.prefersDarkTheme ? props.theme.body : props.theme.accent};
+        }
+      }
       @media (max-width: 520px) {
         flex-direction: column;
 
         .choice {
+          flex-direction: column;
           margin: 0;
-          label {
-            margin: 10px;
-          }
         }
       }
     }
+  }
 
-    .options {
-      height: 50px;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
+  .options {
+    height: 50px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-      margin-top: 15px;
-      button {
-        margin: 0 5px;
-        border: 1px solid #f72727;
-        border-radius: 30px;
-        padding: 10px 30px;
-        color: #f72727;
-        background: transparent;
-        font-size: 15px;
-        font-weight: 700;
+    margin-top: 15px;
+    button {
+      margin: 0 5px;
+      border: 1px solid #f72727;
+      border-radius: 30px;
+      padding: 10px 30px;
+      color: #f72727;
+      background: transparent;
+      font-size: 15px;
+      font-weight: 700;
+    }
+  }
+
+  .privacy {
+    margin: 15px 0;
+    width: 100%;
+    p {
+      font-size: 17px;
+      font-weight: 500;
+
+      @media (max-width: 1000px) {
+        font-size: 14px;
       }
     }
 
-    .privacy {
-      margin: 15px 0;
-      width: 100%;
-      p {
-        font-size: 17px;
-        font-weight: 500;
+    button {
+      border: 1px solid ${(props) => props.theme.accent};
+      border-radius: 30px;
+      padding: 10px 30px;
+      background: transparent;
+      color: ${(props) => props.theme.accent};
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
 
-        @media (max-width: 1000px) {
-          font-size: 14px;
-        }
+      &:hover {
+        color: ${(props) => props.theme.body};
+        background-color: ${(props) => props.theme.accent};
       }
 
-      button {
-        border: 1px solid ${(props) => props.theme.accent};
-        border-radius: 30px;
-        padding: 10px 30px;
-        background: transparent;
-        color: ${(props) => props.theme.accent};
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
+      @media (max-width: 1000px) {
+        font-size: 12px;
+        width: 100%;
+      }
+    }
+  }
 
-        &:hover {
-          color: ${(props) => props.theme.body};
-          background-color: ${(props) => props.theme.accent};
-        }
+  .termsandconditions {
+    margin: 15px 0;
+    width: 100%;
+    p {
+      font-size: 17px;
+      font-weight: 500;
 
-        @media (max-width: 1000px) {
-          font-size: 12px;
-          width: 100%;
-        }
+      @media (max-width: 1000px) {
+        font-size: 14px;
       }
     }
 
-    .termsandconditions {
-      margin: 15px 0;
-      width: 100%;
-      p {
-        font-size: 17px;
-        font-weight: 500;
+    button {
+      border: 1px solid ${(props) => props.theme.accent};
+      border-radius: 30px;
+      padding: 10px 30px;
+      background: transparent;
+      color: ${(props) => props.theme.accent};
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
 
-        @media (max-width: 1000px) {
-          font-size: 14px;
-        }
+      &:hover {
+        color: ${(props) => props.theme.body};
+        background-color: ${(props) => props.theme.accent};
       }
 
-      button {
-        border: 1px solid ${(props) => props.theme.accent};
-        border-radius: 30px;
-        padding: 10px 30px;
-        background: transparent;
-        color: ${(props) => props.theme.accent};
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-
-        &:hover {
-          color: ${(props) => props.theme.body};
-          background-color: ${(props) => props.theme.accent};
-        }
-
-        @media (max-width: 1000px) {
-          font-size: 12px;
-          width: 100%;
-        }
+      @media (max-width: 1000px) {
+        font-size: 12px;
+        width: 100%;
       }
     }
   }
@@ -316,7 +326,10 @@ const Settings = ({ user, themeCurrent }) => {
       dispatch(logOut());
     }
   };
-
+  const { _id: userId } = user;
+  const prefersDarkTheme = useSelector(
+    (state) => state.user.currentUser.prefersDarkTheme
+  );
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
@@ -330,7 +343,7 @@ const Settings = ({ user, themeCurrent }) => {
           Hey! {user.name}, have a look at your setting. Not convinced change it
           now!
         </p>
-        <MiddleSection>
+        <MiddleSection prefersDarkTheme={prefersDarkTheme}>
           <div className="settings-sections">
             <div className="heading">
               {themeCurrent !== "dark" ? (
@@ -342,30 +355,23 @@ const Settings = ({ user, themeCurrent }) => {
             </div>
 
             <div className="setDefaultTheme">
-              <p>Set Your Default Theme |</p>
+              <p>Set Your Default Theme :</p>
 
               <div className="choice">
-                <input type="radio" id="dark" style={{ display: "none" }} />
-                <label htmlFor="dark">
-                  <FontAwesomeIcon
-                    className={`icon ${
-                      themeCurrent === "dark" ? "current" : ""
-                    }`}
-                    icon={faMoon}
-                  />
+                <button
+                  className="dark"
+                  onClick={() => changeTheme(dispatch, userId, true)}
+                >
+                  <FontAwesomeIcon className="icon" icon={faMoon} />
                   Dark
-                </label>
-
-                <input type="radio" id="light" style={{ display: "none" }} />
-                <label htmlFor="light">
-                  <FontAwesomeIcon
-                    className={`icon ${
-                      themeCurrent !== "dark" ? "current" : ""
-                    }`}
-                    icon={faSun}
-                  />
+                </button>
+                <button
+                  className="light"
+                  onClick={() => changeTheme(dispatch, userId, false)}
+                >
+                  <FontAwesomeIcon className="icon" icon={faSun} />
                   Light
-                </label>
+                </button>
               </div>
             </div>
           </div>

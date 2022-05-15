@@ -6,23 +6,33 @@ import {
   postStart,
 } from "./postSlice";
 import {
-  followingFailure,
+  userFailure,
   followingStart,
   followSuccess,
   getFriendsSuccess,
-  loginFailure,
-  loginStart,
+  userStart,
   loginSuccess,
   unFollowSuccess,
+  changeThemeSuccess,
 } from "./userSlice";
 
 export const login = async (dispatch, user) => {
-  dispatch(loginStart());
+  dispatch(userStart());
   try {
     const res = await publicRequest.post("auth/login", user);
     dispatch(loginSuccess(res.data));
   } catch (error) {
-    dispatch(loginFailure());
+    dispatch(userFailure());
+  }
+};
+
+export const changeTheme = async (dispatch, userId, prefersDarkTheme) => {
+  dispatch(userStart());
+  try {
+    await publicRequest.put(`/users/theme/${userId}`, { prefersDarkTheme });
+    dispatch(changeThemeSuccess(prefersDarkTheme));
+  } catch (error) {
+    dispatch(userFailure());
   }
 };
 
@@ -33,7 +43,7 @@ export const getFriends = async (dispatch, username) => {
     dispatch(getFriendsSuccess());
     return res.data;
   } catch (error) {
-    dispatch(followingFailure());
+    dispatch(userFailure());
     return error.message;
   }
 };
@@ -43,7 +53,7 @@ export const follow = async (dispatch, id, userId) => {
     await publicRequest.put(`users/follow/${id}`, { userId });
     dispatch(followSuccess(id));
   } catch (error) {
-    dispatch(followingFailure());
+    dispatch(userFailure());
   }
 };
 export const unfollow = async (dispatch, id, userId) => {
@@ -52,7 +62,7 @@ export const unfollow = async (dispatch, id, userId) => {
     await publicRequest.put(`users/unfollow/${id}`, { userId });
     dispatch(unFollowSuccess(id));
   } catch (error) {
-    dispatch(followingFailure());
+    dispatch(userFailure());
   }
 };
 

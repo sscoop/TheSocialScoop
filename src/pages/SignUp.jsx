@@ -14,7 +14,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
-import { loginStart } from "../redux/userSlice";
+import { userStart } from "../redux/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 
@@ -89,10 +89,13 @@ const SignUp = ({ themeCurrent, setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginStart());
+    dispatch(userStart());
     // ||||||||||||||||||||||||||||||||||||||||||||||||||
 
     try {
+      themeCurrent === "dark"
+        ? setUserData((p) => ({ ...p, prefersDarkTheme: true }))
+        : setUserData((p) => ({ ...p, prefersDarkTheme: false }));
       const fileName = new Date().getTime() + file.name;
 
       const storage = getStorage(app);
