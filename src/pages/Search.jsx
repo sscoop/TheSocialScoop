@@ -40,10 +40,10 @@ const Query = styled.h2`
   width: 100%;
   text-align: left;
   color: ${(props) => props.theme.accent};
-  font-size: 40px;
+  font-size: 20px;
   @media (max-width: 1000px) {
     margin-top: 80px;
-    font-size: 25px;
+    font-size: 15px;
   }
 `;
 const Results = styled.div`

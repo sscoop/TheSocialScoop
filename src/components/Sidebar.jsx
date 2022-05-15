@@ -1,9 +1,9 @@
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { publicRequest } from "../requestMethods";
+import { getFriends } from "../redux/apiCalls";
 
 const MainContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -16,7 +16,7 @@ const MainContainer = styled.div`
       : `rgba(${props.theme.bodyRgba},.4)`};
 
   height: 90%;
-  width: 15%;
+  width: 10%;
   padding: 30px 50px;
   border-radius: 30px;
   overflow-y: scroll;
@@ -48,12 +48,11 @@ const MainContainer = styled.div`
     li {
       list-style: none;
       height: 75px;
-      /* padding: 5px; */
       margin: 15px 0;
-      border-right: ${(props) => `1px solid rgba(${props.theme.mainRgba}, .3)`};
+      width: 100%;
 
       display: flex;
-      justify-content: flex-start;
+      justify-content: space-between;
       align-items: center;
       cursor: pointer;
 
@@ -76,16 +75,35 @@ const MainContainer = styled.div`
       .details {
         margin-left: 5px;
         font-size: 15px;
+        flex: 1;
+      }
+
+      &::after {
+        content: "";
+        background-color: ${(props) => `rgba(${props.theme.mainRgba}, .3)`};
+        top: 0;
+        right: 0;
+        height: 70%;
+        width: 2px;
       }
 
       &:hover {
-        border-right: ${(props) => `1px solid ${props.theme.accent}`};
+        .profilePicture {
+          border: 1px solid ${(props) => `${props.theme.accent}`};
+        }
+        .details {
+          color: ${(props) => `${props.theme.main}`};
+        }
+        &::after {
+          background-color: ${(props) => `${props.theme.accent}`};
+        }
       }
     }
   }
 
   @media (max-width: 1445px) {
-    width: 180px;
+    width: 150px;
+    padding: 30px 40px;
   }
 
   @media (max-width: 1000px) {
@@ -106,18 +124,20 @@ const MainContainer = styled.div`
 `;
 
 const Sidebar = ({ themeCurrent }) => {
-  const userName = useSelector((state) => state.user.currentUser.username);
+  const username = useSelector((state) => state.user.currentUser.username);
+  const isFetching = useSelector((state) => state.user.isFetching);
   const [friendsList, setFriendsList] = useState([]);
-  const getFriends = async () => {
+  const dispatch = useDispatch();
+  const fetchFriends = async () => {
     try {
-      const res = await publicRequest.get(`users/friends/${userName}`);
-      setFriendsList(res.data);
+      const res = await getFriends(dispatch, username);
+      setFriendsList(res);
     } catch (error) {
       console.log(error.message);
     }
   };
   useEffect(() => {
-    getFriends();
+    fetchFriends();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -126,10 +146,10 @@ const Sidebar = ({ themeCurrent }) => {
       <h2>Friends</h2>
       <>
         <ul>
-          {!friendsList.length > 0 && (
+          {isFetching && (
             <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
           )}
-          {friendsList.length > 0 &&
+          {!isFetching &&
             friendsList.map((friend) => (
               <li key={friend._id}>
                 <div className="profilePicture">
