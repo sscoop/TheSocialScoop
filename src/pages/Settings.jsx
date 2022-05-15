@@ -16,8 +16,8 @@ import { logOut } from "../redux/userSlice";
 const MainContainer = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
-      ? `rgba(${props.theme.bodyRgba},.3)`
-      : `rgba(${props.theme.bodyRgba},.3)`};
+      ? `rgba(${props.theme.bodyRgba},.85)`
+      : `rgba(${props.theme.bodyRgba},.6)`};
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -30,6 +30,10 @@ const MainContainer = styled.div`
   justify-content: space-between; */
   overflow-y: scroll;
   border-radius: 30px;
+  .settings-msg {
+    font-size: 17px;
+    font-weight: 500;
+  }
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -43,11 +47,11 @@ const MainContainer = styled.div`
 `;
 
 const TopSection = styled.div`
-  /* border: 1px solid yellow; */
-  /* height: 125px; */
+  height: 50px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  color: ${(props) => props.theme.main};
 
   .icon {
     width: 50px;
@@ -58,84 +62,56 @@ const TopSection = styled.div`
 
   h2 {
     width: 100%;
+    height: 100%;
     font-size: 30px;
     font-weight: 600;
-    margin-left: 5px;
+    margin: 0;
+    margin-left: 10px;
     color: ${(props) => props.theme.main};
     position: relative;
-    &::after {
-      content: "";
-      position: absolute;
-      width: 90%;
-      height: 1px;
-      top: 15px;
-      right: -15px;
-      background-color: ${(props) => `rgba(${props.theme.mainRgba},.5)`};
-
-      @media (max-width: 1000px) {
-        width: 30%;
-      }
-    }
+    border-bottom: ${(props) => `1px solid ${props.theme.accent}`};
+    display: flex;
+    align-items: center;
   }
 `;
 
 const MiddleSection = styled.div`
-  color: ${(props) => props.theme.main};
-  p {
-    font-size: 17px;
-    font-weight: 500;
-  }
-
+  margin: 50px 0;
   .settings-sections {
-    margin: 15px 0;
+    padding: 15px 0;
     .heading {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      width: 100%;
+      height: 30px;
 
-      h4 {
-        width: 100%;
-        font-size: 25px;
-        font-weight: 600;
-        color: ${(props) => `rgba(${props.theme.mainRgba},.9)`};
+      .icon {
+        width: 30px;
+        height: 30px;
 
-        position: relative;
-        &::after {
-          content: "";
-          position: absolute;
-          width: 76%;
-          height: 1px;
-          top: 25px;
-          right: -15px;
-          background-color: ${(props) => `rgba(${props.theme.mainRgba},.5)`};
-        }
+        color: ${(props) => props.theme.main};
+
         @media (max-width: 1000px) {
-          font-size: 19px;
-          &::after {
-            display: none;
-          }
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
         }
       }
 
-      /* div {
-        flex: 5;
+      h4 {
         width: 100%;
-        height: 1px;
-        background-color: ${(props) => `rgba(${props.theme.mainRgba},.5)`};
+        height: 100%;
+        font-size: 20px;
+        font-weight: 600;
         margin-left: 10px;
-      } */
-    }
+        color: ${(props) => props.theme.main};
+        border-bottom: ${(props) => `1px solid ${props.theme.accent}`};
+        position: relative;
 
-    .icon {
-      width: 35px;
-      height: 35px;
-      margin-right: 15px;
-      color: ${(props) => props.theme.accent};
-
-      @media (max-width: 1000px) {
-        width: 20px;
-        height: 20px;
-        margin-right: 5px;
+        @media (max-width: 1000px) {
+          font-size: 19px;
+        }
       }
     }
 
@@ -163,11 +139,14 @@ const MiddleSection = styled.div`
         }
       }
 
-      @media (max-width: 1000px) {
+      @media (max-width: 520px) {
         flex-direction: column;
 
         .choice {
-          margin-left: 0;
+          margin: 0;
+          label {
+            margin: 10px;
+          }
         }
       }
     }
@@ -193,6 +172,7 @@ const MiddleSection = styled.div`
 
     .privacy {
       margin: 15px 0;
+      width: 100%;
       p {
         font-size: 17px;
         font-weight: 500;
@@ -219,12 +199,14 @@ const MiddleSection = styled.div`
 
         @media (max-width: 1000px) {
           font-size: 12px;
+          width: 100%;
         }
       }
     }
 
     .termsandconditions {
       margin: 15px 0;
+      width: 100%;
       p {
         font-size: 17px;
         font-weight: 500;
@@ -251,6 +233,7 @@ const MiddleSection = styled.div`
 
         @media (max-width: 1000px) {
           font-size: 12px;
+          width: 100%;
         }
       }
     }
@@ -258,63 +241,40 @@ const MiddleSection = styled.div`
 `;
 
 const LowerSection = styled.div`
-  color: ${(props) => props.theme.main};
-
   .settings-sections {
     margin: 15px 0;
     .heading {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      height: 40px;
 
-      h4 {
-        width: 100%;
-        font-size: 20px;
-        font-weight: 600;
+      .icon {
+        width: 40px;
+        height: 40px;
 
-        position: relative;
-        &::after {
-          content: "";
-          position: absolute;
-          width: 85%;
-          height: 1px;
-          top: 25px;
-          right: -15px;
-          /* background-color: ${(props) =>
-            `rgba(${props.theme.mainRgba},.5)`}; */
-          background-color: #f72727;
-        }
+        font-size: 25px;
+        color: #f72727;
 
         @media (max-width: 1000px) {
-          font-size: 17px;
-
-          &::after {
-            width: 35%;
-            height: 0.5px;
-            top: 15px;
-          }
+          width: 25px;
+          height: 25px;
         }
       }
 
-      /* div {
-        flex: 5;
+      h4 {
         width: 100%;
-        height: 1px;
-        background-color: ${(props) => `rgba(${props.theme.mainRgba},.5)`};
-        margin-left: 10px;
-      } */
-    }
-
-    .icon {
-      width: 35px;
-      height: 35px;
-      margin-right: 15px;
-      font-size: 25px;
-      color: #f72727;
-
-      @media (max-width: 1000px) {
-        width: 25px;
-        height: 25px;
+        height: 100%;
+        font-size: 25px;
+        font-weight: 600;
+        margin-left: 15px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #f72727;
+        @media (max-width: 1000px) {
+          font-size: 17px;
+        }
       }
     }
 
@@ -356,32 +316,29 @@ const Settings = ({ user, themeCurrent }) => {
       dispatch(logOut());
     }
   };
-  // console.log(themeCurrent);
 
   return (
     <>
-      <NavBar />
+      <NavBar themeCurrent={themeCurrent} />
       <MainContainer>
         <TopSection>
           <FontAwesomeIcon className="icon" icon={faGear} />
           <h2>Setting's</h2>
         </TopSection>
 
+        <p className="settings-msg">
+          Hey! {user.name}, have a look at your setting. Not convinced change it
+          now!
+        </p>
         <MiddleSection>
-          <p>
-            Hey! {user.name}, have a look at your setting. Not convinced change
-            it now!
-          </p>
           <div className="settings-sections">
             <div className="heading">
-              <h4>
-                {themeCurrent !== "dark" ? (
-                  <FontAwesomeIcon className="icon" icon={faSun} />
-                ) : (
-                  <FontAwesomeIcon className="icon" icon={faMoon} />
-                )}
-                Theme Setting's
-              </h4>
+              {themeCurrent !== "dark" ? (
+                <FontAwesomeIcon className="icon" icon={faSun} />
+              ) : (
+                <FontAwesomeIcon className="icon" icon={faMoon} />
+              )}
+              <h4>Theme Setting's</h4>
             </div>
 
             <div className="setDefaultTheme">
@@ -411,51 +368,42 @@ const Settings = ({ user, themeCurrent }) => {
                 </label>
               </div>
             </div>
-
-            <div className="settings-sections">
-              <div className="heading">
-                <h4>
-                  <FontAwesomeIcon icon={faBullhorn} className="icon" />
-                  Privacy Policy
-                </h4>
-              </div>
-
-              <div className="privacy">
-                <p>
-                  Want to know more about our privacy policy! Head towards our
-                  Privacy Policy Section to know more about our initatives to
-                  make your data more protected.
-                </p>
-
-                <Link to="/priavcypolicy">
-                  <button>
-                    Click Here to read more about our privacy policy
-                  </button>
-                </Link>
-              </div>
+          </div>
+          <div className="settings-sections">
+            <div className="heading">
+              <FontAwesomeIcon icon={faBullhorn} className="icon" />
+              <h4>Privacy Policy</h4>
             </div>
 
-            <div className="settings-sections">
-              <div className="heading">
-                <h4>
-                  <FontAwesomeIcon icon={faBullhorn} className="icon" />
-                  Terms and Conditions
-                </h4>
-              </div>
+            <div className="privacy">
+              <p>
+                Want to know more about our privacy policy! Head towards our
+                Privacy Policy Section to know more about our initatives to make
+                your data more protected.
+              </p>
 
-              <div className="termsandconditions">
-                <p>
-                  Want to know more about our terms and conditions! Head towards
-                  our Terms and Conditions Section to know more about the terms
-                  you are aggering upon.
-                </p>
+              <Link to="/priavcypolicy">
+                <button>Read more about our Privacy Policy</button>
+              </Link>
+            </div>
+          </div>
 
-                <Link to="/termsandconditions">
-                  <button>
-                    Click Here to read more about our terms and conditions
-                  </button>
-                </Link>
-              </div>
+          <div className="settings-sections">
+            <div className="heading">
+              <FontAwesomeIcon icon={faBullhorn} className="icon" />
+              <h4>Terms and Conditions</h4>
+            </div>
+
+            <div className="termsandconditions">
+              <p>
+                Want to know more about our terms and conditions! Head towards
+                our Terms and Conditions Section to know more about the terms
+                you are aggering upon.
+              </p>
+
+              <Link to="/termsandconditions">
+                <button>Read more about our Terms and Conditions</button>
+              </Link>
             </div>
           </div>
         </MiddleSection>
@@ -463,10 +411,8 @@ const Settings = ({ user, themeCurrent }) => {
         <LowerSection>
           <div className="settings-sections">
             <div className="heading">
-              <h4>
-                <FontAwesomeIcon icon={faSkullCrossbones} className="icon" />
-                Danger Zone
-              </h4>
+              <FontAwesomeIcon icon={faSkullCrossbones} className="icon" />
+              <h4>Caution Zone</h4>
             </div>
 
             <div className="options">
