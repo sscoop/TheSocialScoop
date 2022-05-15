@@ -2,7 +2,6 @@ import { faEllipsisV, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
-import Comment from "./Comment";
 
 const PostContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -15,19 +14,25 @@ const PostContainer = styled.div`
       : `rgba(${props.theme.bodyRgba},.6)`};
   border-radius: 30px;
   margin-top: 30px;
-  padding: 20px 30px;
+  padding: 30px;
   width: 100%;
-  height: 500px;
+  height: max-content;
+  height: ${(props) => (props.showMedia ? "500px" : "max-content")};
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    height: max-content;
+  }
 `;
 const Media = styled.div`
   width: 50%;
   height: 100%;
   margin-right: 30px;
   position: relative;
+  display: ${(props) => (props.showMedia ? "block" : "none")};
   &::after {
     content: "";
     position: absolute;
@@ -36,6 +41,14 @@ const Media = styled.div`
     top: 0;
     right: -15px;
     background-color: ${(props) => `rgba(${props.theme.mainRgba},.3)`};
+    @media (max-width: 1000px) {
+      top: auto;
+      right: auto;
+      left: 0;
+      bottom: -15px;
+      width: 100%;
+      height: 1px;
+    }
   }
   img {
     height: 100%;
@@ -44,21 +57,24 @@ const Media = styled.div`
     border-radius: 15px;
     object-fit: contain;
   }
+  @media (max-width: 1000px) {
+    width: 100%;
+    height: 50%;
+    margin-right: 0px;
+    margin-bottom: 30px;
+  }
 `;
 const SideContainer = styled.div`
-  width: 50%;
+  width: ${(props) => (props.showMedia ? "50%" : "100%")};
   height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`;
-const Section = styled.div`
-  width: 100%;
-  height: 45%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  @media (max-width: 1000px) {
+    width: 100%;
+    height: ${(props) => (props.showMedia ? "50%" : "100%")};
+  }
 `;
 const TopSection = styled.div`
   height: 50px;
@@ -91,10 +107,11 @@ const Caption = styled.div`
   width: 100%;
   max-height: 100%;
   overflow: hidden;
-  background-color: ${(props) => `rgba(${props.theme.bodyRgba},.3)`};
+  background-color: ${(props) => `rgba(${props.theme.bodyRgba},.1)`};
   box-sizing: border-box;
   border-radius: 15px;
   box-sizing: border-box;
+  margin-bottom: auto;
   p {
     max-width: calc(100% - 60px);
     height: calc(100% - 30px);
@@ -103,6 +120,14 @@ const Caption = styled.div`
     overflow-y: scroll;
     text-align: justify;
   }
+`;
+const BottomSection = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 30px;
 `;
 const Likes = styled.div`
   display: flex;
@@ -114,51 +139,31 @@ const Likes = styled.div`
     margin-left: 10px;
   }
 `;
-const Comments = styled.div`
-  width: 100%;
-  max-height: 50%;
-  position: relative;
-  overflow-y: hidden;
-  .commentList {
-    width: 100%;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: scroll;
-  }
-`;
 
 const Post = ({ themeCurrent, post }) => {
+  const showMedia = post.postMedia === "null" ? false : true;
   return (
-    <PostContainer themeCurrent={themeCurrent}>
-      <Media>
+    <PostContainer themeCurrent={themeCurrent} showMedia={showMedia}>
+      <Media showMedia={showMedia}>
         <img src={post.postMedia} alt="" />
       </Media>
-      <SideContainer>
-        <Section>
-          <TopSection>
-            <div className="left">
-              <img src={post.profilePicture} alt="" />
-              <h3>{post.username}</h3> <p>{post.name}</p>
-            </div>
-            <FontAwesomeIcon icon={faEllipsisV} />
-          </TopSection>
-          <Caption>
-            <p>{post.description}</p>
-          </Caption>
-        </Section>
-        <Likes>
-          <FontAwesomeIcon icon={faHeart} />
-          <p>{post.likes.length}</p>
-        </Likes>
-        <Comments>
-          <h4>Comments</h4>
-          <div className="commentList">
-            <Comment />
-            <Comment />
-            <Comment />
-            <Comment />
+      <SideContainer showMedia={showMedia}>
+        <TopSection>
+          <div className="left">
+            <img src={post.profilePicture} alt="" />
+            <h3>{post.username}</h3> <p>{post.name}</p>
           </div>
-        </Comments>
+          <FontAwesomeIcon icon={faEllipsisV} />
+        </TopSection>
+        <Caption>
+          <p>{post.description}</p>
+        </Caption>
+        <BottomSection>
+          <Likes>
+            <FontAwesomeIcon icon={faHeart} />
+            <p>{post.likes.length}</p>
+          </Likes>
+        </BottomSection>
       </SideContainer>
     </PostContainer>
   );

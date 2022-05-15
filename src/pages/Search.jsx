@@ -74,7 +74,11 @@ const Search = ({ themeCurrent }) => {
     <>
       <NavBar themeCurrent={themeCurrent} />
       <SearchContainer>
-        {query && <Query>Showing Results for: {query}</Query>}
+        <Query>
+          {query
+            ? `Showing Results for: ${query}`
+            : "Search for a user to see results!!"}
+        </Query>
         <Results>
           {users ? (
             Object.keys(users).map((key) => (
