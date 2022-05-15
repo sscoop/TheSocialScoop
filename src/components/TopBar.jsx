@@ -170,6 +170,10 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
   const [search, setSearch] = useState("");
 
+  const userProfile = (e) => {
+    console.log("clicked user pic: ", e);
+  };
+
   return (
     <Container themeCurrent={themeCurrent}>
       <Left to="/">
@@ -221,12 +225,14 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
                   : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
               }
               alt=""
+              onClick={(e) => userProfile(e)}
             />
           )}
           {!user && (
             <img
               src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
               alt=""
+              onClick={(e) => userProfile(e)}
             />
           )}
         </div>

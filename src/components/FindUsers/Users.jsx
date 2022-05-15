@@ -121,7 +121,7 @@ const Right = styled.div`
     border-radius: 30px;
     font-size: 15px;
     font-weight: 700;
-    padding: 15px 30px;
+    padding: 10px 30px;
     background: ${(props) =>
       !props.isFollowing ? props.theme.accent : "transparent"};
     color: ${(props) =>
@@ -132,10 +132,10 @@ const Right = styled.div`
     margin-right: 5px;
 
     button {
-      width: 100%;
-      border-radius: 5px;
+      /* width: 100%; */
+      border-radius: 30px;
       font-size: 11px;
-      padding: 5px;
+      padding: 10px 30px;
     }
   }
 `;
