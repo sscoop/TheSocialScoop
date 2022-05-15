@@ -24,6 +24,9 @@ const userSlice = createSlice({
       state.error = false;
       state.currentUser = null;
     },
+    getFriendsSuccess: (state) => {
+      state.isFetching = false;
+    },
     followingStart: (state) => {
       state.isFetching = true;
     },
@@ -53,5 +56,6 @@ export const {
   followingStart,
   followSuccess,
   unFollowSuccess,
+  getFriendsSuccess,
 } = userSlice.actions;
 export default userSlice.reducer;

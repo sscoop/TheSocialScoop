@@ -138,44 +138,50 @@ const MakePost = ({ themeCurrent }) => {
     // ||||||||||||||||||||||||||||||||||||||||||||||||||
 
     try {
-      const fileName = new Date().getTime() + file.name;
+      if (file.name) {
+        const fileName = new Date().getTime() + file.name;
 
-      const storage = getStorage(app);
-      const storageRef = ref(storage, fileName);
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
 
-      const uploadTask = uploadBytesResumable(storageRef, file);
+        const uploadTask = uploadBytesResumable(storageRef, file);
 
-      await uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-            default:
-              console.log("default");
+        await uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+              default:
+                console.log("default");
+            }
+          },
+          (error) => {
+            // Handle unsuccessful uploads
+            console.log(error.message);
+          },
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then(
+              async (downloadURL) => {
+                console.log("File available at", downloadURL);
+
+                setPostData((p) => ({ ...p, postMedia: downloadURL }));
+              }
+            );
           }
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-          console.log(error.message);
-        },
-        () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            console.log("File available at", downloadURL);
-
-            setPostData((p) => ({ ...p, postMedia: downloadURL }));
-          });
-        }
-      );
+        );
+      } else {
+        setPostData((p) => ({ ...p, postMedia: "null" }));
+      }
       // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     } catch (error) {
       console.log(error.message);
@@ -207,6 +213,7 @@ const MakePost = ({ themeCurrent }) => {
               type="text"
               name="description"
               placeholder={`What's on your mind ${name.toUpperCase()}?`}
+              required
               onChange={(e) =>
                 setPostData((p) => ({ ...p, [e.target.name]: e.target.value }))
               }

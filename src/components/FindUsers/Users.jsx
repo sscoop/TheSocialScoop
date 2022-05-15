@@ -2,6 +2,7 @@ import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { follow, unfollow } from "../../redux/apiCalls";
 
@@ -141,12 +142,17 @@ const Right = styled.div`
 `;
 
 const Users = ({ user }) => {
-  const { _id: userId, following } = useSelector(
-    (state) => state.user.currentUser
-  );
+  const currentUser = useSelector((state) => state.user.currentUser);
+  console.log("currentUser", currentUser);
+  let userId = null;
+  let following = [];
+  if (currentUser) {
+    userId = currentUser._id;
+    following = currentUser.following;
+  }
   const dispatch = useDispatch();
   const isFetching = useSelector((state) => state.user.isFetching);
-
+  const navigate = useNavigate();
   const isFollowing = following.includes(user._id);
   // const isFollowing = true;
 
@@ -193,7 +199,11 @@ const Users = ({ user }) => {
         {!isFetching && (
           <button
             onClick={() =>
-              !isFollowing ? followUser(user._id) : unfollowUser(user._id)
+              !currentUser
+                ? navigate("/login", { replace: true })
+                : !isFollowing
+                ? followUser(user._id)
+                : unfollowUser(user._id)
             }
           >
             {!isFollowing ? "Follow" : "Following"}

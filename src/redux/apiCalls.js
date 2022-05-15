@@ -9,6 +9,7 @@ import {
   followingFailure,
   followingStart,
   followSuccess,
+  getFriendsSuccess,
   loginFailure,
   loginStart,
   loginSuccess,
@@ -25,6 +26,17 @@ export const login = async (dispatch, user) => {
   }
 };
 
+export const getFriends = async (dispatch, username) => {
+  dispatch(followingStart());
+  try {
+    const res = await publicRequest.get(`users/friends/${username}`);
+    dispatch(getFriendsSuccess());
+    return res.data;
+  } catch (error) {
+    dispatch(followingFailure());
+    return error.message;
+  }
+};
 export const follow = async (dispatch, id, userId) => {
   dispatch(followingStart());
   try {
