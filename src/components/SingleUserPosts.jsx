@@ -182,7 +182,7 @@ const Likes = styled.div`
   }
 `;
 
-const Post = ({ themeCurrent, userPost }) => {
+const Post = ({ setPostMod, themeCurrent, userPost }) => {
   const [post, setpost] = useState(userPost);
   const [showOptions, setShowOptions] = useState(false);
   const showMedia = post.postMedia === "null" ? false : true;
@@ -237,7 +237,10 @@ const Post = ({ themeCurrent, userPost }) => {
           />
           <ul className="options" ref={optionRef}>
             <li
-              onClick={() => deletePost(dispatch, post._id, userId)}
+              onClick={() => {
+                deletePost(dispatch, post._id, userId);
+                setPostMod(1);
+              }}
               style={{
                 display: `${post.userId === userId ? "inlineBlock" : "none"}`,
               }}

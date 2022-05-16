@@ -321,7 +321,7 @@ const Profile = ({ themeCurrent }) => {
   const [userPosts, setUserPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
-
+  const [postMod, setPostMod] = useState(0);
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
 
@@ -338,6 +338,11 @@ const Profile = ({ themeCurrent }) => {
     }));
     setUserPosts(postList);
   };
+  useEffect(() => {
+    fetchUserPosts();
+    setPostMod(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [postMod]);
 
   const fetchFollowers = async () => {
     const { data } = await publicRequest.get(
@@ -441,10 +446,11 @@ const Profile = ({ themeCurrent }) => {
 
         {onHide && (
           <>
-            <MakePost themeCurrent={themeCurrent} />
+            <MakePost themeCurrent={themeCurrent} setPostMod={setPostMod} />
 
             {userPosts.map((post) => (
               <SingleUserPosts
+                setPostMod={setPostMod}
                 themeCurrent={themeCurrent}
                 userPost={post}
                 // user={user}

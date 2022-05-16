@@ -30,6 +30,7 @@ const Container = styled.div`
 
 const Feed = ({ themeCurrent }) => {
   const [posts, setPosts] = useState([]);
+  const [postMod, setPostMod] = useState(0);
   const postsList = useSelector((state) => state.posts.postsList);
   const { _id: userId } = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
@@ -39,18 +40,18 @@ const Feed = ({ themeCurrent }) => {
     //   setPosts(data);
     // };
     getPosts(dispatch, userId);
-
+    setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [postMod]);
 
   useEffect(() => {
     setPosts([...postsList]);
-  }, [postsList]);
+  }, [postsList, postMod]);
 
   return (
     <MainContainer>
       <Container>
-        <MakePost themeCurrent={themeCurrent} />
+        <MakePost themeCurrent={themeCurrent} setPostMod={setPostMod} />
         {posts.map((post) => (
           <Post themeCurrent={themeCurrent} post={post} key={post._id} />
         ))}

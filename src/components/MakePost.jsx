@@ -124,7 +124,7 @@ const BottomContainer = styled.div`
   }
 `;
 
-const MakePost = ({ themeCurrent }) => {
+const MakePost = ({ themeCurrent, setPostMod }) => {
   const { profilePicture, name, _id } = useSelector(
     (state) => state.user.currentUser
   );
@@ -193,6 +193,7 @@ const MakePost = ({ themeCurrent }) => {
     postData.postMedia && createPosts(dispatch, postData);
     setPostData({ userId: _id });
     setFile({});
+    setPostMod(2);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postData.postMedia]);
 
