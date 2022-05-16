@@ -1,7 +1,14 @@
-import { faEllipsisV, faHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEllipsisV,
+  faExclamationTriangle,
+  faHeart,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePost, postReaction } from "../redux/apiCalls";
 
 const PostContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -14,7 +21,7 @@ const PostContainer = styled.div`
       : `rgba(${props.theme.bodyRgba},.6)`};
   border-radius: 30px;
   margin-top: 30px;
-  padding: 30px;
+  padding: 30px 40px;
   width: 100%;
   height: max-content;
   height: ${(props) => (props.showMedia ? "500px" : "max-content")};
@@ -25,14 +32,16 @@ const PostContainer = styled.div`
   @media (max-width: 1000px) {
     flex-direction: column;
     height: max-content;
-    padding: 10px;
-    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.5);
+    padding: 30px 30px 20px;
+  }
+  @media (max-width: 550px) {
+    padding: 20px 30px;
   }
 `;
 const Media = styled.div`
   width: 50%;
   height: 100%;
-  margin-right: 30px;
+  margin-right: 60px;
   position: relative;
   display: ${(props) => (props.showMedia ? "block" : "none")};
   &::after {
@@ -41,7 +50,7 @@ const Media = styled.div`
     height: 100%;
     width: 1px;
     top: 0;
-    right: -15px;
+    right: -30px;
     background-color: ${(props) => `rgba(${props.theme.mainRgba},.3)`};
     @media (max-width: 1000px) {
       top: auto;
@@ -63,7 +72,7 @@ const Media = styled.div`
     width: 100%;
     height: 50%;
     margin-right: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
   }
 `;
 const SideContainer = styled.div`
@@ -86,6 +95,28 @@ const TopSection = styled.div`
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
+  position: relative;
+  .options {
+    position: absolute;
+    width: auto;
+    top: 0;
+    right: 5px;
+    z-index: 10;
+    list-style: none;
+    padding: 10px 20px;
+    font-size: 12px;
+    border-radius: 5px;
+    background: ${(props) => props.theme.body};
+    display: ${(props) => (props.showOptions ? "block" : "none")};
+
+    li {
+      cursor: pointer;
+    }
+    .optionsIcon {
+      margin-right: 10px;
+      height: 12px;
+    }
+  }
   .left {
     height: 100%;
     display: flex;
@@ -129,41 +160,96 @@ const BottomSection = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-bottom: 0;
   margin-top: 30px;
 `;
 const Likes = styled.div`
+  width: max-content;
+  color: ${(props) =>
+    props.likedByUser ? props.theme.accent : props.theme.text};
   display: flex;
-  width: 100%;
+  flex-direction: column;
   align-items: center;
   justify-content: start;
-  height: 30px;
+  height: 40px;
+  .likesIcon {
+    height: 20px;
+  }
   p {
-    margin-left: 10px;
+    margin: 0;
+    font-size: 12px;
+    margin-top: 5px;
   }
 `;
 
 const Post = ({ themeCurrent, post }) => {
+  const [showOptions, setShowOptions] = useState(false);
   const showMedia = post.postMedia === "null" ? false : true;
+  const dispatch = useDispatch();
+  const { _id: userId } = useSelector((state) => state.user.currentUser);
+  const likedByUser = post.likes.includes(userId);
+  const reaction = async () => {
+    postReaction(dispatch, post, userId);
+  };
+  const optionRef = useRef(null);
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (optionRef.current && !optionRef.current.contains(event.target)) {
+        setShowOptions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [optionRef]);
+
   return (
     <PostContainer themeCurrent={themeCurrent} showMedia={showMedia}>
       <Media showMedia={showMedia}>
         <img src={post.postMedia} alt="" />
       </Media>
       <SideContainer showMedia={showMedia}>
-        <TopSection>
+        <TopSection showOptions={showOptions}>
           <div className="left">
             <img src={post.profilePicture} alt="" />
             <h3>{post.username}</h3> <p>{post.name}</p>
           </div>
-          <FontAwesomeIcon icon={faEllipsisV} />
+          <FontAwesomeIcon
+            style={{ cursor: "pointer", padding: "0 10px" }}
+            icon={faEllipsisV}
+            onClick={() => setShowOptions((p) => !p)}
+          />
+          <ul className="options" ref={optionRef}>
+            <li
+              onClick={() => deletePost(dispatch, post._id, userId)}
+              style={{
+                display: `${post.userId === userId ? "inlineBlock" : "none"}`,
+              }}
+            >
+              <FontAwesomeIcon icon={faTrash} className="optionsIcon" />
+              Delete
+            </li>
+            <li
+              style={{
+                display: `${post.userId !== userId ? "inlineBlock" : "none"}`,
+              }}
+            >
+              <FontAwesomeIcon
+                icon={faExclamationTriangle}
+                className="optionsIcon"
+              />
+              Unfollow
+            </li>
+          </ul>
         </TopSection>
         <Caption>
           <p>{post.description}</p>
         </Caption>
         <BottomSection>
-          <Likes>
-            <FontAwesomeIcon icon={faHeart} />
-            <p>{post.likes.length}</p>
+          <Likes onClick={reaction} likedByUser={likedByUser}>
+            <FontAwesomeIcon className="likesIcon" icon={faHeart} />
+            <p>{`${post.likes.length} Likes`}</p>
           </Likes>
         </BottomSection>
       </SideContainer>

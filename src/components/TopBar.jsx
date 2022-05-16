@@ -217,7 +217,7 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
           </motion.span>
         </span>
         <div className="profile">
-          <Link to={`/${user._id}`}>
+          <Link to={`/${user?._id}`}>
             {user && (
               <img
                 src={

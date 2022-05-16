@@ -13,19 +13,25 @@ const postSlice = createSlice({
     },
     createPostSuccess: (state, action) => {
       state.postsList.push(action.payload);
-      // const compare = (a, b) => {
-      //   if (a.updatedAt < b.updatedAt) {
-      //     return -1;
-      //   }
-      //   if (a.updatedAt > b.updatedAt) {
-      //     return 1;
-      //   }
-      //   return 0;
-      // };
-
-      // state.postsList.newPostData.sort(compare);
       state.isFetching = false;
     },
+    postReactSuccess: (state, action) => {
+      state.postsList = state.postsList.map((post) => {
+        if (post._id === action.payload.newPost._id) {
+          return action.payload.newPost;
+        } else {
+          return post;
+        }
+      });
+      state.isFetching = false;
+    },
+    postDeleteSuccess: (state, action) => {
+      state.postsList = state.postsList.filter(
+        (post) => post._id !== action.payload
+      );
+      state.isFetching = false;
+    },
+
     getPostSuccess: (state, action) => {
       state.postsList = [...action.payload];
       state.isFetching = false;
@@ -37,6 +43,12 @@ const postSlice = createSlice({
   },
 });
 
-export const { createPostSuccess, getPostSuccess, postFailure, postStart } =
-  postSlice.actions;
+export const {
+  createPostSuccess,
+  getPostSuccess,
+  postFailure,
+  postStart,
+  postReactSuccess,
+  postDeleteSuccess,
+} = postSlice.actions;
 export default postSlice.reducer;

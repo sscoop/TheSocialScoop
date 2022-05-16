@@ -148,7 +148,7 @@ function App() {
                 }
               />
               <Route
-                path={`/${user._id}`}
+                path={`/${user?._id}`}
                 element={<User themeCurrent={themeDark ? "dark" : "light"} />}
               />
             </Routes>
