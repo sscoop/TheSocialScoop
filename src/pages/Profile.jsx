@@ -1,8 +1,10 @@
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import MakePost from "../components/MakePost";
 import NavBar from "../components/NavBar";
 import SingleUserPosts from "../components/SingleUserPosts";
 import { publicRequest } from "../requestMethods";
@@ -226,6 +228,133 @@ const MainSection = styled.div`
     }
   }
 
+  .hiddenSection {
+    background: ${(props) =>
+      props.themeCurrent === "dark"
+        ? `rgba(${props.theme.bodyRgba},.85)`
+        : `rgba(${props.theme.bodyRgba},.6)`};
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-bottom: 0.5px solid ${(props) => props.theme.accent};
+    height: 100%;
+    overflow-y: hidden;
+
+    .backIcon {
+      color: ${(props) => props.theme.accent};
+      font-size: 45px;
+      text-align: end;
+
+      .icon {
+        &:hover {
+          animation-name: rotation;
+          animation-duration: 500ms;
+          animation-fill-mode: forwards;
+
+          @keyframes rotation {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(180deg);
+            }
+          }
+        }
+      }
+    }
+
+    .static {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid
+        ${(props) =>
+          props.themeCurrent === "dark"
+            ? `rgba(${props.theme.mainRgba},.85)`
+            : `rgba(${props.theme.mainRgba},.6)`};
+
+      div {
+        width: 100%;
+        text-align: center;
+
+        h3 {
+          font-size: 25px;
+          cursor: pointer;
+        }
+        .active {
+          color: ${(props) => props.theme.accent};
+        }
+      }
+    }
+
+    .dynamic {
+      height: 100%;
+      overflow-y: scroll;
+      ul {
+        width: 100%;
+        padding: 0;
+        li {
+          list-style: none;
+          height: 75px;
+          margin: 15px 0;
+          width: 100%;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+
+          .profilePicture {
+            height: 50px;
+            width: 50px;
+            margin-right: 10px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid ${(props) => props.theme.main};
+            box-sizing: border-box;
+            img {
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+              cursor: pointer;
+            }
+          }
+
+          .details {
+            margin-left: 5px;
+            font-size: 15px;
+            flex: 1;
+          }
+
+          &::after {
+            content: "";
+            background-color: ${(props) => `rgba(${props.theme.mainRgba}, .3)`};
+            top: 0;
+            right: 0;
+            height: 70%;
+            width: 2px;
+          }
+
+          &:hover {
+            .profilePicture {
+              border: 1px solid ${(props) => `${props.theme.accent}`};
+            }
+            .details {
+              color: ${(props) => `${props.theme.main}`};
+            }
+            &::after {
+              background-color: ${(props) => `${props.theme.accent}`};
+            }
+          }
+        }
+      }
+    }
+
+    @media (max-width: 1000px) {
+    }
+  }
+
   @media (max-width: 1300px) {
     padding: 30px;
   }
@@ -238,22 +367,17 @@ const MainSection = styled.div`
   }
 `;
 
-const User = ({ themeCurrent }) => {
-  const username = useLocation().pathname.split("/")[2];
-  const [user, setUser] = useState({});
+const Profile = ({ themeCurrent }) => {
+  const user = useSelector((state) => state.user.currentUser);
   const [userPosts, setUserPosts] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+
+  const [onHide, setOnHide] = useState(true);
+  const [onFollowers, setOnFollowers] = useState(true);
 
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
-
-  const fetchUser = async () => {
-    try {
-      const res = await publicRequest.get(`/users/user/${username}`);
-      setUser(res.data);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   const fetchUserPosts = async () => {
     const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
@@ -261,15 +385,26 @@ const User = ({ themeCurrent }) => {
     setUserPosts(data);
   };
 
-  useEffect(() => {
-    fetchUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const fetchFollowers = async () => {
+    const { data } = await publicRequest.get(
+      `users/followers/${user.username}`
+    );
+
+    setFollowers(data);
+  };
+
+  const fetchFollowing = async () => {
+    const { data } = await publicRequest.get(`users/friends/${user.username}`);
+
+    setFollowing(data);
+  };
 
   useEffect(() => {
     fetchUserPosts();
+    fetchFollowers();
+    fetchFollowing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, []);
 
   return (
     <>
@@ -322,32 +457,116 @@ const User = ({ themeCurrent }) => {
         <div className="lower">
           <div className="posts">
             <h3>Posts</h3>
-            <p>{userPosts.length ? userPosts.length : "Fetching"}</p>
+            <p>{userPosts.length}</p>
           </div>
 
-          <div className="followers">
+          <div
+            className="followers"
+            style={{ cursor: "pointer" }}
+            onClick={() => setOnHide(false)}
+          >
             <h3>Followers</h3>
-            <p>{user.followers ? user.followers.length : "Fetching"}</p>
+            <p>{followers.length}</p>
           </div>
 
-          <div className="following">
+          <div
+            className="following"
+            style={{ cursor: "pointer" }}
+            onClick={() => setOnHide(false)}
+          >
             <h3>Following</h3>
-            <p>{user.following ? user.following.length : "fetching"}</p>
+            <p>{following.length}</p>
           </div>
         </div>
 
-        {userPosts.map((post) => (
-          <SingleUserPosts
-            themeCurrent={themeCurrent}
-            post={post}
-            user={user}
-            key={post._id}
-          />
-        ))}
+        {onHide && (
+          <>
+            <MakePost themeCurrent={themeCurrent} />
+
+            {userPosts.map((post) => (
+              <SingleUserPosts
+                themeCurrent={themeCurrent}
+                post={post}
+                user={user}
+                key={post._id}
+              />
+            ))}
+          </>
+        )}
+
+        {!onHide && (
+          <div className="hiddenSection">
+            <div className="backIcon">
+              <FontAwesomeIcon
+                icon={faCaretDown}
+                className="icon"
+                onClick={() => setOnHide(true)}
+              />
+            </div>
+            <div className="static">
+              <div>
+                <h3
+                  onClick={() => setOnFollowers(true)}
+                  className={`${onFollowers ? "active" : ""}`}
+                >
+                  Followers
+                </h3>
+              </div>
+              <div>
+                <h3
+                  onClick={() => setOnFollowers(false)}
+                  className={`${!onFollowers ? "active" : ""}`}
+                >
+                  Following
+                </h3>
+              </div>
+            </div>
+
+            <div className="dynamic">
+              <ul>
+                {onFollowers
+                  ? followers.map((friend) => (
+                      <li key={friend._id}>
+                        <div className="profilePicture">
+                          <Link to={`/user/${friend.username}`}>
+                            <img
+                              src={
+                                friend.profilePicture
+                                  ? friend.profilePicture
+                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                              }
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div className="details">{friend.name}</div>
+                      </li>
+                    ))
+                  : following.map((friend) => (
+                      <li key={friend._id}>
+                        <div className="profilePicture">
+                          <Link to={`/user/${friend.username}`}>
+                            <img
+                              src={
+                                friend.profilePicture
+                                  ? friend.profilePicture
+                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                              }
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div className="details">{friend.name}</div>
+                      </li>
+                    ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </MainSection>
       {/* </MainContainer> */}
     </>
   );
 };
 
-export default User;
+export default Profile;
