@@ -51,7 +51,7 @@ const Feed = ({ themeCurrent }) => {
       <Container>
         <MakePost themeCurrent={themeCurrent} />
         {posts.map((post) => (
-          <Post themeCurrent={themeCurrent} post={post} />
+          <Post themeCurrent={themeCurrent} post={post} key={post._id} />
         ))}
       </Container>
     </MainContainer>

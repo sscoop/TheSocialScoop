@@ -4,9 +4,10 @@ import React from "react";
 import styled from "styled-components";
 
 const PostContainer = styled.div`
-  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  /* box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5); */
+  border-bottom: 0.5px solid ${(props) => props.theme.accent};
   z-index: 1;
   background: ${(props) =>
     props.themeCurrent === "dark"
@@ -25,8 +26,9 @@ const PostContainer = styled.div`
   @media (max-width: 1000px) {
     flex-direction: column;
     height: max-content;
-    padding: 10px;
-    box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    box-shadow: 0px 4px 3px ${(props) => props.theme.accent};
+    border-bottom: none;
   }
 `;
 const Media = styled.div`
@@ -142,7 +144,7 @@ const Likes = styled.div`
   }
 `;
 
-const Post = ({ themeCurrent, post }) => {
+const Post = ({ themeCurrent, post, user }) => {
   const showMedia = post.postMedia === "null" ? false : true;
   return (
     <PostContainer themeCurrent={themeCurrent} showMedia={showMedia}>
@@ -152,8 +154,8 @@ const Post = ({ themeCurrent, post }) => {
       <SideContainer showMedia={showMedia}>
         <TopSection>
           <div className="left">
-            <img src={post.profilePicture} alt="" />
-            <h3>{post.username}</h3> <p>{post.name}</p>
+            <img src={user.profilePicture} alt="" />
+            <h3>{user.username}</h3> <p>{user.name}</p>
           </div>
           <FontAwesomeIcon icon={faEllipsisV} />
         </TopSection>

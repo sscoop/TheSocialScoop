@@ -87,7 +87,7 @@ const Center = styled.form`
     background-color: transparent;
     border: none;
     outline: none;
-    flex: 1;
+    width: 17vw;
     color: ${(props) => props.theme.main};
     &::placeholder {
       color: ${(props) => `rgba(${props.theme.mainRgba},0.4)`};
@@ -170,8 +170,8 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
   const [search, setSearch] = useState("");
 
-  const userProfile = (e) => {
-    console.log("clicked user pic: ", e);
+  const userProfile = () => {
+    // console.log("clicked user pic", user);
   };
 
   return (
@@ -217,24 +217,26 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
           </motion.span>
         </span>
         <div className="profile">
-          {user && (
-            <img
-              src={
-                user.profilePicture
-                  ? user.profilePicture
-                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-              }
-              alt=""
-              onClick={(e) => userProfile(e)}
-            />
-          )}
-          {!user && (
-            <img
-              src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-              alt=""
-              onClick={(e) => userProfile(e)}
-            />
-          )}
+          <Link to={`/${user._id}`}>
+            {user && (
+              <img
+                src={
+                  user.profilePicture
+                    ? user.profilePicture
+                    : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                }
+                alt=""
+                onClick={userProfile}
+              />
+            )}
+            {!user && (
+              <img
+                src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                alt=""
+                onClick={userProfile}
+              />
+            )}
+          </Link>
         </div>
       </Right>
     </Container>
