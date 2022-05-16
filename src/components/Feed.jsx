@@ -14,7 +14,8 @@ const MainContainer = styled.div`
   overflow-y: scroll;
   scroll-behavior: smooth;
   @media (max-width: 1000px) {
-    padding: 5px 0px;
+    padding: 5px 40px;
+    width: calc(100% - 80px);
   }
 `;
 const Container = styled.div`

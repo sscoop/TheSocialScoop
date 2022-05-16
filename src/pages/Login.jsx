@@ -20,7 +20,7 @@ const MainContainer = styled.span`
   height: 90%;
   width: 90%;
   padding: 30px 50px;
-  margin-left: 30px;
+  margin: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,8 +48,15 @@ const MainContainer = styled.span`
   @media (max-width: 1000px) {
     margin-left: 0;
     width: calc(100% - 60px);
-    margin-bottom: 20px;
     overflow-y: scroll;
+    height: 85%;
+    margin: 20px 40px;
+    width: calc(100% - 140px);
+  }
+
+  @media (max-width: 475px) {
+    width: calc(100% - 90px);
+    margin: 20px 15px 0;
   }
 `;
 const ImageSectionWrapper = styled.div`

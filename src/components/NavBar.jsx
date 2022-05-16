@@ -26,18 +26,23 @@ const MainContainer = styled.div`
   align-items: center;
   justify-content: space-around;
   flex-shrink: 0;
+  margin-left: 40px;
 
   @media (max-width: 1000px) {
     height: 45px;
-    width: 100%;
+    width: calc(100% - 80px);
     padding: 30px 0px;
     flex-direction: row;
+    margin: 30px 40px 0;
   }
 
   @media (max-width: 650px) {
     height: 20px;
-    width: 100%;
     padding: 30px 0px;
+  }
+  @media (max-width: 475px) {
+    width: calc(100% - 30px);
+    margin: 20px 15px 0;
   }
 `;
 const IconContainer = styled(Link)`

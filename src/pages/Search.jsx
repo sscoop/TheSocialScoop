@@ -17,8 +17,7 @@ const SearchContainer = styled.div`
   height: 90%;
   width: 90%;
   padding: 30px 50px;
-  margin-left: 30px;
-  margin-right: 30px;
+  margin: 0 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,10 +29,15 @@ const SearchContainer = styled.div`
   }
   @media (max-width: 1000px) {
     margin-left: 0;
-    padding: 15px;
-    width: calc(100% - 30px);
+    padding: 20px;
+    margin: 0 40px;
+    width: calc(100% - 120px);
     margin-bottom: 20px;
     overflow-y: scroll;
+  }
+  @media (max-width: 475px) {
+    width: calc(100% - 60px);
+    margin: 0px 15px;
   }
 `;
 const Query = styled.h2`

@@ -15,9 +15,12 @@ const UsersSectionWrapper = styled.div`
   height: 90%;
   width: 15%;
   padding: 30px 50px;
+  margin-right: 40px;
+
   border-radius: 30px;
   overflow-y: scroll;
   flex-shrink: 0;
+
   h2 {
     margin: 10px 0px;
     color: ${(props) => props.theme.accent};
@@ -87,9 +90,16 @@ const UsersSectionWrapper = styled.div`
       height: 40px;
     }
   }
+
   @media (max-width: 1000px) {
     height: 85%;
-    margin-bottom: 20px;
+    margin: 20px 40px 0;
+    width: calc(100% - 80px);
+  }
+
+  @media (max-width: 475px) {
+    width: calc(100% - 30px);
+    margin: 20px 15px 0;
   }
 `;
 

@@ -46,7 +46,7 @@ const MainConatiner = styled.div`
 `;
 const Container = styled.div`
   height: calc(100% - 180px);
-  padding: 40px 40px 30px;
+  padding: 40px 0px 30px;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -57,7 +57,7 @@ const Container = styled.div`
   }
   @media (max-width: 475px) {
     height: calc(100vh - 140px);
-    padding: 0px 15px 20px;
+    padding: 0px 0px 20px;
   }
 `;
 

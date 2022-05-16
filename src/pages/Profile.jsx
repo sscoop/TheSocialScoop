@@ -1,4 +1,4 @@
-import { faCaretDown, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -9,44 +9,11 @@ import NavBar from "../components/NavBar";
 import SingleUserPosts from "../components/SingleUserPosts";
 import { publicRequest } from "../requestMethods";
 
-// const MainContainer = styled.div`
-//   background: ${(props) =>
-//     props.themeCurrent === "dark"
-//       ? `rgba(${props.theme.bodyRgba},.3)`
-//       : `rgba(${props.theme.bodyRgba},.3)`};
-//   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-//   border-top: 1px solid rgba(255, 255, 255, 0.5);
-//   border-left: 1px solid rgba(255, 255, 255, 0.5);
-//   height: 90%;
-//   width: 90%;
-//   padding: 30px 50px;
-//   margin-left: 30px;
-//   margin-right: 30px;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   border-radius: 30px;
-
-//   @media (max-width: 1300px) {
-//     padding: 30px;
-//   }
-//   @media (max-width: 1000px) {
-//     margin-left: 0;
-//     padding: 15px;
-//     width: calc(100% - 30px);
-//     margin-bottom: 20px;
-//     overflow-y: scroll;
-//   }
-// `;
-
 const MainSection = styled.div`
-  height: 90%;
+  height: 98%;
   width: 100%;
-  padding: 5px;
+  padding: 0 40px 0;
   overflow-y: scroll;
-  margin-left: 30px;
-  margin-right: 30px;
-
   .top {
     display: flex;
     justify-content: flex-start;
@@ -56,8 +23,8 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 10px;
-    margin: 10px 0;
+    padding: 20px 30px;
+    margin: 0 0 10px;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
 
@@ -75,7 +42,7 @@ const MainSection = styled.div`
       }
     }
     .details {
-      width: 70%;
+      flex: 1;
       height: 50px;
       margin-left: 15px;
 
@@ -116,7 +83,6 @@ const MainSection = styled.div`
     //
     @media (max-width: 1000px) {
       .image-container {
-        flex: 2;
         width: 45px;
         height: 45px;
       }
@@ -138,7 +104,6 @@ const MainSection = styled.div`
       }
 
       .button {
-        flex: 1;
         /* width: 15%; */
         button {
           /* align-self: flex-end;
@@ -160,7 +125,7 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 15px;
+    padding: 20px 30px;
     margin: 10px 0;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
@@ -194,7 +159,7 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 10px;
+    padding: 20px 30px;
     margin: 10px 0;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
@@ -233,32 +198,22 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 10px;
+    padding: 20px 40px;
     margin: 10px 0;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
-    height: 100%;
-    overflow-y: hidden;
+    height: max-content;
+    overflow: hidden;
 
     .backIcon {
-      color: ${(props) => props.theme.accent};
-      font-size: 45px;
-      text-align: end;
-
+      color: ${(props) => props.theme.main};
+      font-size: 30px;
+      text-align: center;
       .icon {
+        transition: transform 0.25s ease-in-out;
         &:hover {
-          animation-name: rotation;
-          animation-duration: 500ms;
-          animation-fill-mode: forwards;
-
-          @keyframes rotation {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(180deg);
-            }
-          }
+          transform: rotate(180deg);
+          color: ${(props) => props.theme.accent};
         }
       }
     }
@@ -350,16 +305,10 @@ const MainSection = styled.div`
         }
       }
     }
-
-    @media (max-width: 1000px) {
-    }
   }
 
-  @media (max-width: 1300px) {
-    padding: 30px;
-  }
   @media (max-width: 1000px) {
-    margin-left: 0;
+    margin: 0 30px;
     padding: 15px;
     width: calc(100% - 30px);
     margin-bottom: 20px;
@@ -381,8 +330,13 @@ const Profile = ({ themeCurrent }) => {
 
   const fetchUserPosts = async () => {
     const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
-
-    setUserPosts(data);
+    const postList = data.map((post) => ({
+      ...post,
+      profilePicture: user.profilePicture,
+      username: user.username,
+      name: user.name,
+    }));
+    setUserPosts(postList);
   };
 
   const fetchFollowers = async () => {
@@ -408,9 +362,9 @@ const Profile = ({ themeCurrent }) => {
 
   return (
     <>
-      <NavBar />
+      <NavBar themeCurrent={themeCurrent} />
       {/* <MainContainer> */}
-      <MainSection>
+      <MainSection themeCurrent={themeCurrent}>
         <div className="top">
           <div className="image-container">
             <img
@@ -463,7 +417,10 @@ const Profile = ({ themeCurrent }) => {
           <div
             className="followers"
             style={{ cursor: "pointer" }}
-            onClick={() => setOnHide(false)}
+            onClick={() => {
+              setOnHide(false);
+              setOnFollowers(true);
+            }}
           >
             <h3>Followers</h3>
             <p>{followers.length}</p>
@@ -472,7 +429,10 @@ const Profile = ({ themeCurrent }) => {
           <div
             className="following"
             style={{ cursor: "pointer" }}
-            onClick={() => setOnHide(false)}
+            onClick={() => {
+              setOnHide(false);
+              setOnFollowers(false);
+            }}
           >
             <h3>Following</h3>
             <p>{following.length}</p>
@@ -486,8 +446,8 @@ const Profile = ({ themeCurrent }) => {
             {userPosts.map((post) => (
               <SingleUserPosts
                 themeCurrent={themeCurrent}
-                post={post}
-                user={user}
+                userPost={post}
+                // user={user}
                 key={post._id}
               />
             ))}
@@ -498,26 +458,15 @@ const Profile = ({ themeCurrent }) => {
           <div className="hiddenSection">
             <div className="backIcon">
               <FontAwesomeIcon
-                icon={faCaretDown}
+                icon={faAngleDown}
                 className="icon"
                 onClick={() => setOnHide(true)}
               />
             </div>
             <div className="static">
               <div>
-                <h3
-                  onClick={() => setOnFollowers(true)}
-                  className={`${onFollowers ? "active" : ""}`}
-                >
-                  Followers
-                </h3>
-              </div>
-              <div>
-                <h3
-                  onClick={() => setOnFollowers(false)}
-                  className={`${!onFollowers ? "active" : ""}`}
-                >
-                  Following
+                <h3 className="active">
+                  {onFollowers ? "Followers" : "Following"}
                 </h3>
               </div>
             </div>

@@ -22,6 +22,7 @@ const MainContainer = styled.div`
   border-radius: 30px;
   overflow-y: scroll;
   flex-shrink: 0;
+  margin-right: 40px;
 
   @keyframes rotation {
     0% {
