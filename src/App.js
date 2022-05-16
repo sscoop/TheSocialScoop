@@ -13,6 +13,7 @@ import bgLight from "./assets/bgLight.jpg";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
 import { useSelector } from "react-redux";
+import Profile from "./pages/Profile";
 import User from "./pages/User";
 
 const Main = styled.div`
@@ -148,7 +149,13 @@ function App() {
                 }
               />
               <Route
-                path={`/${user._id}`}
+                path={`/profile/${user._id}`}
+                element={
+                  <Profile themeCurrent={themeDark ? "dark" : "light"} />
+                }
+              />
+              <Route
+                path={`/user/:username`}
                 element={<User themeCurrent={themeDark ? "dark" : "light"} />}
               />
             </Routes>

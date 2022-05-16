@@ -2,6 +2,7 @@ import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { getFriends } from "../redux/apiCalls";
 
@@ -153,14 +154,16 @@ const Sidebar = ({ themeCurrent }) => {
             friendsList.map((friend) => (
               <li key={friend._id}>
                 <div className="profilePicture">
-                  <img
-                    src={
-                      friend.profilePicture
-                        ? friend.profilePicture
-                        : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                    }
-                    alt=""
-                  />
+                  <Link to={`/user/${friend.username}`}>
+                    <img
+                      src={
+                        friend.profilePicture
+                          ? friend.profilePicture
+                          : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                      }
+                      alt=""
+                    />
+                  </Link>
                 </div>
                 <div className="details">{friend.name}</div>
               </li>
