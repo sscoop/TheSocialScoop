@@ -108,13 +108,11 @@ export const postReaction = async (dispatch, post, userId) => {
 export const deletePost = async (dispatch, postId, userId) => {
   dispatch(postStart());
   try {
-    console.log(userId);
-    const res = await publicRequest.delete(`/posts/delete-post/${postId}`, {
+    await publicRequest.delete(`/posts/delete-post/${postId}`, {
       data: {
         userId,
       },
     });
-    console.log(res);
     dispatch(postDeleteSuccess(postId));
   } catch (error) {
     dispatch(postFailure());

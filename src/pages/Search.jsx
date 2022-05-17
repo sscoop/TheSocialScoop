@@ -9,8 +9,8 @@ import { publicRequest } from "../requestMethods";
 const SearchContainer = styled.div`
   background: ${(props) =>
     props.themeCurrent === "dark"
-      ? `rgba(${props.theme.bodyRgba},.3)`
-      : `rgba(${props.theme.bodyRgba},.3)`};
+      ? `rgba(${props.theme.bodyRgba},.85)`
+      : `rgba(${props.theme.bodyRgba},.6)`};
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -88,11 +88,11 @@ const Search = ({ themeCurrent, name }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <SearchContainer>
+      <SearchContainer themeCurrent={themeCurrent}>
         <Query>
           {query
             ? `Showing Results for: ${query}`
-            : `Hey! ${name} feeling alone find some friends now`}
+            : `Hey! ${name} feeling alone? Find some friends now!!`}
         </Query>
         <Results>
           {Object.keys(users).length ? (
@@ -100,9 +100,7 @@ const Search = ({ themeCurrent, name }) => {
               <Users key={key} user={users[key]} />
             ))
           ) : query ? (
-            <h2>
-              Hey, {name} feeling alone! But no result found for your search.
-            </h2>
+            <h2>Hey, {name}! Sorry, but no result found for your search.</h2>
           ) : (
             ""
           )}

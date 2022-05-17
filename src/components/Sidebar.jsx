@@ -2,7 +2,7 @@ import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getFriends } from "../redux/apiCalls";
 
@@ -127,6 +127,7 @@ const MainContainer = styled.div`
 
 const Sidebar = ({ themeCurrent }) => {
   const username = useSelector((state) => state.user.currentUser.username);
+  const nav = useNavigate();
   const isFetching = useSelector((state) => state.user.isFetching);
   const [friendsList, setFriendsList] = useState([]);
   const dispatch = useDispatch();
@@ -154,21 +155,26 @@ const Sidebar = ({ themeCurrent }) => {
           )}
           {!isFetching &&
             friendsList.map((friend) => (
-              <li key={friend._id}>
+              // <Link to={`/user/${friend.username}`}>
+              <li
+                key={friend._id}
+                onClick={() =>
+                  nav(`/user/${friend.username}`, { replace: true })
+                }
+              >
                 <div className="profilePicture">
-                  <Link to={`/user/${friend.username}`}>
-                    <img
-                      src={
-                        friend.profilePicture
-                          ? friend.profilePicture
-                          : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                      }
-                      alt=""
-                    />
-                  </Link>
+                  <img
+                    src={
+                      friend.profilePicture
+                        ? friend.profilePicture
+                        : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                    }
+                    alt=""
+                  />
                 </div>
                 <div className="details">{friend.name}</div>
               </li>
+              // </Link>
             ))}
         </ul>
       </>

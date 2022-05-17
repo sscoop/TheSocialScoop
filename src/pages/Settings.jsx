@@ -346,7 +346,7 @@ const Settings = ({ user, themeCurrent }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainContainer>
+      <MainContainer themeCurrent={themeCurrent}>
         <TopSection>
           <FontAwesomeIcon className="icon" icon={faGear} />
           <h2>Setting's</h2>

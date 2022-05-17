@@ -54,6 +54,7 @@ const Container = styled.div`
   background: transparent;
   @media (max-width: 1000px) {
     flex-direction: column-reverse;
+    padding: 0px 0px 20px;
   }
   @media (max-width: 475px) {
     height: calc(100vh - 140px);
