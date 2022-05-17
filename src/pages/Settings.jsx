@@ -285,6 +285,7 @@ const LowerSection = styled.div`
         font-weight: 600;
         margin-left: 15px;
         position: relative;
+        color: ${(props) => props.theme.main};
         display: flex;
         align-items: center;
         border-bottom: 1px solid #f72727;
@@ -310,6 +311,12 @@ const LowerSection = styled.div`
         background: transparent;
         font-size: 15px;
         font-weight: 700;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f72727;
+          color: ${(props) => props.theme.main};
+        }
       }
       @media (max-width: 1000px) {
         flex-direction: column;

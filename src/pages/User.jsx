@@ -1,4 +1,4 @@
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -7,44 +7,11 @@ import NavBar from "../components/NavBar";
 import SingleUserPosts from "../components/SingleUserPosts";
 import { publicRequest } from "../requestMethods";
 
-// const MainContainer = styled.div`
-//   background: ${(props) =>
-//     props.themeCurrent === "dark"
-//       ? `rgba(${props.theme.bodyRgba},.3)`
-//       : `rgba(${props.theme.bodyRgba},.3)`};
-//   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-//   border-top: 1px solid rgba(255, 255, 255, 0.5);
-//   border-left: 1px solid rgba(255, 255, 255, 0.5);
-//   height: 90%;
-//   width: 90%;
-//   padding: 30px 50px;
-//   margin-left: 30px;
-//   margin-right: 30px;
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   border-radius: 30px;
-
-//   @media (max-width: 1300px) {
-//     padding: 30px;
-//   }
-//   @media (max-width: 1000px) {
-//     margin-left: 0;
-//     padding: 15px;
-//     width: calc(100% - 30px);
-//     margin-bottom: 20px;
-//     overflow-y: scroll;
-//   }
-// `;
-
 const MainSection = styled.div`
-  height: 90%;
+  height: 98%;
   width: 100%;
-  padding: 5px;
+  padding: 0 40px 0;
   overflow-y: scroll;
-  margin-left: 30px;
-  margin-right: 30px;
-
   .top {
     display: flex;
     justify-content: flex-start;
@@ -54,8 +21,8 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 10px;
-    margin: 10px 0;
+    padding: 20px 30px;
+    margin: 0 0 10px;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
 
@@ -73,7 +40,7 @@ const MainSection = styled.div`
       }
     }
     .details {
-      width: 70%;
+      flex: 1;
       height: 50px;
       margin-left: 15px;
 
@@ -114,7 +81,6 @@ const MainSection = styled.div`
     //
     @media (max-width: 1000px) {
       .image-container {
-        flex: 2;
         width: 45px;
         height: 45px;
       }
@@ -136,7 +102,6 @@ const MainSection = styled.div`
       }
 
       .button {
-        flex: 1;
         /* width: 15%; */
         button {
           /* align-self: flex-end;
@@ -158,7 +123,7 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 15px;
+    padding: 20px 30px;
     margin: 10px 0;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
@@ -192,7 +157,7 @@ const MainSection = styled.div`
       props.themeCurrent === "dark"
         ? `rgba(${props.theme.bodyRgba},.85)`
         : `rgba(${props.theme.bodyRgba},.6)`};
-    padding: 10px;
+    padding: 20px 30px;
     margin: 10px 0;
     border-radius: 10px;
     border-bottom: 0.5px solid ${(props) => props.theme.accent};
@@ -226,11 +191,122 @@ const MainSection = styled.div`
     }
   }
 
-  @media (max-width: 1300px) {
-    padding: 30px;
+  .hiddenSection {
+    background: ${(props) =>
+      props.themeCurrent === "dark"
+        ? `rgba(${props.theme.bodyRgba},.85)`
+        : `rgba(${props.theme.bodyRgba},.6)`};
+    padding: 20px 40px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border-bottom: 0.5px solid ${(props) => props.theme.accent};
+    height: max-content;
+    overflow: hidden;
+
+    .backIcon {
+      color: ${(props) => props.theme.main};
+      font-size: 30px;
+      text-align: center;
+      .icon {
+        transition: transform 0.25s ease-in-out;
+        &:hover {
+          transform: rotate(180deg);
+          color: ${(props) => props.theme.accent};
+        }
+      }
+    }
+
+    .static {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid
+        ${(props) =>
+          props.themeCurrent === "dark"
+            ? `rgba(${props.theme.mainRgba},.85)`
+            : `rgba(${props.theme.mainRgba},.6)`};
+
+      div {
+        width: 100%;
+        text-align: center;
+
+        h3 {
+          font-size: 25px;
+          cursor: pointer;
+        }
+        .active {
+          color: ${(props) => props.theme.accent};
+        }
+      }
+    }
+
+    .dynamic {
+      height: 100%;
+      overflow-y: scroll;
+      ul {
+        width: 100%;
+        padding: 0;
+        li {
+          list-style: none;
+          height: 75px;
+          margin: 15px 0;
+          width: 100%;
+
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+
+          .profilePicture {
+            height: 50px;
+            width: 50px;
+            margin-right: 10px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid ${(props) => props.theme.main};
+            box-sizing: border-box;
+            img {
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+              cursor: pointer;
+            }
+          }
+
+          .details {
+            margin-left: 5px;
+            font-size: 15px;
+            flex: 1;
+          }
+
+          &::after {
+            content: "";
+            background-color: ${(props) => `rgba(${props.theme.mainRgba}, .3)`};
+            top: 0;
+            right: 0;
+            height: 70%;
+            width: 2px;
+          }
+
+          &:hover {
+            .profilePicture {
+              border: 1px solid ${(props) => `${props.theme.accent}`};
+            }
+            .details {
+              color: ${(props) => `${props.theme.main}`};
+            }
+            &::after {
+              background-color: ${(props) => `${props.theme.accent}`};
+            }
+          }
+        }
+      }
+    }
   }
+
   @media (max-width: 1000px) {
-    margin-left: 0;
+    margin: 0 30px;
     padding: 15px;
     width: calc(100% - 30px);
     margin-bottom: 20px;
@@ -238,44 +314,65 @@ const MainSection = styled.div`
   }
 `;
 
-const User = ({ themeCurrent }) => {
+const Profile = ({ themeCurrent }) => {
   const username = useLocation().pathname.split("/")[2];
   const [user, setUser] = useState({});
   const [userPosts, setUserPosts] = useState([]);
+  const [followers, setFollowers] = useState([]);
+  const [following, setFollowing] = useState([]);
+  const [postMod, setPostMod] = useState(0);
+  const [onHide, setOnHide] = useState(true);
+  const [onFollowers, setOnFollowers] = useState(true);
 
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
 
   const fetchUser = async () => {
-    try {
-      const res = await publicRequest.get(`/users/user/${username}`);
-      setUser(res.data);
-    } catch (error) {
-      console.log(error.message);
-    }
+    const { data } = await publicRequest.get(`/users/user/${username}`);
+
+    setUser(data);
+    fetchFollowers();
+    fetchFollowing();
   };
 
   const fetchUserPosts = async () => {
+    console.log(user._id);
     const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
+    const postList = data.map((post) => ({
+      ...post,
+      profilePicture: user.profilePicture,
+      username: user.username,
+      name: user.name,
+    }));
+    setUserPosts(postList);
+  };
 
-    setUserPosts(data);
+  const fetchFollowers = async () => {
+    const { data } = await publicRequest.get(`users/followers/${username}`);
+
+    setFollowers(data);
+  };
+
+  const fetchFollowing = async () => {
+    const { data } = await publicRequest.get(`users/friends/${username}`);
+
+    setFollowing(data);
   };
 
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   useEffect(() => {
     fetchUserPosts();
+    setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [postMod, user]);
 
   return (
     <>
-      <NavBar />
-      {/* <MainContainer> */}
-      <MainSection>
+      <NavBar themeCurrent={themeCurrent} />
+      <MainSection themeCurrent={themeCurrent}>
         <div className="top">
           <div className="image-container">
             <img
@@ -322,32 +419,109 @@ const User = ({ themeCurrent }) => {
         <div className="lower">
           <div className="posts">
             <h3>Posts</h3>
-            <p>{userPosts.length ? userPosts.length : "Fetching"}</p>
+            <p>{userPosts.length}</p>
           </div>
 
-          <div className="followers">
+          <div
+            className="followers"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOnHide(false);
+              setOnFollowers(true);
+            }}
+          >
             <h3>Followers</h3>
-            <p>{user.followers ? user.followers.length : "Fetching"}</p>
+            <p>{followers.length}</p>
           </div>
 
-          <div className="following">
+          <div
+            className="following"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOnHide(false);
+              setOnFollowers(false);
+            }}
+          >
             <h3>Following</h3>
-            <p>{user.following ? user.following.length : "fetching"}</p>
+            <p>{following.length}</p>
           </div>
         </div>
 
-        {userPosts.map((post) => (
-          <SingleUserPosts
-            themeCurrent={themeCurrent}
-            post={post}
-            user={user}
-            key={post._id}
-          />
-        ))}
+        {onHide && (
+          <>
+            {userPosts.map((post) => (
+              <SingleUserPosts
+                setPostMod={setPostMod}
+                themeCurrent={themeCurrent}
+                userPost={post}
+                // user={user}
+                key={post._id}
+              />
+            ))}
+          </>
+        )}
+
+        {!onHide && (
+          <div className="hiddenSection">
+            <div className="backIcon">
+              <FontAwesomeIcon
+                icon={faAngleDown}
+                className="icon"
+                onClick={() => setOnHide(true)}
+              />
+            </div>
+            <div className="static">
+              <div>
+                <h3 className="active">
+                  {onFollowers ? "Followers" : "Following"}
+                </h3>
+              </div>
+            </div>
+
+            <div className="dynamic">
+              <ul>
+                {onFollowers
+                  ? followers.map((friend) => (
+                      <li key={friend._id}>
+                        <div className="profilePicture">
+                          <Link to={`/user/${friend.username}`}>
+                            <img
+                              src={
+                                friend.profilePicture
+                                  ? friend.profilePicture
+                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                              }
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div className="details">{friend.name}</div>
+                      </li>
+                    ))
+                  : following.map((friend) => (
+                      <li key={friend._id}>
+                        <div className="profilePicture">
+                          <Link to={`/user/${friend.username}`}>
+                            <img
+                              src={
+                                friend.profilePicture
+                                  ? friend.profilePicture
+                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                              }
+                              alt=""
+                            />
+                          </Link>
+                        </div>
+                        <div className="details">{friend.name}</div>
+                      </li>
+                    ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </MainSection>
-      {/* </MainContainer> */}
     </>
   );
 };
 
-export default User;
+export default Profile;

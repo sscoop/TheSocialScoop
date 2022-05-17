@@ -23,6 +23,7 @@ const SearchContainer = styled.div`
   align-items: center;
   justify-content: flex-start;
   border-radius: 30px;
+  overflow-x: hidden;
 
   @media (max-width: 1300px) {
     padding: 30px;
@@ -55,15 +56,25 @@ const Results = styled.div`
   overflow-y: scroll;
   padding: 10px;
 
+  h2 {
+    margin: 200px 310px;
+    text-align: center;
+  }
+
   @media (max-width: 1000px) {
     margin-top: 30px;
+
+    h2 {
+      margin: 0;
+      font-size: 15px;
+    }
   }
 `;
 
-const Search = ({ themeCurrent }) => {
+const Search = ({ themeCurrent, name }) => {
   const query = useLocation().pathname.split("/")[2];
   const [users, setUsers] = useState({});
-
+  console.log();
   useEffect(() => {
     const showResults = async () => {
       if (!query) return setUsers({});
@@ -81,15 +92,19 @@ const Search = ({ themeCurrent }) => {
         <Query>
           {query
             ? `Showing Results for: ${query}`
-            : "Search for a user to see results!!"}
+            : `Hey! ${name} feeling alone find some friends now`}
         </Query>
         <Results>
-          {users ? (
+          {Object.keys(users).length ? (
             Object.keys(users).map((key) => (
               <Users key={key} user={users[key]} />
             ))
+          ) : query ? (
+            <h2>
+              Hey, {name} feeling alone! But no result found for your search.
+            </h2>
           ) : (
-            <h2>Hey! User feeling alone find some friends now</h2>
+            ""
           )}
         </Results>
       </SearchContainer>

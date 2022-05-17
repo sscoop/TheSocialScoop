@@ -212,7 +212,14 @@ const Post = ({ themeCurrent, post }) => {
       <SideContainer showMedia={showMedia}>
         <TopSection showOptions={showOptions}>
           <div className="left">
-            <img src={post.profilePicture} alt="" />
+            <img
+              src={
+                post.profilePicture
+                  ? post.profilePicture
+                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+              }
+              alt=""
+            />
             <h3>{post.username}</h3> <p>{post.name}</p>
           </div>
           <FontAwesomeIcon

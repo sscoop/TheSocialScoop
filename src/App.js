@@ -109,11 +109,21 @@ function App() {
               />
               <Route
                 path={"/search/:query"}
-                element={<Search themeCurrent={themeDark ? "dark" : "light"} />}
+                element={
+                  <Search
+                    themeCurrent={themeDark ? "dark" : "light"}
+                    name={user ? user.name : ""}
+                  />
+                }
               />
               <Route
                 path={"/search"}
-                element={<Search themeCurrent={themeDark ? "dark" : "light"} />}
+                element={
+                  <Search
+                    themeCurrent={themeDark ? "dark" : "light"}
+                    name={user ? user.name : ""}
+                  />
+                }
               />
               <Route
                 path="/messages"
