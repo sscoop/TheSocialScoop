@@ -8,7 +8,7 @@ const MainContainer = styled.div`
   width: 100%;
   z-index: 1;
   height: 95%;
-  padding: 10px 60px;
+  padding: 10px 60px 40px;
   margin: 0 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);

@@ -1,3 +1,5 @@
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import styled from "styled-components";
 
@@ -5,6 +7,7 @@ const CommentContainer = styled.div`
   height: 60px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 10px 0;
   background-color: ${(props) => `rgba(${props.theme.bodyRgba},.3)`};
   box-sizing: border-box;
@@ -19,6 +22,11 @@ const CommentContainer = styled.div`
   }
   p {
     font-size: 12px;
+    flex: 1;
+  }
+  .commentOption {
+    padding-left: 20px;
+    cursor: pointer;
   }
 `;
 const Comment = () => {
@@ -32,6 +40,7 @@ const Comment = () => {
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Suscipit
         doloremque sint odit dolorem vitae beatae!
       </p>
+      <FontAwesomeIcon className="commentOption" icon={faEllipsisV} />
     </CommentContainer>
   );
 };

@@ -1,4 +1,5 @@
 import {
+  faComments,
   faEllipsisV,
   faExclamationTriangle,
   faHeart,
@@ -9,6 +10,8 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, postReaction } from "../redux/apiCalls";
+import CommentList from "./CommentList";
+import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -24,14 +27,15 @@ const PostContainer = styled.div`
   padding: 30px 40px;
   width: 100%;
   height: max-content;
-  height: ${(props) => (props.showMedia ? "500px" : "max-content")};
+  height: ${(props) =>
+    props.showComments ? "500px" : props.showMedia ? "500px" : "max-content"};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   @media (max-width: 1600px) {
-    height: max-content;
+    height: ${(props) => (props.showComments ? "500px" : "max-content")};
   }
 `;
 
@@ -84,6 +88,7 @@ const TopSection = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
+    cursor: pointer;
     img {
       height: 100%;
       aspect-ratio: 1/1;
@@ -154,10 +159,7 @@ const Caption = styled.div`
   width: 100%;
   max-height: 100%;
   overflow-y: scroll;
-  padding: 10px;
-  background-color: ${(props) => `rgba(${props.theme.bodyRgba},.1)`};
   box-sizing: border-box;
-  border-radius: 15px;
   box-sizing: border-box;
   margin-bottom: auto;
 `;
@@ -165,8 +167,8 @@ const Responses = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 0;
   margin-top: 30px;
 `;
@@ -179,7 +181,26 @@ const Likes = styled.div`
   align-items: center;
   justify-content: start;
   height: 40px;
+  cursor: pointer;
   .likesIcon {
+    height: 20px;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+`;
+const Comments = styled.div`
+  width: max-content;
+  color: ${(props) => props.theme.text};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 40px;
+  cursor: pointer;
+  .commentsIcon {
     height: 20px;
   }
   p {
@@ -191,7 +212,9 @@ const Likes = styled.div`
 
 const Post = ({ themeCurrent, post }) => {
   const [showOptions, setShowOptions] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const showMedia = post.postMedia === "null" ? false : true;
+  const nav = useNavigate();
   const dispatch = useDispatch();
   const { _id: userId } = useSelector((state) => state.user.currentUser);
   const likedByUser = post.likes.includes(userId);
@@ -212,9 +235,16 @@ const Post = ({ themeCurrent, post }) => {
   }, [optionRef]);
 
   return (
-    <PostContainer themeCurrent={themeCurrent} showMedia={showMedia}>
+    <PostContainer
+      themeCurrent={themeCurrent}
+      showMedia={showMedia}
+      showComments={showComments}
+    >
       <TopSection showOptions={showOptions}>
-        <div className="left">
+        <div
+          className="left"
+          onClick={() => nav(`/user/${post.username}`, { replace: true })}
+        >
           <img
             src={
               post.profilePicture
@@ -254,20 +284,29 @@ const Post = ({ themeCurrent, post }) => {
         </ul>
       </TopSection>
 
-      <BottomSection>
-        <Media showMedia={showMedia}>
-          <img src={post.postMedia} alt="" />
-        </Media>
-        <SideContainer showMedia={showMedia}>
-          <Caption>{post.description}</Caption>
-          <Responses>
-            <Likes onClick={reaction} likedByUser={likedByUser}>
-              <FontAwesomeIcon className="likesIcon" icon={faHeart} />
-              <p>{`${post.likes.length} Likes`}</p>
-            </Likes>
-          </Responses>
-        </SideContainer>
-      </BottomSection>
+      {!showComments && (
+        <BottomSection>
+          <Media showMedia={showMedia}>
+            <img src={post.postMedia} alt="" />
+          </Media>
+          <SideContainer showMedia={showMedia}>
+            <>
+              <Caption>{post.description}</Caption>
+              <Responses>
+                <Likes onClick={reaction} likedByUser={likedByUser}>
+                  <FontAwesomeIcon className="likesIcon" icon={faHeart} />
+                  <p>{`${post.likes.length} Likes`}</p>
+                </Likes>
+                <Comments onClick={() => setShowComments(true)}>
+                  <FontAwesomeIcon className="commentsIcon" icon={faComments} />
+                  <p>{`${post.likes.length} Comments`}</p>
+                </Comments>
+              </Responses>
+            </>
+          </SideContainer>
+        </BottomSection>
+      )}
+      {showComments && <CommentList setShowComments={setShowComments} />}
     </PostContainer>
   );
 };

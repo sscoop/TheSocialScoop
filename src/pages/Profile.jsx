@@ -364,7 +364,6 @@ const Profile = ({ themeCurrent }) => {
     fetchFollowing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(postMod);
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />

@@ -1,4 +1,5 @@
 import {
+  faComments,
   faEllipsisV,
   faExclamationTriangle,
   faHeart,
@@ -9,6 +10,8 @@ import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, postReaction } from "../redux/apiCalls";
+import CommentList from "./CommentList";
+import { useNavigate } from "react-router-dom";
 
 const PostContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -24,73 +27,37 @@ const PostContainer = styled.div`
   padding: 30px 40px;
   width: 100%;
   height: max-content;
-  height: ${(props) => (props.showMedia ? "500px" : "max-content")};
+  height: ${(props) =>
+    props.showComments ? "500px" : props.showMedia ? "500px" : "max-content"};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  @media (max-width: 1600px) {
+    height: ${(props) => (props.showComments ? "500px" : "max-content")};
+  }
+`;
+
+const BottomSection = styled.div`
+  width: 100%;
+  height: calc(100% - 70px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  @media (max-width: 1000px) {
+  @media (max-width: 1600px) {
     flex-direction: column;
-    height: max-content;
-    padding: 30px 30px 20px;
   }
   @media (max-width: 550px) {
     padding: 20px 30px;
   }
 `;
-const Media = styled.div`
-  width: 50%;
-  height: 100%;
-  margin-right: 60px;
-  position: relative;
-  display: ${(props) => (props.showMedia ? "block" : "none")};
-  &::after {
-    content: "";
-    position: absolute;
-    height: 100%;
-    width: 1px;
-    top: 0;
-    right: -30px;
-    background-color: ${(props) => `rgba(${props.theme.mainRgba},.3)`};
-    @media (max-width: 1000px) {
-      top: auto;
-      right: auto;
-      left: 0;
-      bottom: -15px;
-      width: 100%;
-      height: 1px;
-    }
-  }
-  img {
-    height: 100%;
-    width: 100%;
-    background-color: ${(props) => `rgba(${props.theme.mainRgba},.1)`};
-    border-radius: 15px;
-    object-fit: contain;
-  }
-  @media (max-width: 1000px) {
-    width: 100%;
-    height: 50%;
-    margin-right: 0px;
-    margin-bottom: 40px;
-  }
-`;
-const SideContainer = styled.div`
-  width: ${(props) => (props.showMedia ? "50%" : "100%")};
-  height: 100%;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media (max-width: 1000px) {
-    width: 100%;
-    height: ${(props) => (props.showMedia ? "50%" : "100%")};
-  }
-`;
+
 const TopSection = styled.div`
-  height: 50px;
+  height: 70px;
   width: 100%;
-  padding: 0 0 10px;
+  padding: 0 0 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -121,6 +88,7 @@ const TopSection = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
+    cursor: pointer;
     img {
       height: 100%;
       aspect-ratio: 1/1;
@@ -136,30 +104,71 @@ const TopSection = styled.div`
     }
   }
 `;
+
+const Media = styled.div`
+  width: 65%;
+  height: 100%;
+  margin-right: 60px;
+  position: relative;
+  display: ${(props) => (props.showMedia ? "block" : "none")};
+  &::after {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 1px;
+    top: 0;
+    right: -30px;
+    background-color: ${(props) => `rgba(${props.theme.mainRgba},.3)`};
+    @media (max-width: 1600px) {
+      top: auto;
+      right: auto;
+      left: 0;
+      bottom: -15px;
+      width: 100%;
+      height: 1px;
+    }
+  }
+  img {
+    height: 100%;
+    width: 100%;
+    background-color: ${(props) => `rgba(${props.theme.mainRgba},.1)`};
+    border-radius: 15px;
+    object-fit: contain;
+  }
+  @media (max-width: 1600px) {
+    width: 100%;
+    height: 50%;
+    margin-right: 0px;
+    margin-bottom: 40px;
+  }
+`;
+const SideContainer = styled.div`
+  width: ${(props) => (props.showMedia ? "50%" : "100%")};
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media (max-width: 1600px) {
+    width: 100%;
+    height: ${(props) => (props.showMedia ? "50%" : "100%")};
+  }
+`;
+
 const Caption = styled.div`
   width: 100%;
   max-height: 100%;
-  overflow: hidden;
-  background-color: ${(props) => `rgba(${props.theme.bodyRgba},.1)`};
+  overflow-y: scroll;
   box-sizing: border-box;
-  border-radius: 15px;
   box-sizing: border-box;
   margin-bottom: auto;
-  p {
-    max-width: calc(100% - 60px);
-    height: calc(100% - 30px);
-    margin: 15px 30px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    text-align: justify;
-  }
 `;
-const BottomSection = styled.div`
+const Responses = styled.div`
   width: 100%;
   height: 40px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+  flex-direction: row;
+  justify-content: space-between;
   margin-bottom: 0;
   margin-top: 30px;
 `;
@@ -172,7 +181,26 @@ const Likes = styled.div`
   align-items: center;
   justify-content: start;
   height: 40px;
+  cursor: pointer;
   .likesIcon {
+    height: 20px;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+`;
+const Comments = styled.div`
+  width: max-content;
+  color: ${(props) => props.theme.text};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  height: 40px;
+  cursor: pointer;
+  .commentsIcon {
     height: 20px;
   }
   p {
@@ -185,7 +213,9 @@ const Likes = styled.div`
 const Post = ({ setPostMod, themeCurrent, userPost }) => {
   const [post, setpost] = useState(userPost);
   const [showOptions, setShowOptions] = useState(false);
+  const [showComments, setShowComments] = useState(false);
   const showMedia = post.postMedia === "null" ? false : true;
+  const nav = useNavigate();
   const dispatch = useDispatch();
   const { _id: userId } = useSelector((state) => state.user.currentUser);
   const likedByUser = post.likes.includes(userId);
@@ -220,57 +250,81 @@ const Post = ({ setPostMod, themeCurrent, userPost }) => {
   }, [optionRef]);
 
   return (
-    <PostContainer themeCurrent={themeCurrent} showMedia={showMedia}>
-      <Media showMedia={showMedia}>
-        <img src={post.postMedia} alt="" />
-      </Media>
-      <SideContainer showMedia={showMedia}>
-        <TopSection showOptions={showOptions}>
-          <div className="left">
-            <img src={post.profilePicture} alt="" />
-            <h3>{post.username}</h3> <p>{post.name}</p>
-          </div>
-          <FontAwesomeIcon
-            style={{ cursor: "pointer", padding: "0 10px" }}
-            icon={faEllipsisV}
-            onClick={() => setShowOptions((p) => !p)}
+    <PostContainer
+      themeCurrent={themeCurrent}
+      showMedia={showMedia}
+      showComments={showComments}
+    >
+      <TopSection showOptions={showOptions}>
+        <div
+          className="left"
+          onClick={() => nav(`/user/${post.username}`, { replace: true })}
+        >
+          <img
+            src={
+              post.profilePicture
+                ? post.profilePicture
+                : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+            }
+            alt=""
           />
-          <ul className="options" ref={optionRef}>
-            <li
-              onClick={() => {
-                deletePost(dispatch, post._id, userId);
-                setPostMod(1);
-              }}
-              style={{
-                display: `${post.userId === userId ? "inlineBlock" : "none"}`,
-              }}
-            >
-              <FontAwesomeIcon icon={faTrash} className="optionsIcon" />
-              Delete
-            </li>
-            <li
-              style={{
-                display: `${post.userId !== userId ? "inlineBlock" : "none"}`,
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faExclamationTriangle}
-                className="optionsIcon"
-              />
-              Unfollow
-            </li>
-          </ul>
-        </TopSection>
-        <Caption>
-          <p>{post.description}</p>
-        </Caption>
+          <h3>{post.username}</h3> <p>{post.name}</p>
+        </div>
+        <FontAwesomeIcon
+          style={{ cursor: "pointer", padding: "0 10px" }}
+          icon={faEllipsisV}
+          onClick={() => setShowOptions((p) => !p)}
+        />
+        <ul className="options" ref={optionRef}>
+          <li
+            onClick={() => {
+              deletePost(dispatch, post._id, userId);
+              setPostMod(1);
+            }}
+            style={{
+              display: `${post.userId === userId ? "inlineBlock" : "none"}`,
+            }}
+          >
+            <FontAwesomeIcon icon={faTrash} className="optionsIcon" />
+            Delete
+          </li>
+          <li
+            style={{
+              display: `${post.userId !== userId ? "inlineBlock" : "none"}`,
+            }}
+          >
+            <FontAwesomeIcon
+              icon={faExclamationTriangle}
+              className="optionsIcon"
+            />
+            Unfollow
+          </li>
+        </ul>
+      </TopSection>
+
+      {!showComments && (
         <BottomSection>
-          <Likes onClick={reaction} likedByUser={likedByUser}>
-            <FontAwesomeIcon className="likesIcon" icon={faHeart} />
-            <p>{`${post.likes.length} Likes`}</p>
-          </Likes>
+          <Media showMedia={showMedia}>
+            <img src={post.postMedia} alt="" />
+          </Media>
+          <SideContainer showMedia={showMedia}>
+            <>
+              <Caption>{post.description}</Caption>
+              <Responses>
+                <Likes onClick={reaction} likedByUser={likedByUser}>
+                  <FontAwesomeIcon className="likesIcon" icon={faHeart} />
+                  <p>{`${post.likes.length} Likes`}</p>
+                </Likes>
+                <Comments onClick={() => setShowComments(true)}>
+                  <FontAwesomeIcon className="commentsIcon" icon={faComments} />
+                  <p>{`${post.likes.length} Comments`}</p>
+                </Comments>
+              </Responses>
+            </>
+          </SideContainer>
         </BottomSection>
-      </SideContainer>
+      )}
+      {showComments && <CommentList setShowComments={setShowComments} />}
     </PostContainer>
   );
 };
