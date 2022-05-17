@@ -87,7 +87,7 @@ const Center = styled.form`
     background-color: transparent;
     border: none;
     outline: none;
-    width: 17vw;
+    width: 90%;
     color: ${(props) => props.theme.main};
     &::placeholder {
       color: ${(props) => `rgba(${props.theme.mainRgba},0.4)`};
