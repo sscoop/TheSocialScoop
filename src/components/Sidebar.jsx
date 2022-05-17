@@ -140,6 +140,7 @@ const Sidebar = ({ themeCurrent }) => {
   };
   useEffect(() => {
     fetchFriends();
+    console.log(friendsList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
