@@ -1,7 +1,9 @@
 import { faCircleChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { publicRequest } from "../requestMethods";
 import Comment from "./Comment";
 const Comments = styled.div`
   width: 100%;
@@ -76,7 +78,22 @@ const Comments = styled.div`
     }
   }
 `;
-const CommentList = ({ setShowComments }) => {
+const CommentList = ({ setShowComments, post, setPostMod }) => {
+  const { profilePicture, username } = useSelector(
+    (state) => state.user.currentUser
+  );
+  const [commentData, setCommentData] = useState({
+    profilePicture,
+    username,
+    comment: "",
+  });
+  const commentPost = async (e) => {
+    e.preventDefault();
+    await publicRequest.put(`/posts/comment/${post._id}`, {
+      commentData,
+    });
+    setPostMod(3);
+  };
   return (
     <Comments>
       <div className="commentHeader">
@@ -88,21 +105,21 @@ const CommentList = ({ setShowComments }) => {
         />
       </div>
       <div className="commentList">
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
-        <Comment />
+        {post.comments.map((comment) => (
+          <Comment comment={comment} post={post} setPostMod={setPostMod} />
+        ))}
       </div>
-      <form>
+      <form onSubmit={(e) => commentPost(e)}>
         <input
           type="text"
           name="makeComment"
           id="makeComment"
+          autocomplete="off"
+          value={commentData.comment}
           placeholder="Your Comment..."
+          onChange={(e) =>
+            setCommentData((p) => ({ ...p, comment: e.target.value }))
+          }
         />
         <button type="submit">Post</button>
       </form>

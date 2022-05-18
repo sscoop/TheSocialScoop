@@ -210,7 +210,7 @@ const Comments = styled.div`
   }
 `;
 
-const Post = ({ themeCurrent, post }) => {
+const Post = ({ themeCurrent, post, setPostMod }) => {
   const [showOptions, setShowOptions] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const showMedia = post.postMedia === "null" ? false : true;
@@ -299,14 +299,22 @@ const Post = ({ themeCurrent, post }) => {
                 </Likes>
                 <Comments onClick={() => setShowComments(true)}>
                   <FontAwesomeIcon className="commentsIcon" icon={faComments} />
-                  <p>{`${post.likes.length} Comments`}</p>
+                  <p>{`${
+                    post.comments ? post.comments.length : "0"
+                  } Comments`}</p>
                 </Comments>
               </Responses>
             </>
           </SideContainer>
         </BottomSection>
       )}
-      {showComments && <CommentList setShowComments={setShowComments} />}
+      {showComments && (
+        <CommentList
+          setShowComments={setShowComments}
+          post={post}
+          setPostMod={setPostMod}
+        />
+      )}
     </PostContainer>
   );
 };
