@@ -71,16 +71,16 @@ const Results = styled.div`
   }
 `;
 
-const Search = ({ themeCurrent, name }) => {
+const Search = ({ themeCurrent, name, userId }) => {
   const query = useLocation().pathname.split("/")[2];
   const [users, setUsers] = useState({});
   console.log();
   useEffect(() => {
     const showResults = async () => {
       if (!query) return setUsers({});
-      const res = await publicRequest.get(`users/${query}`);
+      const { data } = await publicRequest.get(`users/${query}`);
 
-      setUsers(res.data);
+      setUsers(data);
     };
     showResults();
   }, [query]);
@@ -96,9 +96,9 @@ const Search = ({ themeCurrent, name }) => {
         </Query>
         <Results>
           {Object.keys(users).length ? (
-            Object.keys(users).map((key) => (
-              <Users key={key} user={users[key]} />
-            ))
+            Object.keys(users)
+              .filter((key) => users[key]._id !== userId)
+              .map((key) => <Users key={key} user={users[key]} />)
           ) : query ? (
             <h2>Hey, {name}! Sorry, but no result found for your search.</h2>
           ) : (

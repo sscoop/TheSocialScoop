@@ -314,7 +314,7 @@ const MainSection = styled.div`
   }
 `;
 
-const Profile = ({ themeCurrent }) => {
+const User = ({ themeCurrent }) => {
   const username = useLocation().pathname.split("/")[2];
   const [user, setUser] = useState({});
   const [userPosts, setUserPosts] = useState([]);
@@ -336,7 +336,6 @@ const Profile = ({ themeCurrent }) => {
   };
 
   const fetchUserPosts = async () => {
-    console.log(user._id);
     const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
     const postList = data.map((post) => ({
       ...post,
@@ -369,6 +368,8 @@ const Profile = ({ themeCurrent }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMod, user]);
 
+  const handleEdit = () => console.log("clicked");
+
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
@@ -391,7 +392,7 @@ const Profile = ({ themeCurrent }) => {
           </div>
 
           <div className="button">
-            <Link to="/editform">
+            <Link to="/profile/edit">
               {!mobile ? (
                 <button>
                   <FontAwesomeIcon icon={faPenToSquare} className="icon" />
@@ -524,4 +525,4 @@ const Profile = ({ themeCurrent }) => {
   );
 };
 
-export default Profile;
+export default User;

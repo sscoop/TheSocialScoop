@@ -209,7 +209,14 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
       {!isFetching && (
         <>
           <TopContainer>
-            <img src={profilePicture} alt="" />
+            <img
+              src={
+                profilePicture
+                  ? profilePicture
+                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+              }
+              alt=""
+            />
             <input
               type="text"
               name="description"

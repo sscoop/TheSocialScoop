@@ -143,7 +143,6 @@ const Right = styled.div`
 
 const Users = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
-  console.log("currentUser", currentUser);
   let userId = null;
   let following = [];
   if (currentUser) {

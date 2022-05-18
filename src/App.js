@@ -15,6 +15,7 @@ import Settings from "./pages/Settings";
 import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
 import User from "./pages/User";
+import EditProfile from "./pages/EditProfile";
 
 const Main = styled.div`
   height: 100vh;
@@ -114,6 +115,7 @@ function App() {
                   <Search
                     themeCurrent={themeDark ? "dark" : "light"}
                     name={user ? user.name : ""}
+                    userId={user ? user._id : ""}
                   />
                 }
               />
@@ -123,6 +125,7 @@ function App() {
                   <Search
                     themeCurrent={themeDark ? "dark" : "light"}
                     name={user ? user.name : ""}
+                    userId={user ? user._id : ""}
                   />
                 }
               />
@@ -168,6 +171,10 @@ function App() {
               <Route
                 path={`/user/:username`}
                 element={<User themeCurrent={themeDark ? "dark" : "light"} />}
+              />
+              <Route
+                path="/profile/edit"
+                element={<EditProfile user={user} />}
               />
             </Routes>
           </Container>

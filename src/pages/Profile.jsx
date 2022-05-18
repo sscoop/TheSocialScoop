@@ -387,7 +387,7 @@ const Profile = ({ themeCurrent }) => {
           </div>
 
           <div className="button">
-            <Link to="/editform">
+            <Link to="/profile/edit">
               {!mobile ? (
                 <button>
                   <FontAwesomeIcon icon={faPenToSquare} className="icon" />
