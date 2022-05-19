@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -216,13 +215,36 @@ const FormContainer = styled.div`
 `;
 
 const EditProfile = ({ user }) => {
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState({ ...user });
   const [file, setFile] = useState({});
-
   const nav = useNavigate();
 
   const handleChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    if (e.target.value !== "")
+      setUserData({ ...userData, [e.target.name]: e.target.value });
+    else {
+      switch (e.target.name) {
+        case "name":
+          setUserData({ ...userData, [e.target.name]: user.name });
+          break;
+        case "username":
+          setUserData({ ...userData, [e.target.name]: user.username });
+          break;
+        case "email":
+          setUserData({ ...userData, [e.target.name]: user.email });
+          break;
+        case "password":
+          setUserData({ ...userData, [e.target.name]: user.password });
+          break;
+        case "description":
+          setUserData({ ...userData, [e.target.name]: user.description });
+
+          break;
+
+        default:
+          break;
+      }
+    }
   };
 
   const onSubmit = async (e) => {
@@ -238,7 +260,7 @@ const EditProfile = ({ user }) => {
 
       const uploadTask = uploadBytesResumable(storageRef, file);
 
-      await uploadTask.on(
+      uploadTask.on(
         "state_changed",
         (snapshot) => {
           const progress =
@@ -265,7 +287,7 @@ const EditProfile = ({ user }) => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
 
-            await setUserData((p) => ({ ...p, profilePicture: downloadURL }));
+            setUserData((p) => ({ ...p, profilePicture: downloadURL }));
           });
         }
       );

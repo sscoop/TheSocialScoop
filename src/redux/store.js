@@ -9,6 +9,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+import {
+  createStateSyncMiddleware,
+  initMessageListener,
+} from "redux-state-sync";
 import storage from "redux-persist/lib/storage";
 import postSlice from "./postSlice";
 import userSlice from "./userSlice";
@@ -30,7 +34,16 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
-});
+    }).concat(
+      createStateSyncMiddleware({
+        blacklist: ["persist/PERSIST", "persist/REHYDRATE"],
+      })
+    ),
+  // middleware: [
+  //   applyMiddleware(
 
+  //   ),
+  // ],
+});
+initMessageListener(store);
 export let persistor = persistStore(store);

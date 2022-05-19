@@ -7,7 +7,7 @@ import Post from "./Post";
 const MainContainer = styled.div`
   width: 100%;
   z-index: 1;
-  height: 95%;
+  height: 91%;
   padding: 10px 60px 40px;
   margin: 0 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5);
@@ -43,10 +43,6 @@ const Feed = ({ themeCurrent }) => {
   const { _id: userId } = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   useEffect(() => {
-    // const getPosts = async () => {
-    //   const { data } = await publicRequest.get(`/posts/${userId}`);
-    //   setPosts(data);
-    // };
     getPosts(dispatch, userId);
     setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
