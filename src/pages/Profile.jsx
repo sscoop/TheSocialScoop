@@ -405,10 +405,9 @@ const Profile = ({ themeCurrent }) => {
         <div className="middle">
           <h4>Bio</h4>
           <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-            eligendi atque sapiente, maxime totam deleniti voluptatum amet,
-            dolorum aut sed eius? Atque illo itaque voluptates explicabo
-            adipisci rerum deserunt facilis!
+            {user.description
+              ? user.description
+              : "Let the world know about you!"}
           </p>
         </div>
 

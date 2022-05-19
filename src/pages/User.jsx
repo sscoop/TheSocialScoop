@@ -1,10 +1,16 @@
-import { faAngleDown, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faCircleNodes,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import SingleUserPosts from "../components/SingleUserPosts";
+import { follow, unfollow } from "../redux/apiCalls";
 import { publicRequest } from "../requestMethods";
 
 const MainSection = styled.div`
@@ -315,6 +321,10 @@ const MainSection = styled.div`
 `;
 
 const User = ({ themeCurrent }) => {
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const isFetching = useSelector((state) => state.user.isFetching);
+
   const username = useLocation().pathname.split("/")[2];
   const [user, setUser] = useState({});
   const [userPosts, setUserPosts] = useState([]);
@@ -324,8 +334,7 @@ const User = ({ themeCurrent }) => {
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
 
-  let mobile =
-    (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
+  let isFollowing = following.map((user) => user._id).includes(currentUser._id);
 
   const fetchUser = async () => {
     const { data } = await publicRequest.get(`/users/user/${username}`);
@@ -358,6 +367,22 @@ const User = ({ themeCurrent }) => {
     setFollowing(data);
   };
 
+  const handleFollow = async (currentUserId) => {
+    try {
+      follow(dispatch, currentUserId, user._id);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleUnfollow = async (currentUserId) => {
+    try {
+      unfollow(dispatch, currentUserId, user._id);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -367,8 +392,6 @@ const User = ({ themeCurrent }) => {
     setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMod, user]);
-
-  const handleEdit = () => console.log("clicked");
 
   return (
     <>
@@ -392,30 +415,31 @@ const User = ({ themeCurrent }) => {
           </div>
 
           <div className="button">
-            <Link to="/profile/edit">
-              {!mobile ? (
-                <button>
-                  <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                  Edit
-                </button>
-              ) : (
-                <button>
-                  <FontAwesomeIcon icon={faPenToSquare} className="icon" />
-                </button>
-              )}
-            </Link>
+            {isFetching && (
+              <button>
+                <FontAwesomeIcon className="loader" icon={faCircleNodes} />
+              </button>
+            )}
+            {!isFetching && (
+              <button
+                onClick={() =>
+                  !isFollowing
+                    ? handleFollow(currentUser._id)
+                    : handleUnfollow(currentUser._id)
+                }
+              >
+                {!isFollowing ? "Follow" : "Following"}
+              </button>
+            )}
           </div>
         </div>
 
-        <div className="middle">
-          <h4>Bio</h4>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
-            eligendi atque sapiente, maxime totam deleniti voluptatum amet,
-            dolorum aut sed eius? Atque illo itaque voluptates explicabo
-            adipisci rerum deserunt facilis!
-          </p>
-        </div>
+        {user.description && (
+          <div className="middle">
+            <h4>Bio</h4>
+            <p>{user.description}</p>
+          </div>
+        )}
 
         <div className="lower">
           <div className="posts">

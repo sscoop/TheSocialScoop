@@ -153,7 +153,6 @@ const Users = ({ user }) => {
   const isFetching = useSelector((state) => state.user.isFetching);
   const navigate = useNavigate();
   const isFollowing = following.includes(user._id);
-  // const isFollowing = true;
 
   const followUser = async (id) => {
     try {
@@ -172,7 +171,9 @@ const Users = ({ user }) => {
   };
 
   return (
-    <UserWrapper>
+    <UserWrapper
+      onClick={() => navigate(`/user/${user.username}`, { replace: true })}
+    >
       <Left>
         <div className="profilePicture">
           <img
