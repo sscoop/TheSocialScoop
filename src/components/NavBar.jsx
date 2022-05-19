@@ -6,7 +6,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 const MainContainer = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -60,6 +60,10 @@ const IconContainer = styled(Link)`
     height: 100%;
   }
 
+  .active {
+    color: ${(props) => props.theme.accent};
+  }
+
   @media (max-width: 1000px) {
     height: 4%;
     height: calc(120px * 0.4);
@@ -75,19 +79,32 @@ const IconContainer = styled(Link)`
 `;
 
 const NavBar = ({ themeCurrent }) => {
+  const { pathname } = useLocation();
   return (
     <MainContainer themeCurrent={themeCurrent}>
       <IconContainer to="/">
-        <FontAwesomeIcon className="navIcon" icon={faHome} />
+        <FontAwesomeIcon
+          className={`navIcon ${pathname === "/" ? "active" : ""}`}
+          icon={faHome}
+        />
       </IconContainer>
       <IconContainer to="/search">
-        <FontAwesomeIcon className="navIcon" icon={faSearch} />
+        <FontAwesomeIcon
+          className={`navIcon ${pathname === "/search" ? "active" : ""}`}
+          icon={faSearch}
+        />
       </IconContainer>
       <IconContainer to="/messages">
-        <FontAwesomeIcon className="navIcon" icon={faMessage} />
+        <FontAwesomeIcon
+          className={`navIcon ${pathname === "/messages" ? "active" : ""}`}
+          icon={faMessage}
+        />
       </IconContainer>
       <IconContainer to="/settings">
-        <FontAwesomeIcon className="navIcon" icon={faGear} />
+        <FontAwesomeIcon
+          className={`navIcon ${pathname === "/settings" ? "active" : ""}`}
+          icon={faGear}
+        />
       </IconContainer>
     </MainContainer>
   );

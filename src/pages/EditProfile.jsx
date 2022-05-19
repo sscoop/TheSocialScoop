@@ -10,6 +10,8 @@ import {
 } from "firebase/storage";
 import app from "../firebase";
 import { publicRequest } from "../requestMethods";
+import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MainContainer = styled.div`
   background: ${(props) =>
@@ -48,6 +50,12 @@ const MainContainer = styled.div`
   h2 {
     width: 100%;
     color: ${(props) => `rgba(${props.theme.mainRgba}, .9)`};
+
+    .icon {
+      color: ${(props) => props.theme.accent};
+      font-size: 35px;
+      margin-right: 15px;
+    }
   }
 `;
 
@@ -312,7 +320,10 @@ const EditProfile = ({ user }) => {
     <>
       <NavBar />
       <MainContainer>
-        <h2>Update Your Profile</h2>
+        <h2>
+          <FontAwesomeIcon icon={faHighlighter} className="icon" />
+          Update Your Profile
+        </h2>
 
         <FormContainer>
           <form onSubmit={(e) => onSubmit(e)}>
@@ -375,7 +386,9 @@ const EditProfile = ({ user }) => {
               <textarea
                 type="text"
                 name="bio"
-                placeholder={user.description}
+                placeholder={
+                  user.description ? user.description : "Enter your Bio..."
+                }
                 onChange={(e) => handleChange(e)}
               ></textarea>
             </label>

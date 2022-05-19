@@ -146,7 +146,7 @@ const Sidebar = ({ themeCurrent }) => {
 
   return (
     <MainContainer themeCurrent={themeCurrent}>
-      <h2>Friends</h2>
+      <h2>Your Homies</h2>
       <>
         <ul>
           {isFetching && (
