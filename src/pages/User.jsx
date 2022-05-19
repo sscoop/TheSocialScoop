@@ -1,8 +1,4 @@
-import {
-  faAngleDown,
-  faCircleNodes,
-  faPenToSquare,
-} from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown, faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
