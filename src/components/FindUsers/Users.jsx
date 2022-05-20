@@ -4,7 +4,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { follow, unfollow } from "../../redux/apiCalls";
+import { follow, unfollow, unsendFollowReq } from "../../redux/apiCalls";
 
 const UserWrapper = styled.div`
   width: 95%;
@@ -145,14 +145,17 @@ const Users = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   let userId = null;
   let following = [];
+  let reqSent = [];
   if (currentUser) {
     userId = currentUser._id;
     following = currentUser.following;
+    reqSent = currentUser.reqSent;
   }
   const dispatch = useDispatch();
   const isFetching = useSelector((state) => state.user.isFetching);
   const navigate = useNavigate();
   const isFollowing = following.includes(user._id);
+  const pendingRequest = reqSent.includes(user._id);
 
   const followUser = async (id) => {
     try {
@@ -201,12 +204,30 @@ const Users = ({ user }) => {
             onClick={() =>
               !currentUser
                 ? navigate("/login", { replace: true })
-                : !isFollowing
-                ? followUser(user._id)
-                : unfollowUser(user._id)
+                : isFollowing
+                ? unfollowUser({
+                    dispatch,
+                    userId: currentUser._id,
+                    id: user._id,
+                  })
+                : pendingRequest
+                ? unsendFollowReq({
+                    dispatch,
+                    userId: currentUser._id,
+                    id: user._id,
+                  })
+                : followUser({
+                    dispatch,
+                    userId: currentUser._id,
+                    id: user._id,
+                  })
             }
           >
-            {!isFollowing ? "Follow" : "Following"}
+            {isFollowing
+              ? "Following"
+              : pendingRequest
+              ? "Requested"
+              : "Follow"}
           </button>
         )}
       </Right>

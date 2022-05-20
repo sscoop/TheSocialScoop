@@ -117,6 +117,7 @@ const CommentList = ({ setShowComments, post, setPostMod }) => {
           autocomplete="off"
           value={commentData.comment}
           placeholder="Your Comment..."
+          required
           onChange={(e) =>
             setCommentData((p) => ({ ...p, comment: e.target.value }))
           }

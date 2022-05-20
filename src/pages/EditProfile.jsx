@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
@@ -12,6 +12,8 @@ import app from "../firebase";
 import { publicRequest } from "../requestMethods";
 import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/userSlice";
 
 const MainContainer = styled.div`
   background: ${(props) =>
@@ -223,9 +225,12 @@ const FormContainer = styled.div`
 `;
 
 const EditProfile = ({ user }) => {
-  const [userData, setUserData] = useState({ ...user });
+  const [userData, setUserData] = useState();
   const [file, setFile] = useState({});
+  const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
+  const dispatch = useDispatch();
+  console.log(userData);
 
   const handleChange = (e) => {
     if (e.target.value !== "")
@@ -233,19 +238,19 @@ const EditProfile = ({ user }) => {
     else {
       switch (e.target.name) {
         case "name":
-          setUserData({ ...userData, [e.target.name]: user.name });
+          delete userData.name;
           break;
         case "username":
-          setUserData({ ...userData, [e.target.name]: user.username });
+          delete userData.username;
           break;
         case "email":
-          setUserData({ ...userData, [e.target.name]: user.email });
+          delete userData.email;
           break;
         case "password":
-          setUserData({ ...userData, [e.target.name]: user.password });
+          delete userData.password;
           break;
         case "description":
-          setUserData({ ...userData, [e.target.name]: user.description });
+          delete userData.description;
 
           break;
 
@@ -294,27 +299,35 @@ const EditProfile = ({ user }) => {
           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
-
             setUserData((p) => ({ ...p, profilePicture: downloadURL }));
+            submit(downloadURL);
           });
         }
       );
+
       // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     } catch (error) {
       console.log(error.message);
     }
-
+  };
+  const submit = async (downloadURL = null) => {
+    downloadURL
+      ? await publicRequest.put(`/users/${user._id}`, {
+          ...userData,
+          profilePicture: downloadURL,
+          _id: user._id,
+        })
+      : await publicRequest.put(`/users/${user._id}`, {
+          ...userData,
+          _id: user._id,
+        });
+    downloadURL
+      ? dispatch(
+          loginSuccess({ ...user, ...userData, profilePicture: downloadURL })
+        )
+      : dispatch(loginSuccess({ ...user, ...userData }));
     nav(`/profile/${user._id}`, { replace: true });
   };
-
-  useEffect(() => {
-    const submit = async () => {
-      userData.profilePicture &&
-        (await publicRequest.put(`/users/${user._id}`, { ...userData }));
-    };
-    submit();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData.profilePicture]);
 
   return (
     <>
@@ -326,23 +339,19 @@ const EditProfile = ({ user }) => {
         </h2>
 
         <FormContainer>
-          <form onSubmit={(e) => onSubmit(e)}>
+          <form onSubmit={(e) => (preview ? onSubmit(e) : submit())}>
             <label htmlFor="profilePicture" className="profilePicture">
               <input
                 type="file"
                 name="profilePicture"
                 id="profilePicture"
                 style={{ display: "none" }}
-                onChange={(e) => setFile(e.target.files[0])}
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                  setPreview(URL.createObjectURL(e.target.files[0]));
+                }}
               />
-              <img
-                src={
-                  user.profilePicture
-                    ? user.profilePicture
-                    : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                }
-                alt=""
-              />
+              <img src={!preview ? user.profilePicture : preview} alt="" />
             </label>
 
             <div className="flex">

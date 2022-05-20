@@ -34,11 +34,31 @@ const userSlice = createSlice({
     followingStart: (state) => {
       state.isFetching = true;
     },
-    followSuccess: (state, action) => {
+    sendFollowRequestSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state.currentUser.reqSent.push(action.payload);
+    },
+    unSendFollowRequestSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state.currentUser.reqSent = state.currentUser.reqSent.filter(
+        (user) => user !== action.payload
+      );
+    },
+    approveFollowRequestSuccess: (state, action) => {
       state.isFetching = false;
       state.error = false;
       state.currentUser.following.push(action.payload);
     },
+    rejectFollowRequestSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state.currentUser.reqRecieved = state.currentUser.reqRecieved.filter(
+        (user) => user !== action.payload
+      );
+    },
+
     unFollowSuccess: (state, action) => {
       state.isFetching = false;
       state.error = false;
@@ -58,10 +78,13 @@ export const {
   logOut,
   userFailure,
   followingStart,
-  followSuccess,
+  sendFollowRequestSuccess,
   unFollowSuccess,
   getFriendsSuccess,
   changeThemeSuccess,
   userStart,
+  approveFollowRequestSuccess,
+  rejectFollowRequestSuccess,
+  unSendFollowRequestSuccess,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -46,7 +46,7 @@ const BottomSection = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  @media (max-width: 1600px) {
+  @media (max-width: 1300px) {
     flex-direction: column;
   }
   @media (max-width: 550px) {
@@ -119,7 +119,7 @@ const Media = styled.div`
     top: 0;
     right: -30px;
     background-color: ${(props) => `rgba(${props.theme.mainRgba},.3)`};
-    @media (max-width: 1600px) {
+    @media (max-width: 1300px) {
       top: auto;
       right: auto;
       left: 0;
@@ -135,7 +135,7 @@ const Media = styled.div`
     border-radius: 15px;
     object-fit: contain;
   }
-  @media (max-width: 1600px) {
+  @media (max-width: 1300px) {
     width: 100%;
     height: 50%;
     margin-right: 0px;
@@ -149,7 +149,7 @@ const SideContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  @media (max-width: 1600px) {
+  @media (max-width: 1300px) {
     width: 100%;
     height: ${(props) => (props.showMedia ? "50%" : "100%")};
   }

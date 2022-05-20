@@ -10,12 +10,15 @@ import {
 import {
   userFailure,
   followingStart,
-  followSuccess,
+  sendFollowRequestSuccess,
   getFriendsSuccess,
   userStart,
   loginSuccess,
   unFollowSuccess,
   changeThemeSuccess,
+  unSendFollowRequestSuccess,
+  approveFollowRequestSuccess,
+  rejectFollowRequestSuccess,
 } from "./userSlice";
 
 export const login = async (dispatch, user) => {
@@ -49,15 +52,44 @@ export const getFriends = async (dispatch, username) => {
     return error.message;
   }
 };
+
 export const follow = async (dispatch, id, userId) => {
   dispatch(followingStart());
   try {
-    await publicRequest.put(`users/follow/${id}`, { userId });
-    dispatch(followSuccess(id));
+    await publicRequest.put(`users/follow-request/${id}`, { userId });
+    dispatch(sendFollowRequestSuccess(id));
   } catch (error) {
     dispatch(userFailure());
   }
 };
+export const unsendFollowReq = async (dispatch, id, userId) => {
+  dispatch(followingStart());
+  try {
+    await publicRequest.put(`users/unsend-follow-request/${id}`, { userId });
+    dispatch(unSendFollowRequestSuccess(id));
+  } catch (error) {
+    dispatch(userFailure());
+  }
+};
+export const approveFollowRequest = async (dispatch, id, userId) => {
+  dispatch(followingStart());
+  try {
+    await publicRequest.put(`users/approve-follow-request/${id}`, { userId });
+    dispatch(approveFollowRequestSuccess(id));
+  } catch (error) {
+    dispatch(userFailure());
+  }
+};
+export const rejectFollowRequest = async (dispatch, id, userId) => {
+  dispatch(followingStart());
+  try {
+    await publicRequest.put(`users/reject-follow-request/${id}`, { userId });
+    dispatch(rejectFollowRequestSuccess(id));
+  } catch (error) {
+    dispatch(userFailure());
+  }
+};
+
 export const unfollow = async (dispatch, id, userId) => {
   dispatch(followingStart());
   try {
@@ -76,6 +108,7 @@ export const createPosts = async (dispatch, postData) => {
     dispatch(postFailure());
   }
 };
+
 export const getPosts = async (dispatch, userId) => {
   dispatch(postStart());
   try {
@@ -85,6 +118,7 @@ export const getPosts = async (dispatch, userId) => {
     dispatch(postFailure());
   }
 };
+
 export const postReaction = async (dispatch, post, userId) => {
   try {
     await publicRequest.put(`/posts/reactions/${post._id}`, {
