@@ -8,6 +8,7 @@ import NavBar from "../components/NavBar";
 import {
   approveFollowRequest,
   getUsers,
+  rejectFollowRequest,
   unsendFollowReq,
 } from "../redux/apiCalls";
 
@@ -255,7 +256,17 @@ const FriendRequests = ({ themeCurrent }) => {
                         >
                           Accept
                         </button>
-                        <button>Reject</button>
+                        <button
+                          onClick={() =>
+                            rejectFollowRequest({
+                              dispatch,
+                              userId: userId,
+                              id: user.userId,
+                            })
+                          }
+                        >
+                          Reject
+                        </button>
                       </>
                     )}
                     {!showRecieved && (

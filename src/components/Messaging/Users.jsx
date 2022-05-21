@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { user, user1, user2 } from "../../assets/images";
+import { getConversations } from "../../redux/convoApiCalls";
 
 const UsersSectionWrapper = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
@@ -104,6 +106,18 @@ const UsersSectionWrapper = styled.div`
 `;
 
 const Users = ({ themeCurrent }) => {
+  const dispatch = useDispatch();
+  const { _id: userId } = useSelector((state) => state.user.currentUser);
+
+  const getConvo = () => {
+    getConversations(dispatch, userId);
+  };
+  useEffect(() => {
+    getConvo();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <UsersSectionWrapper themeCurrent={themeCurrent}>
       <h2>Messages</h2>
