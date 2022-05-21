@@ -14,6 +14,21 @@ const MainSection = styled.div`
   width: 100%;
   padding: 0 40px 0;
   overflow-y: scroll;
+  @media (max-width: 1000px) {
+    margin: 0 0px;
+    padding: 15px 50px;
+    width: calc(100% - 100px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
+  @media (max-width: 475px) {
+    margin: 0 0px;
+    padding: 15px;
+    width: calc(100% - 30px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
+
   .top {
     display: flex;
     justify-content: flex-start;
@@ -306,14 +321,6 @@ const MainSection = styled.div`
       }
     }
   }
-
-  @media (max-width: 1000px) {
-    margin: 0 30px;
-    padding: 15px;
-    width: calc(100% - 30px);
-    margin-bottom: 20px;
-    overflow-y: scroll;
-  }
 `;
 
 const Profile = ({ themeCurrent }) => {
@@ -324,12 +331,13 @@ const Profile = ({ themeCurrent }) => {
   const [postMod, setPostMod] = useState(0);
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
-
+  console.log(postMod);
   let mobile =
     (window.innerWidth > 0 ? window.innerWidth : window.screen.width) < 750;
 
   const fetchUserPosts = async () => {
     const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
+    console.log("data589", data);
     const postList = data.map((post) => ({
       ...post,
       profilePicture: user.profilePicture,
@@ -337,10 +345,18 @@ const Profile = ({ themeCurrent }) => {
       name: user.name,
     }));
     setUserPosts(postList);
+    console.log("postList589", postList);
+    setPostMod(0);
+
+    console.log(userPosts);
   };
   useEffect(() => {
     fetchUserPosts();
     setPostMod(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    fetchUserPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postMod]);
 
@@ -364,6 +380,7 @@ const Profile = ({ themeCurrent }) => {
     fetchFollowing();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />

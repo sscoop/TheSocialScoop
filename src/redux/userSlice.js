@@ -27,7 +27,7 @@ const userSlice = createSlice({
       state.error = false;
       state.currentUser.prefersDarkTheme = action.payload;
     },
-    getFriendsSuccess: (state) => {
+    getUsersSuccess: (state) => {
       state.isFetching = false;
       state.error = false;
     },
@@ -50,6 +50,9 @@ const userSlice = createSlice({
       state.isFetching = false;
       state.error = false;
       state.currentUser.following.push(action.payload);
+      state.currentUser.reqRecieved = state.currentUser.reqRecieved.filter(
+        (user) => user !== action.payload
+      );
     },
     rejectFollowRequestSuccess: (state, action) => {
       state.isFetching = false;
@@ -80,7 +83,7 @@ export const {
   followingStart,
   sendFollowRequestSuccess,
   unFollowSuccess,
-  getFriendsSuccess,
+  getUsersSuccess,
   changeThemeSuccess,
   userStart,
   approveFollowRequestSuccess,

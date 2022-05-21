@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 import SingleUserPosts from "../components/SingleUserPosts";
-import { follow, unfollow } from "../redux/apiCalls";
+import { follow, unfollow, unsendFollowReq } from "../redux/apiCalls";
 import { publicRequest } from "../requestMethods";
 
 const MainSection = styled.div`
@@ -14,6 +14,21 @@ const MainSection = styled.div`
   width: 100%;
   padding: 0 40px 0;
   overflow-y: scroll;
+  @media (max-width: 1000px) {
+    margin: 0 0px;
+    padding: 15px 50px;
+    width: calc(100% - 100px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
+  @media (max-width: 475px) {
+    margin: 0 0px;
+    padding: 15px;
+    width: calc(100% - 30px);
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
+
   .top {
     display: flex;
     justify-content: flex-start;
@@ -306,21 +321,13 @@ const MainSection = styled.div`
       }
     }
   }
-
-  @media (max-width: 1000px) {
-    margin: 0 30px;
-    padding: 15px;
-    width: calc(100% - 30px);
-    margin-bottom: 20px;
-    overflow-y: scroll;
-  }
 `;
 
 const User = ({ themeCurrent }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
   const isFetching = useSelector((state) => state.user.isFetching);
-
+  const [isFollowing, setIsFollowing] = useState(false);
   const username = useLocation().pathname.split("/")[2];
   const [user, setUser] = useState({});
   const [userPosts, setUserPosts] = useState([]);
@@ -330,7 +337,11 @@ const User = ({ themeCurrent }) => {
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
 
-  let isFollowing = following.map((user) => user._id).includes(currentUser._id);
+  let reqSent = [];
+  if (currentUser) {
+    reqSent = currentUser.reqSent;
+  }
+  const pendingRequest = reqSent.includes(user._id);
 
   const fetchUser = async () => {
     const { data } = await publicRequest.get(`/users/user/${username}`);
@@ -338,6 +349,14 @@ const User = ({ themeCurrent }) => {
     setUser(data);
     fetchFollowers();
     fetchFollowing();
+  };
+
+  const checkFollowing = () => {
+    followers.forEach((user) => {
+      if (user._id === currentUser._id) {
+        setIsFollowing(true);
+      }
+    });
   };
 
   const fetchUserPosts = async () => {
@@ -355,28 +374,13 @@ const User = ({ themeCurrent }) => {
     const { data } = await publicRequest.get(`users/followers/${username}`);
 
     setFollowers(data);
+    checkFollowing();
   };
 
   const fetchFollowing = async () => {
     const { data } = await publicRequest.get(`users/friends/${username}`);
 
     setFollowing(data);
-  };
-
-  const handleFollow = async (currentUserId) => {
-    try {
-      follow(dispatch, currentUserId, user._id);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const handleUnfollow = async (currentUserId) => {
-    try {
-      unfollow(dispatch, currentUserId, user._id);
-    } catch (error) {
-      console.log(error.message);
-    }
   };
 
   useEffect(() => {
@@ -387,7 +391,9 @@ const User = ({ themeCurrent }) => {
     fetchUserPosts();
     setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMod, user]);
+  }, [postMod, user, currentUser]);
+
+  console.log(isFollowing);
 
   return (
     <>
@@ -419,12 +425,30 @@ const User = ({ themeCurrent }) => {
             {!isFetching && (
               <button
                 onClick={() =>
-                  !isFollowing
-                    ? handleFollow(currentUser._id)
-                    : handleUnfollow(currentUser._id)
+                  isFollowing
+                    ? unfollow({
+                        dispatch,
+                        userId: currentUser._id,
+                        id: user._id,
+                      })
+                    : pendingRequest
+                    ? unsendFollowReq({
+                        dispatch,
+                        userId: currentUser._id,
+                        id: user._id,
+                      })
+                    : follow({
+                        dispatch,
+                        userId: currentUser._id,
+                        id: user._id,
+                      })
                 }
               >
-                {!isFollowing ? "Follow" : "Following"}
+                {isFollowing
+                  ? "Following"
+                  : pendingRequest
+                  ? "Requested"
+                  : "Follow"}
               </button>
             )}
           </div>
@@ -468,7 +492,7 @@ const User = ({ themeCurrent }) => {
           </div>
         </div>
 
-        {onHide && (
+        {onHide && isFollowing && (
           <>
             {userPosts.map((post) => (
               <SingleUserPosts

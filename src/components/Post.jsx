@@ -34,7 +34,7 @@ const PostContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  @media (max-width: 1600px) {
+  @media (max-width: 1300px) {
     height: ${(props) => (props.showComments ? "500px" : "max-content")};
   }
 `;

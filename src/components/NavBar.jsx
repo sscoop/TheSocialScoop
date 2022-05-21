@@ -3,6 +3,7 @@ import {
   faHome,
   faMessage,
   faSearch,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -92,6 +93,12 @@ const NavBar = ({ themeCurrent }) => {
         <FontAwesomeIcon
           className={`navIcon ${pathname === "/search" ? "active" : ""}`}
           icon={faSearch}
+        />
+      </IconContainer>
+      <IconContainer to="/friendRequests">
+        <FontAwesomeIcon
+          className={`navIcon ${pathname === "/search" ? "active" : ""}`}
+          icon={faUsers}
         />
       </IconContainer>
       <IconContainer to="/messages">

@@ -143,11 +143,9 @@ const Right = styled.div`
 
 const Users = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
-  let userId = null;
   let following = [];
   let reqSent = [];
   if (currentUser) {
-    userId = currentUser._id;
     following = currentUser.following;
     reqSent = currentUser.reqSent;
   }
@@ -157,27 +155,11 @@ const Users = ({ user }) => {
   const isFollowing = following.includes(user._id);
   const pendingRequest = reqSent.includes(user._id);
 
-  const followUser = async (id) => {
-    try {
-      follow(dispatch, id, userId);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
-  const unfollowUser = async (id) => {
-    try {
-      unfollow(dispatch, id, userId);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   return (
-    <UserWrapper
-      onClick={() => navigate(`/user/${user.username}`, { replace: true })}
-    >
-      <Left>
+    <UserWrapper>
+      <Left
+        onClick={() => navigate(`/user/${user.username}`, { replace: true })}
+      >
         <div className="profilePicture">
           <img
             src={
@@ -189,7 +171,9 @@ const Users = ({ user }) => {
           />
         </div>
       </Left>
-      <Center>
+      <Center
+        onClick={() => navigate(`/user/${user.username}`, { replace: true })}
+      >
         <h4>{user.name}</h4>
         <p>({user.username})</p>
       </Center>
@@ -205,7 +189,7 @@ const Users = ({ user }) => {
               !currentUser
                 ? navigate("/login", { replace: true })
                 : isFollowing
-                ? unfollowUser({
+                ? unfollow({
                     dispatch,
                     userId: currentUser._id,
                     id: user._id,
@@ -216,7 +200,7 @@ const Users = ({ user }) => {
                     userId: currentUser._id,
                     id: user._id,
                   })
-                : followUser({
+                : follow({
                     dispatch,
                     userId: currentUser._id,
                     id: user._id,

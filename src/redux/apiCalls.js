@@ -11,7 +11,7 @@ import {
   userFailure,
   followingStart,
   sendFollowRequestSuccess,
-  getFriendsSuccess,
+  getUsersSuccess,
   userStart,
   loginSuccess,
   unFollowSuccess,
@@ -41,11 +41,13 @@ export const changeTheme = async (dispatch, userId, prefersDarkTheme) => {
   }
 };
 
-export const getFriends = async (dispatch, username) => {
+export const getUsers = async (dispatch, userList) => {
   dispatch(followingStart());
   try {
-    const res = await publicRequest.get(`users/friends/${username}`);
-    dispatch(getFriendsSuccess());
+    const res = await publicRequest.post("users/users-details", {
+      data: userList,
+    });
+    dispatch(getUsersSuccess());
     return res.data;
   } catch (error) {
     dispatch(userFailure());
@@ -53,7 +55,7 @@ export const getFriends = async (dispatch, username) => {
   }
 };
 
-export const follow = async (dispatch, id, userId) => {
+export const follow = async ({ dispatch, id, userId }) => {
   dispatch(followingStart());
   try {
     await publicRequest.put(`users/follow-request/${id}`, { userId });
@@ -62,7 +64,7 @@ export const follow = async (dispatch, id, userId) => {
     dispatch(userFailure());
   }
 };
-export const unsendFollowReq = async (dispatch, id, userId) => {
+export const unsendFollowReq = async ({ dispatch, id, userId }) => {
   dispatch(followingStart());
   try {
     await publicRequest.put(`users/unsend-follow-request/${id}`, { userId });
@@ -71,7 +73,7 @@ export const unsendFollowReq = async (dispatch, id, userId) => {
     dispatch(userFailure());
   }
 };
-export const approveFollowRequest = async (dispatch, id, userId) => {
+export const approveFollowRequest = async ({ dispatch, id, userId }) => {
   dispatch(followingStart());
   try {
     await publicRequest.put(`users/approve-follow-request/${id}`, { userId });
@@ -80,7 +82,7 @@ export const approveFollowRequest = async (dispatch, id, userId) => {
     dispatch(userFailure());
   }
 };
-export const rejectFollowRequest = async (dispatch, id, userId) => {
+export const rejectFollowRequest = async ({ dispatch, id, userId }) => {
   dispatch(followingStart());
   try {
     await publicRequest.put(`users/reject-follow-request/${id}`, { userId });
@@ -90,7 +92,7 @@ export const rejectFollowRequest = async (dispatch, id, userId) => {
   }
 };
 
-export const unfollow = async (dispatch, id, userId) => {
+export const unfollow = async ({ dispatch, id, userId }) => {
   dispatch(followingStart());
   try {
     await publicRequest.put(`users/unfollow/${id}`, { userId });
@@ -113,6 +115,7 @@ export const getPosts = async (dispatch, userId) => {
   dispatch(postStart());
   try {
     const { data } = await publicRequest.get(`/posts/${userId}`);
+    console.log(data);
     dispatch(getPostSuccess(data));
   } catch (error) {
     dispatch(postFailure());

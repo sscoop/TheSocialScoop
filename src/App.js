@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import Profile from "./pages/Profile";
 import User from "./pages/User";
 import EditProfile from "./pages/EditProfile";
+import FriendRequests from "./pages/FriendRequests";
 
 const Main = styled.div`
   height: 100vh;
@@ -175,6 +176,10 @@ function App() {
               <Route
                 path="/profile/edit"
                 element={<EditProfile user={user} />}
+              />
+              <Route
+                path="/friendRequests"
+                element={<FriendRequests user={user} />}
               />
             </Routes>
           </Container>
