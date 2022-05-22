@@ -366,7 +366,6 @@ const User = ({ themeCurrent }) => {
   const [postMod, setPostMod] = useState(0);
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
-  // console.log(user);
   let reqSent = [];
   if (currentUser) {
     reqSent = currentUser.reqSent;
@@ -498,7 +497,13 @@ const User = ({ themeCurrent }) => {
         )}
 
         <div className="lower">
-          <div className="posts">
+          <div
+            className="posts"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOnHide(true);
+            }}
+          >
             <h3>Posts</h3>
             <p>{posts.length}</p>
           </div>

@@ -74,7 +74,6 @@ const Results = styled.div`
 const Search = ({ themeCurrent, name, userId }) => {
   const query = useLocation().pathname.split("/")[2];
   const [users, setUsers] = useState({});
-  console.log();
   useEffect(() => {
     const showResults = async () => {
       if (!query) return setUsers({});

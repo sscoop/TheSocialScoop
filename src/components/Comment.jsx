@@ -61,7 +61,6 @@ const Comment = ({ comment, post, setPostMod }) => {
   const [showOptions, setShowOptions] = useState(false);
   const nav = useNavigate();
   const { username } = useSelector((state) => state.user.currentUser);
-  console.log(post.username, comment.username);
   const optionRef = useRef(null);
   useEffect(() => {
     function handleClickOutside(event) {

@@ -230,7 +230,6 @@ const EditProfile = ({ user }) => {
   const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
   const dispatch = useDispatch();
-  console.log(userData);
 
   const handleChange = (e) => {
     if (e.target.value !== "")

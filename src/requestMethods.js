@@ -1,5 +1,5 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:8800/api/";
+const BASE_URL = "https://the-social-scoop.herokuapp.com/api/";
 // const TOKEN = localStorage.getItem("persist:root")
 //   ? JSON.parse(JSON.parse(localStorage.getItem("persist:root"))?.user)
 //       ?.currentUser?.accessToken
