@@ -1,9 +1,9 @@
-import { publicRequest } from "../requestMethods";
+import { publicRequest } from "../../requestMethods";
 import {
   convoFailure,
   convoFetchSuccess,
   convoStart,
-} from "./conversationSlice";
+} from "../conversationSlice";
 
 export const getConversations = async (dispatch, userId) => {
   dispatch(convoStart());

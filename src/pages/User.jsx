@@ -1,12 +1,20 @@
-import { faAngleDown, faCircleNodes } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleDown,
+  faCircleNodes,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import SingleUserPosts from "../components/SingleUserPosts";
-import { follow, unfollow, unsendFollowReq } from "../redux/apiCalls";
+import Post from "../components/Post";
+import { follow, unfollow, unsendFollowReq } from "../redux/API Calls/apiCalls";
+import {
+  getUserPosts,
+  getUserProfile,
+} from "../redux/API Calls/profileApiCalls";
 import { publicRequest } from "../requestMethods";
 
 const MainSection = styled.div`
@@ -27,6 +35,22 @@ const MainSection = styled.div`
     width: calc(100% - 30px);
     margin-bottom: 20px;
     overflow-y: scroll;
+  }
+
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spinner {
+    margin: auto;
+    animation: rotation 1.5s infinite linear;
+    height: 30px;
+    color: ${(props) => props.theme.accent};
   }
 
   .top {
@@ -324,19 +348,25 @@ const MainSection = styled.div`
 `;
 
 const User = ({ themeCurrent }) => {
+  const username = useLocation().pathname.split("/")[2];
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
-  const isFetching = useSelector((state) => state.user.isFetching);
+  const isFetching = useSelector(
+    (state) => state.profile.isFetching && state.user.isFetching
+  );
+  let user = useSelector((state) =>
+    state.profile.user ? state.profile.user : {}
+  );
+  const postsList = useSelector((state) => state.profile.posts);
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
-  const username = useLocation().pathname.split("/")[2];
-  const [user, setUser] = useState({});
-  const [userPosts, setUserPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [following, setFollowing] = useState([]);
   const [postMod, setPostMod] = useState(0);
   const [onHide, setOnHide] = useState(true);
   const [onFollowers, setOnFollowers] = useState(true);
-
+  // console.log(user);
   let reqSent = [];
   if (currentUser) {
     reqSent = currentUser.reqSent;
@@ -344,37 +374,26 @@ const User = ({ themeCurrent }) => {
   const pendingRequest = reqSent.includes(user._id);
 
   const fetchUser = async () => {
-    const { data } = await publicRequest.get(`/users/user/${username}`);
-
-    setUser(data);
+    await getUserProfile(dispatch, username);
     fetchFollowers();
     fetchFollowing();
+    checkFollowing();
   };
 
   const checkFollowing = () => {
-    followers.forEach((user) => {
-      if (user._id === currentUser._id) {
-        setIsFollowing(true);
-      }
-    });
-  };
-
-  const fetchUserPosts = async () => {
-    const { data } = await publicRequest.get(`/posts/profile/${user._id}`);
-    const postList = data.map((post) => ({
-      ...post,
-      profilePicture: user.profilePicture,
-      username: user.username,
-      name: user.name,
-    }));
-    setUserPosts(postList);
+    if (user._id === currentUser._id) setIsFollowing(true);
+    else
+      user.followers.forEach((follower) => {
+        if (follower === currentUser._id) {
+          setIsFollowing(true);
+        }
+      });
   };
 
   const fetchFollowers = async () => {
     const { data } = await publicRequest.get(`users/followers/${username}`);
 
     setFollowers(data);
-    checkFollowing();
   };
 
   const fetchFollowing = async () => {
@@ -386,14 +405,17 @@ const User = ({ themeCurrent }) => {
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [username]);
+
   useEffect(() => {
-    fetchUserPosts();
+    getUserPosts(dispatch, user);
     setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMod, user, currentUser]);
+  }, [postMod, user]);
 
-  console.log(isFollowing);
+  useEffect(() => {
+    setPosts([...postsList]);
+  }, [postsList, postMod]);
 
   return (
     <>
@@ -422,7 +444,21 @@ const User = ({ themeCurrent }) => {
                 <FontAwesomeIcon className="loader" icon={faCircleNodes} />
               </button>
             )}
-            {!isFetching && (
+
+            {!isFetching && user._id === currentUser._id && (
+              <button
+                onClick={() =>
+                  navigate(`/profile/edit`, {
+                    replace: true,
+                  })
+                }
+              >
+                <FontAwesomeIcon icon={faPenToSquare} className="icon" />
+                Edit
+              </button>
+            )}
+
+            {!isFetching && user._id !== currentUser._id && (
               <button
                 onClick={() =>
                   isFollowing
@@ -464,7 +500,7 @@ const User = ({ themeCurrent }) => {
         <div className="lower">
           <div className="posts">
             <h3>Posts</h3>
-            <p>{userPosts.length}</p>
+            <p>{posts.length}</p>
           </div>
 
           <div
@@ -492,15 +528,19 @@ const User = ({ themeCurrent }) => {
           </div>
         </div>
 
-        {onHide && isFollowing && (
+        {onHide && isFollowing && isFetching && (
           <>
-            {userPosts.map((post) => (
-              <SingleUserPosts
-                setPostMod={setPostMod}
+            <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+          </>
+        )}
+        {onHide && isFollowing && !isFetching && (
+          <>
+            {posts.map((post) => (
+              <Post
                 themeCurrent={themeCurrent}
-                userPost={post}
-                // user={user}
+                post={post}
                 key={post._id}
+                setPostMod={setPostMod}
               />
             ))}
           </>
@@ -527,35 +567,45 @@ const User = ({ themeCurrent }) => {
               <ul>
                 {onFollowers
                   ? followers.map((friend) => (
-                      <li key={friend._id}>
+                      <li
+                        key={friend._id}
+                        onClick={() =>
+                          navigate(`/user/${friend.username}`, {
+                            replace: true,
+                          })
+                        }
+                      >
                         <div className="profilePicture">
-                          <Link to={`/user/${friend.username}`}>
-                            <img
-                              src={
-                                friend.profilePicture
-                                  ? friend.profilePicture
-                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                              }
-                              alt=""
-                            />
-                          </Link>
+                          <img
+                            src={
+                              friend.profilePicture
+                                ? friend.profilePicture
+                                : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                            }
+                            alt=""
+                          />
                         </div>
                         <div className="details">{friend.name}</div>
                       </li>
                     ))
                   : following.map((friend) => (
-                      <li key={friend._id}>
+                      <li
+                        key={friend._id}
+                        onClick={() =>
+                          navigate(`/user/${friend.username}`, {
+                            replace: true,
+                          })
+                        }
+                      >
                         <div className="profilePicture">
-                          <Link to={`/user/${friend.username}`}>
-                            <img
-                              src={
-                                friend.profilePicture
-                                  ? friend.profilePicture
-                                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                              }
-                              alt=""
-                            />
-                          </Link>
+                          <img
+                            src={
+                              friend.profilePicture
+                                ? friend.profilePicture
+                                : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                            }
+                            alt=""
+                          />
                         </div>
                         <div className="details">{friend.name}</div>
                       </li>

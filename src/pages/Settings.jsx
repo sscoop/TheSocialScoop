@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import { changeTheme } from "../redux/apiCalls";
+import { changeTheme } from "../redux/API Calls/apiCalls";
 import { logOut } from "../redux/userSlice";
 
 const MainContainer = styled.div`

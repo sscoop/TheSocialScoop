@@ -4,7 +4,11 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { follow, unfollow, unsendFollowReq } from "../../redux/apiCalls";
+import {
+  follow,
+  unfollow,
+  unsendFollowReq,
+} from "../../redux/API Calls/apiCalls";
 
 const UserWrapper = styled.div`
   width: 95%;

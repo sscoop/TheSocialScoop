@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost, postReaction } from "../redux/apiCalls";
+import { deletePost, postReaction } from "../redux/API Calls/postApiCalls";
 import CommentList from "./CommentList";
 import { useNavigate } from "react-router-dom";
 

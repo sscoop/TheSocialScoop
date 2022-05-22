@@ -17,6 +17,7 @@ import storage from "redux-persist/lib/storage";
 import postSlice from "./postSlice";
 import userSlice from "./userSlice";
 import conversationSlice from "./conversationSlice";
+import profileSlice from "./profileSlice";
 
 const persistconfig = {
   key: "root",
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
   user: userSlice,
   posts: postSlice,
   conversations: conversationSlice,
+  profile: profileSlice,
 });
 
 const persistedReducer = persistReducer(persistconfig, rootReducer);

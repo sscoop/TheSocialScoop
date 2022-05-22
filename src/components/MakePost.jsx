@@ -11,7 +11,7 @@ import {
 } from "firebase/storage";
 import app from "../firebase";
 import { postStart } from "../redux/postSlice";
-import { createPosts } from "../redux/apiCalls";
+import { createPosts } from "../redux/API Calls/postApiCalls";
 
 const MakePostContainer = styled.form`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);

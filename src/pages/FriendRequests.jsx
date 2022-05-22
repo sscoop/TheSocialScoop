@@ -10,7 +10,7 @@ import {
   getUsers,
   rejectFollowRequest,
   unsendFollowReq,
-} from "../redux/apiCalls";
+} from "../redux/API Calls/apiCalls";
 
 const MainContainer = styled.div`
   background: ${(props) =>

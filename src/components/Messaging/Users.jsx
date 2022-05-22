@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { user, user1, user2 } from "../../assets/images";
-import { getConversations } from "../../redux/convoApiCalls";
+import { getConversations } from "../../redux/API Calls/convoApiCalls";
 
 const UsersSectionWrapper = styled.div`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
