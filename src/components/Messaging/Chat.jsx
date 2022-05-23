@@ -1,8 +1,9 @@
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { user1, user2 } from "../../assets/images";
+import { publicRequest } from "../../requestMethods";
 import Message from "./Message";
 
 const ChatSectionWrapper = styled.div`
@@ -39,13 +40,15 @@ const ChatSectionWrapper = styled.div`
 
   .chat-section {
     height: calc(100% - 90px);
+    width: 95%;
     overflow-y: scroll;
     margin: 0 30px;
     display: flex;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     flex-direction: column;
     padding: 40px 20px;
+
     @media (max-width: 1250px) {
       padding: 40px 0px;
     }
@@ -87,18 +90,105 @@ const ChatSectionWrapper = styled.div`
   }
 `;
 
-const Chat = ({ themeCurrent }) => {
+const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const reciver = users.find((user) =>
+    openConvo.members.find((id) => id === user.userId)
+  );
+
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  // const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const scrollRef = useRef();
+
+  // console.log("messages array: ", messages);
+  // console.log("new message: ", arrivalMessage);
+
+  const sendMessage = async (e) => {
+    e.preventDefault();
+
+    const messageData = {
+      message: newMessage,
+      senderId: currentUser._id,
+      conversationId: openConvo._id,
+    };
+
+    socket.current.emit("sendMessage", {
+      reciverId: reciver.userId,
+      senderId: currentUser._id,
+      message: newMessage,
+    });
+
+    try {
+      const { data } = await publicRequest.post(`message/`, messageData);
+
+      setMessages([...messages, data]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchMessages = async () => {
+    try {
+      const { data } = await publicRequest.get(`message/${openConvo._id}`);
+
+      setMessages(data);
+      setNewMessage("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // useEffect(() => {
+  //   socket.current.on("getMessage", (data) =>
+  //     setArrivalMessage({
+  //       senderId: data.senderId,
+  //       message: data.message,
+  //     })
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  useEffect(() => {
+    arrivalMessage &&
+      openConvo?.members.includes(arrivalMessage.senderId) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, openConvo]);
+
+  useEffect(() => {
+    fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openConvo]);
+
+  // useEffect(() => {
+  //   scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  // }, [messages]);
+
   return (
     <ChatSectionWrapper themeCurrent={themeCurrent}>
       <div className="chat-section">
-        <Message userPic={user1} />
-        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
-        <Message userPic={user1} />
-        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
-        <Message userPic={user1} />
-        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
-        <Message userPic={user1} />
-        <Message userPic={user2} themeCurrent={themeCurrent} own={true} />
+        {messages ? (
+          messages.map((messageObj) => (
+            <Message
+              key={messageObj._id}
+              // ref={scrollRef}
+              userPic={
+                currentUser._id === messageObj.senderId
+                  ? currentUser.profilePicture
+                    ? currentUser.profilePicture
+                    : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                  : reciver.profilePicture
+                  ? reciver.profilePicture
+                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+              }
+              themeCurrent={themeCurrent}
+              own={currentUser._id === messageObj.senderId ? true : false}
+              message={messageObj.message}
+            />
+          ))
+        ) : (
+          <p>No chat yet!</p>
+        )}
       </div>
 
       <div className="lower-section">
@@ -106,8 +196,10 @@ const Chat = ({ themeCurrent }) => {
           type="text"
           placeholder="Enter your message..."
           className="msgInput"
+          onChange={(e) => setNewMessage(e.target.value)}
+          value={newMessage}
         />
-        <button className="sendBtn">
+        <button className="sendBtn" onClick={sendMessage}>
           <FontAwesomeIcon icon={faPaperPlane} />
         </button>
       </div>

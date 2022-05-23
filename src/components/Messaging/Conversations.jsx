@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { user, user1, user2 } from "../../assets/images";
+import { getUsers } from "../../redux/API Calls/apiCalls";
 import { getConversations } from "../../redux/API Calls/convoApiCalls";
 
 const UsersSectionWrapper = styled.div`
@@ -39,8 +39,8 @@ const UsersSectionWrapper = styled.div`
     cursor: pointer;
 
     .userImg {
-      height: 40px;
-      width: 40px;
+      height: 50px;
+      width: 50px;
       border-radius: 50%;
       overflow: hidden;
       border: 1px solid ${(props) => props.theme.main};
@@ -67,7 +67,7 @@ const UsersSectionWrapper = styled.div`
       p {
         margin: 0;
         margin-top: 5px;
-        font-size: 12px;
+        font-size: 13.5px;
         color: ${(props) => props.theme.text};
       }
     }
@@ -105,51 +105,88 @@ const UsersSectionWrapper = styled.div`
   }
 `;
 
-const Users = ({ themeCurrent }) => {
+const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
   const dispatch = useDispatch();
   const { _id: userId } = useSelector((state) => state.user.currentUser);
 
   const getConvo = () => {
     getConversations(dispatch, userId);
   };
+
   useEffect(() => {
     getConvo();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const conversations = useSelector(
+    (state) => state.conversations.conversations
+  );
+
+  const getDetails = async (userIds) => {
+    const userDetails = await getUsers(dispatch, userIds);
+    setUsers(userDetails);
+  };
+
+  const setConversation = (id) => {
+    const selectedConvo = conversations.find((convo) =>
+      convo.members.find((userId) => userId === id)
+    );
+
+    setOpenConvo(selectedConvo);
+  };
+
+  useEffect(() => {
+    const userIds = conversations[0]._id
+      ? conversations.map((convo) => {
+          if (convo.members[0] === userId) {
+            return convo.members[1];
+          } else {
+            return convo.members[0];
+          }
+        })
+      : [];
+    getDetails(userIds);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conversations, userId]);
+
+  // console.log("convo: ", conversations);
+  // console.log("user: ", users);
+
   return (
     <UsersSectionWrapper themeCurrent={themeCurrent}>
-      <h2>Messages</h2>
-      <div className="userDiv">
-        <div className="userImg">
-          <img src={user1} alt="" />
-        </div>
-        <div className="userInfo">
-          <h3>Jane</h3>
-          <p>Last message!</p>
-        </div>
-      </div>
-      <div className="userDiv">
-        <div className="userImg">
-          <img src={user2} alt="" />
-        </div>
-        <div className="userInfo">
-          <h3>Jane</h3>
-          <p>Last message!</p>
-        </div>
-      </div>
-      <div className="userDiv">
-        <div className="userImg">
-          <img src={user} alt="" />
-        </div>
-        <div className="userInfo">
-          <h3>Jane</h3>
-          <p>Last message!</p>
-        </div>
-      </div>
+      <h2>Conversations</h2>
+      {users &&
+        users.map((user) => {
+          return (
+            <div
+              className="userDiv"
+              key={user.userId}
+              onClick={() => {
+                // console.log(user.userId);
+                return setConversation(user.userId);
+              }}
+            >
+              <div className="userImg">
+                <img
+                  src={
+                    user.profilePicture
+                      ? user.profilePicture
+                      : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                  }
+                  alt=""
+                />
+              </div>
+              <div className="userInfo">
+                <h3>{user.name}</h3>
+                <p>{user.username}</p>
+              </div>
+            </div>
+          );
+        })}
     </UsersSectionWrapper>
   );
 };
 
-export default Users;
+export default Conversations;

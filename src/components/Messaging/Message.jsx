@@ -5,11 +5,12 @@ const Text = styled.div`
   display: flex;
   justify-content: ${(props) => (props.own ? "flex-end" : "flex-start")};
   align-items: center;
+  width: 100%;
 
   .message {
     display: flex;
     flex-direction: ${(props) => (props.own ? "row-reverse" : "row")};
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
     width: 75%;
   }
@@ -36,17 +37,12 @@ const Text = styled.div`
   }
 `;
 
-const Message = ({ userPic, own = false, themeCurrent }) => {
+const Message = ({ userPic, own, themeCurrent, message }) => {
   return (
     <Text own={own} themeCurrent={themeCurrent}>
       <div className="message">
         <img src={userPic} alt="" className="userImg" />
-        <p className="text">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Et cum quia
-          corporis soluta aut delectus odio necessitatibus, eius blanditiis
-          obcaecati voluptatibus dolorum provident, veritatis consectetur.
-          Laborum inventore officia illo recusandae.
-        </p>
+        <p className="text">{message}</p>
       </div>
     </Text>
   );
