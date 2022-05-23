@@ -29,12 +29,6 @@ const Messages = ({ themeCurrent }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   arrivalMessage &&
-  //     openConvo?.members.includes(arrivalMessage.senderId) &&
-  //     setMessages((prev) => [...prev, arrivalMessage]);
-  // }, [arrivalMessage, openConvo]);
-
   useEffect(() => {
     socket.current.emit("addUser", currentUser._id);
     socket.current.on("getUsers", (users) => console.log(users));

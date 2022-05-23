@@ -94,3 +94,13 @@ export const unfollow = async ({ dispatch, id, userId }) => {
     dispatch(userFailure());
   }
 };
+
+export const deleteUser = async (dispatch, id) => {
+  dispatch(followingStart());
+  try {
+    await publicRequest.delete(`users/${id}`);
+    dispatch(deleteUser(id));
+  } catch (error) {
+    dispatch(userFailure());
+  }
+};

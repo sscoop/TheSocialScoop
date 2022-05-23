@@ -69,6 +69,11 @@ const userSlice = createSlice({
         (user) => user !== action.payload
       );
     },
+    deleteUser: (state) => {
+      state.isFetching = false;
+      state.error = false;
+      state.currentUser = null;
+    },
     userFailure: (state) => {
       state.isFetching = false;
       state.error = true;
@@ -89,5 +94,6 @@ export const {
   approveFollowRequestSuccess,
   rejectFollowRequestSuccess,
   unSendFollowRequestSuccess,
+  deleteUser,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,6 +1,6 @@
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { publicRequest } from "../../requestMethods";
@@ -98,11 +98,6 @@ const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  // const [arrivalMessage, setArrivalMessage] = useState(null);
-  // const scrollRef = useRef();
-
-  // console.log("messages array: ", messages);
-  // console.log("new message: ", arrivalMessage);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -138,16 +133,6 @@ const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
       console.log(error);
     }
   };
-
-  // useEffect(() => {
-  //   socket.current.on("getMessage", (data) =>
-  //     setArrivalMessage({
-  //       senderId: data.senderId,
-  //       message: data.message,
-  //     })
-  //   );
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     arrivalMessage &&

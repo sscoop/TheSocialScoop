@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import { changeTheme } from "../redux/API Calls/apiCalls";
+import { changeTheme, deleteUser } from "../redux/API Calls/apiCalls";
 import { logOut } from "../redux/userSlice";
 
 const MainContainer = styled.div`
@@ -343,6 +343,7 @@ const Settings = ({ user, themeCurrent }) => {
   const prefersDarkTheme = useSelector(
     (state) => state.user.currentUser.prefersDarkTheme
   );
+
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
@@ -436,7 +437,9 @@ const Settings = ({ user, themeCurrent }) => {
 
             <div className="options">
               <button onClick={signOut}>Logout</button>
-              <button>Delete Account</button>
+              <button onClick={() => user && deleteUser(dispatch, user._id)}>
+                Delete Account
+              </button>
             </div>
           </div>
         </LowerSection>

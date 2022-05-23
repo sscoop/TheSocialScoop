@@ -151,9 +151,6 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [conversations, userId]);
 
-  // console.log("convo: ", conversations);
-  // console.log("user: ", users);
-
   return (
     <UsersSectionWrapper themeCurrent={themeCurrent}>
       <h2>Conversations</h2>
