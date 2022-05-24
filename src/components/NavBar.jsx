@@ -97,7 +97,9 @@ const NavBar = ({ themeCurrent }) => {
       </IconContainer>
       <IconContainer to="/friendRequests">
         <FontAwesomeIcon
-          className={`navIcon ${pathname === "/search" ? "active" : ""}`}
+          className={`navIcon ${
+            pathname === "/friendRequests" ? "active" : ""
+          }`}
           icon={faUsers}
         />
       </IconContainer>

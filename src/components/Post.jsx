@@ -36,6 +36,7 @@ const PostContainer = styled.div`
   box-sizing: border-box;
   @media (max-width: 1300px) {
     height: ${(props) => (props.showComments ? "500px" : "max-content")};
+    padding: 20px;
   }
 `;
 
@@ -50,7 +51,7 @@ const BottomSection = styled.div`
     flex-direction: column;
   }
   @media (max-width: 550px) {
-    padding: 20px 30px;
+    padding: 10px 0;
   }
 `;
 
@@ -111,6 +112,7 @@ const Media = styled.div`
   margin-right: 60px;
   position: relative;
   display: ${(props) => (props.showMedia ? "block" : "none")};
+
   &::after {
     content: "";
     position: absolute;

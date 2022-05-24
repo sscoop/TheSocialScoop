@@ -12,6 +12,7 @@ import {
   unSendFollowRequestSuccess,
   approveFollowRequestSuccess,
   rejectFollowRequestSuccess,
+  deleteUserSuccess,
 } from "../userSlice";
 
 export const login = async (dispatch, user) => {
@@ -96,10 +97,10 @@ export const unfollow = async ({ dispatch, id, userId }) => {
 };
 
 export const deleteUser = async (dispatch, id) => {
-  dispatch(followingStart());
+  dispatch(userStart());
   try {
     await publicRequest.delete(`users/${id}`);
-    dispatch(deleteUser(id));
+    dispatch(deleteUserSuccess(id));
   } catch (error) {
     dispatch(userFailure());
   }

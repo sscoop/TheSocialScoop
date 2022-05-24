@@ -66,11 +66,18 @@ const TopContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 1000px) {
+    font-size: 12px;
+  }
 
   img {
     height: 70px;
     width: 70px;
     border-radius: 50%;
+    @media (max-width: 1000px) {
+      height: 55px;
+      width: 55px;
+    }
   }
   input {
     width: 100%;
@@ -81,6 +88,7 @@ const TopContainer = styled.div`
     outline: none;
     color: ${(props) => props.theme.main};
     font-size: 15px;
+
     &::placeholder {
       color: ${(props) => props.theme.text};
     }
@@ -91,6 +99,10 @@ const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 1000px) {
+    font-size: 12px;
+  }
   input {
     display: none;
   }
@@ -118,7 +130,6 @@ const BottomContainer = styled.div`
       background-color: ${(props) => props.theme.body};
     }
     @media (max-width: 1000px) {
-      font-size: 12px;
       padding: 12px 30px;
     }
   }

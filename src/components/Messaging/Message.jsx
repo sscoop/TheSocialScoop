@@ -31,9 +31,12 @@ const Text = styled.div`
       !props.own ? `rgba(${props.theme.mainRgba},.8)` : props.theme.body};
     border-radius: ${(props) =>
       !props.own ? "0 30px 30px 30px" : "30px 0 30px 30px"};
-    padding: 30px;
+    padding: 15px 30px;
     font-weight: 200;
     margin-top: 25px;
+    @media (max-width: 1000px) {
+      padding: 10px 30px;
+    }
   }
 `;
 

@@ -30,10 +30,6 @@ export const getPosts = async (dispatch, userId) => {
 
 export const postReaction = async (dispatch, post, userId) => {
   try {
-    await publicRequest.put(`/posts/reactions/${post._id}`, {
-      userId,
-    });
-
     if (!post.likes.includes(userId)) {
       const newPost = { ...post, likes: [...post.likes, userId] };
       dispatch(postReactSuccess({ newPost, userId }));
@@ -43,6 +39,9 @@ export const postReaction = async (dispatch, post, userId) => {
       const newPost = { ...post, likes: newLikes };
       dispatch(postReactSuccess({ newPost, userId }));
     }
+    await publicRequest.put(`/posts/reactions/${post._id}`, {
+      userId,
+    });
   } catch (error) {
     dispatch(postFailure());
   }

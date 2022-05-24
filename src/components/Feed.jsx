@@ -18,9 +18,11 @@ const MainContainer = styled.div`
     margin-left: 20px;
   }
   @media (max-width: 1000px) {
-    margin: 0 5px;
-    padding: 5px 40px;
-    width: calc(100% - 80px);
+    margin: 0 0px;
+    padding: 5px 15px;
+    width: calc(100% - 30px);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   }
 `;
 const Container = styled.div`

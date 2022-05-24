@@ -37,7 +37,7 @@ const SearchContainer = styled.div`
     overflow-y: scroll;
   }
   @media (max-width: 475px) {
-    width: calc(100% - 60px);
+    width: calc(100% - 70px);
     margin: 0px 15px;
   }
 `;

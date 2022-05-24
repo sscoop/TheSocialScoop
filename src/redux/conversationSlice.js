@@ -16,6 +16,11 @@ const userSlice = createSlice({
       state.error = false;
       state.conversations = action.payload;
     },
+    convoPostSuccess: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state.conversations = [...state.conversations, action.payload];
+    },
 
     convoFailure: (state) => {
       state.isFetching = false;
@@ -24,6 +29,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { convoStart, convoFetchSuccess, convoFailure } =
+export const { convoStart, convoFetchSuccess, convoFailure, convoPostSuccess } =
   userSlice.actions;
 export default userSlice.reducer;

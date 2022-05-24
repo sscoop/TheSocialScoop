@@ -1,6 +1,6 @@
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { faCircleLeft, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { publicRequest } from "../../requestMethods";
@@ -12,14 +12,14 @@ const ChatSectionWrapper = styled.div`
   border-left: 1px solid rgba(255, 255, 255, 0.5);
   z-index: 1;
   background: transparent;
-
+  /* box-sizing: border-box; */
   position: relative;
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
       : `rgba(${props.theme.bodyRgba},.6)`};
   height: calc(90% + 60px);
-  width: 65%;
+  width: 90%;
   margin: 0 40px;
   border-radius: 30px;
   overflow: hidden;
@@ -29,13 +29,29 @@ const ChatSectionWrapper = styled.div`
   align-items: center;
   @media (max-width: 1000px) {
     width: calc(100% - 80px);
-    padding: 30px 0px 0;
     margin: 30px 40px 0;
   }
 
   @media (max-width: 475px) {
     width: calc(100% - 30px);
     margin: 20px 15px 0;
+  }
+
+  .top-section {
+    width: 95%;
+    padding: 25px 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      margin-left: 5px;
+    }
+
+    .backIcon {
+      margin-right: 5px;
+      height: 20px;
+    }
   }
 
   .chat-section {
@@ -48,6 +64,10 @@ const ChatSectionWrapper = styled.div`
     align-items: flex-start;
     flex-direction: column;
     padding: 40px 20px;
+
+    .messages-container {
+      width: 100%;
+    }
 
     @media (max-width: 1250px) {
       padding: 40px 0px;
@@ -64,6 +84,10 @@ const ChatSectionWrapper = styled.div`
       `0px -5px 15px 5px rgba(${props.theme.mainRgba},.15)`};
     transition: all 0.2s ease;
 
+    @media (max-width: 1000px) {
+      height: 60px;
+      font-size: 12px;
+    }
     .msgInput {
       width: 80%;
       background: transparent;
@@ -74,6 +98,12 @@ const ChatSectionWrapper = styled.div`
       margin: 0 20px;
       font-size: 17px;
       color: ${(props) => props.theme.main};
+
+      @media (max-width: 1000px) {
+        padding: 10px;
+        font-size: 12px;
+      }
+
       &::placeholder {
         color: #555;
       }
@@ -86,15 +116,28 @@ const ChatSectionWrapper = styled.div`
       margin: 20px;
       background-color: ${(props) => props.theme.accent};
       color: ${(props) => props.theme.body};
+      @media (max-width: 1000px) {
+        padding: 10px 40px;
+        font-size: 12px;
+      }
     }
   }
 `;
 
-const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
+const Chat = ({
+  themeCurrent,
+  openConvo,
+  users,
+  arrivalMessage,
+  socket,
+  setOpenConvo,
+}) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const reciver = users.find((user) =>
     openConvo.members.find((id) => id === user.userId)
   );
+
+  const scrollRef = useRef(null);
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
@@ -118,6 +161,7 @@ const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
       const { data } = await publicRequest.post(`message/`, messageData);
 
       setMessages([...messages, data]);
+      setNewMessage("");
     } catch (error) {
       console.log(error);
     }
@@ -145,38 +189,47 @@ const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openConvo]);
 
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
-  // }, [messages]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+  }, [messages]);
 
   return (
     <ChatSectionWrapper themeCurrent={themeCurrent}>
+      <div className="top-section">
+        <h2>{reciver.name}</h2>
+        <FontAwesomeIcon
+          className="backIcon"
+          icon={faCircleLeft}
+          onClick={() => setOpenConvo(false)}
+        />
+      </div>
       <div className="chat-section">
         {messages ? (
           messages.map((messageObj) => (
-            <Message
-              key={messageObj._id}
-              // ref={scrollRef}
-              userPic={
-                currentUser._id === messageObj.senderId
-                  ? currentUser.profilePicture
+            <div className="messages-container" ref={scrollRef}>
+              <Message
+                key={messageObj._id}
+                userPic={
+                  currentUser._id === messageObj.senderId
                     ? currentUser.profilePicture
+                      ? currentUser.profilePicture
+                      : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                    : reciver.profilePicture
+                    ? reciver.profilePicture
                     : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                  : reciver.profilePicture
-                  ? reciver.profilePicture
-                  : "https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-              }
-              themeCurrent={themeCurrent}
-              own={currentUser._id === messageObj.senderId ? true : false}
-              message={messageObj.message}
-            />
+                }
+                themeCurrent={themeCurrent}
+                own={currentUser._id === messageObj.senderId ? true : false}
+                message={messageObj.message}
+              />
+            </div>
           ))
         ) : (
           <p>No chat yet!</p>
         )}
       </div>
 
-      <div className="lower-section">
+      <form onSubmit={(e) => sendMessage(e)} className="lower-section">
         <input
           type="text"
           placeholder="Enter your message..."
@@ -184,10 +237,10 @@ const Chat = ({ themeCurrent, openConvo, users, arrivalMessage, socket }) => {
           onChange={(e) => setNewMessage(e.target.value)}
           value={newMessage}
         />
-        <button className="sendBtn" onClick={sendMessage}>
+        <button className="sendBtn">
           <FontAwesomeIcon icon={faPaperPlane} />
         </button>
-      </div>
+      </form>
     </ChatSectionWrapper>
   );
 };
