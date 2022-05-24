@@ -185,7 +185,7 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
   }, [users]);
 
   useEffect(() => {
-    const userIds = conversations[0]._id
+    const userIds = conversations[0]?._id
       ? conversations.map((convo) => {
           if (convo.members[0] === userId) {
             return convo.members[1];
