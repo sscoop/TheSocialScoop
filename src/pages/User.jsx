@@ -374,19 +374,23 @@ const User = ({ themeCurrent }) => {
 
   const fetchUser = async () => {
     await getUserProfile(dispatch, username);
-    fetchFollowers();
-    fetchFollowing();
-    checkFollowing();
+    await fetchFollowing();
+    await fetchFollowers();
   };
 
   const checkFollowing = () => {
-    if (user._id === currentUser._id) setIsFollowing(true);
-    else
+    console.log(1, user.username);
+    if (user._id !== currentUser._id) {
+      let check = false;
       user.followers.forEach((follower) => {
         if (follower === currentUser._id) {
-          setIsFollowing(true);
+          check = true;
+          console.log(3, check);
         }
       });
+      console.log(2, check);
+      check ? setIsFollowing(true) : setIsFollowing(false);
+    } else setIsFollowing(true);
   };
 
   const fetchFollowers = async () => {
@@ -404,18 +408,19 @@ const User = ({ themeCurrent }) => {
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+  }, [username, postMod]);
 
   useEffect(() => {
+    checkFollowing();
     getUserPosts(dispatch, user);
-    setPostMod(0);
+    if (postMod !== 0) setPostMod(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [postMod, user]);
+  }, [postMod, user._id]);
 
   useEffect(() => {
     setPosts([...postsList]);
   }, [postsList, postMod]);
-
+  console.log(isFollowing, "posts", posts);
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
