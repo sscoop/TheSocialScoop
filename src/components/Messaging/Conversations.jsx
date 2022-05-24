@@ -160,7 +160,9 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
   );
 
   const getDetails = async (userIds) => {
+    console.log(userIds);
     const userDetails = await getUsers(dispatch, userIds);
+    console.log(userDetails);
     setUsers(userDetails);
   };
 
@@ -185,7 +187,7 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
   }, [users]);
 
   useEffect(() => {
-    const userIds = conversations[0]?._id
+    const userIds = !!conversations[0]?._id
       ? conversations.map((convo) => {
           if (convo.members[0] === userId) {
             return convo.members[1];
@@ -270,7 +272,7 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
       {!searchFocus && (
         <div className="userList">
           {users &&
-            users.map((user) => {
+            users?.map((user) => {
               return (
                 <div
                   className="userDiv"

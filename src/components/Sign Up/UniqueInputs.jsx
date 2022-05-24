@@ -51,8 +51,12 @@ const UniqueInput = ({ handleChange, setSignupProgression, userData }) => {
         <input
           type="email"
           name="email"
+          id="email"
           placeholder="Email..."
           onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") validator();
+          }}
           value={userData.email}
           required
         />
@@ -61,8 +65,12 @@ const UniqueInput = ({ handleChange, setSignupProgression, userData }) => {
         <input
           type="text"
           name="username"
+          id="username"
           placeholder="Username... "
           onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") validator();
+          }}
           value={userData.username}
           required
         />

@@ -30,7 +30,7 @@ const FormSectionWrapper = styled.div`
     }
   }
 
-  form {
+  .form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -239,7 +239,8 @@ const Form = ({ handleChange, handleSubmit, userData, setFile }) => {
   const [signupProgression, setSignupProgression] = useState(1);
   return (
     <FormSectionWrapper>
-      <form onSubmit={(e) => handleSubmit(e)}>
+      {/* onSubmit={(e) => handleSubmit(e)} */}
+      <div className="form">
         {signupProgression === 1 && (
           <UniqueInputs
             handleChange={handleChange}
@@ -260,9 +261,10 @@ const Form = ({ handleChange, handleSubmit, userData, setFile }) => {
             setSignupProgression={setSignupProgression}
             userData={userData}
             setFile={setFile}
+            handleSubmit={handleSubmit}
           />
         )}
-      </form>
+      </div>
 
       <div className="login-wrapper">
         <div className="divider" />

@@ -14,7 +14,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../firebase";
-import { userStart } from "../redux/userSlice";
+import { userFailure, userStart } from "../redux/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 
@@ -159,15 +159,21 @@ const SignUp = ({ themeCurrent, setUser }) => {
   };
   useEffect(() => {
     const submit = async () => {
-      userData.profilePicture &&
-        (await publicRequest.post("/auth/signup", { ...userData }));
+      try {
+        userData.profilePicture &&
+          (await publicRequest.post("/auth/signup", { ...userData }));
 
-      userData.profilePicture &&
-        login(dispatch, {
-          username: userData.username,
-          password: userData.password,
-        });
+        userData.profilePicture &&
+          login(dispatch, {
+            username: userData.username,
+            password: userData.password,
+          });
+      } catch (error) {
+        dispatch(userFailure());
+        console.log(error.message);
+      }
     };
+
     submit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userData.profilePicture]);

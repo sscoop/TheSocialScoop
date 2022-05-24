@@ -43,9 +43,13 @@ const NonUniqueInput = ({ handleChange, setSignupProgression, userData }) => {
         <input
           type="text"
           name="name"
+          id="name"
           placeholder="Name..."
           required
           onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") validator();
+          }}
         />
       </label>
 
@@ -54,18 +58,26 @@ const NonUniqueInput = ({ handleChange, setSignupProgression, userData }) => {
           <input
             type="password"
             name="password"
+            id="password"
             placeholder="Password..."
             required
             onChange={(e) => handleChange(e)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") validator();
+            }}
           />
         </label>
         <label htmlFor="password2">
           <input
             type="password"
             name="password2"
+            id="password2"
             placeholder="Confirm Password..."
             required
             onChange={(e) => handleChange(e)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") validator();
+            }}
           />
         </label>
       </div>
