@@ -42,15 +42,18 @@ const ChatSectionWrapper = styled.div`
     padding: 25px 0 15px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    color: ${(props) => props.theme.accent};
 
     h2 {
-      margin-left: 5px;
+      padding-left: 15px;
+      cursor: pointer;
     }
 
     .backIcon {
-      margin-right: 5px;
+      padding-left: 5px;
       height: 20px;
+      cursor: pointer;
     }
   }
 
@@ -196,12 +199,12 @@ const Chat = ({
   return (
     <ChatSectionWrapper themeCurrent={themeCurrent}>
       <div className="top-section">
-        <h2>{reciver.name}</h2>
         <FontAwesomeIcon
           className="backIcon"
           icon={faCircleLeft}
           onClick={() => setOpenConvo(false)}
         />
+        <h2 onClick={() => setOpenConvo(false)}>{reciver.name}</h2>
       </div>
       <div className="chat-section">
         {messages ? (
