@@ -12,12 +12,13 @@ import bgDark from "./assets/bgDark.jpg";
 import bgLight from "./assets/bgLight.jpg";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import User from "./pages/User";
 import EditProfile from "./pages/EditProfile";
 import FriendRequests from "./pages/FriendRequests";
 import TermsandConditions from "./pages/TermsandConditions";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import { refresh } from "./redux/API Calls/apiCalls";
 
 const Main = styled.div`
   height: 100vh;
@@ -66,13 +67,20 @@ const Container = styled.div`
 `;
 
 function App() {
+  const dispatch = useDispatch();
   const [themeDark, setThemeDark] = useState(
     window.matchMedia("(prefers-color-scheme: dark)").matches
   );
   const user = useSelector((state) => state.user.currentUser);
   useEffect(() => {
+    // refresh(dispatch, user);
     user ? setThemeDark(user.prefersDarkTheme) : setThemeDark((p) => p);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+  useEffect(() => {
+    refresh(dispatch, user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Main themeColor={themeDark ? "dark" : "light"}>

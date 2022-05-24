@@ -13,6 +13,7 @@ import {
   approveFollowRequestSuccess,
   rejectFollowRequestSuccess,
   deleteUserSuccess,
+  refreshSuccess,
 } from "../userSlice";
 
 export const login = async (dispatch, user) => {
@@ -20,6 +21,15 @@ export const login = async (dispatch, user) => {
   try {
     const res = await publicRequest.post("auth/login", user);
     dispatch(loginSuccess(res.data));
+  } catch (error) {
+    dispatch(userFailure());
+  }
+};
+export const refresh = async (dispatch, user) => {
+  dispatch(userStart());
+  try {
+    const res = await publicRequest.get(`/users/user/${user.username}`);
+    dispatch(refreshSuccess({ ...user, ...res.data }));
   } catch (error) {
     dispatch(userFailure());
   }
