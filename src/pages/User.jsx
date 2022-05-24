@@ -379,16 +379,13 @@ const User = ({ themeCurrent }) => {
   };
 
   const checkFollowing = () => {
-    console.log(1, user.username);
     if (user._id !== currentUser._id) {
       let check = false;
       user.followers.forEach((follower) => {
         if (follower === currentUser._id) {
           check = true;
-          console.log(3, check);
         }
       });
-      console.log(2, check);
       check ? setIsFollowing(true) : setIsFollowing(false);
     } else setIsFollowing(true);
   };
@@ -420,7 +417,6 @@ const User = ({ themeCurrent }) => {
   useEffect(() => {
     setPosts([...postsList]);
   }, [postsList, postMod]);
-  console.log(isFollowing, "posts", posts);
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
