@@ -402,7 +402,7 @@ const Settings = ({ user, themeCurrent }) => {
                 your data more protected.
               </p>
 
-              <Link to="/priavcypolicy">
+              <Link to="/privacypolicy">
                 <button>Read more about our Privacy Policy</button>
               </Link>
             </div>

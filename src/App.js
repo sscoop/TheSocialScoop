@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import User from "./pages/User";
 import EditProfile from "./pages/EditProfile";
 import FriendRequests from "./pages/FriendRequests";
+import TermsandConditions from "./pages/TermsandConditions";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const Main = styled.div`
   height: 100vh;
@@ -174,6 +176,20 @@ function App() {
               <Route
                 path="/friendRequests"
                 element={<FriendRequests user={user} />}
+              />
+              <Route
+                path="/termsandconditions"
+                element={
+                  <TermsandConditions
+                    themeCurrent={themeDark ? "dark" : "light"}
+                  />
+                }
+              />
+              <Route
+                path="/privacypolicy"
+                element={
+                  <PrivacyPolicy themeCurrent={themeDark ? "dark" : "light"} />
+                }
               />
             </Routes>
           </Container>
