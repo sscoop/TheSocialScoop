@@ -133,6 +133,31 @@ const MainContainer = styled.div`
             !props.isFollowing ? props.theme.body : props.theme.accent};
           cursor: pointer;
         }
+
+        .accept {
+          background: transparent;
+          border: 1px solid ${(props) => props.theme.accent};
+          color: ${(props) => props.theme.accent};
+
+          &:hover {
+            background: ${(props) => props.theme.accent};
+            color: ${(props) => props.theme.body};
+            border: 1px solid ${(props) => props.theme.accent};
+          }
+        }
+
+        .reject {
+          background: transparent;
+          border: 1px solid #f72727;
+          color: #f72727;
+
+          &:hover {
+            background: #f72727;
+            color: ${(props) => props.theme.main};
+            border: 1px solid #f72727;
+          }
+        }
+
         @media (max-width: 1000px) {
           margin-right: 5px;
 
@@ -143,6 +168,17 @@ const MainContainer = styled.div`
             padding: 10px 30px;
           }
         }
+
+        /* @media (max-width: 350px) {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          button {
+            margin-right: 5px;
+            padding: 10px 15px;
+          }
+        } */
       }
 
       &::after {
@@ -253,6 +289,7 @@ const FriendRequests = ({ themeCurrent }) => {
                               id: user.userId,
                             })
                           }
+                          className="accept"
                         >
                           Accept
                         </button>
@@ -264,6 +301,7 @@ const FriendRequests = ({ themeCurrent }) => {
                               id: user.userId,
                             })
                           }
+                          className="reject"
                         >
                           Reject
                         </button>
