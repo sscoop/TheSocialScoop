@@ -161,9 +161,10 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
 
   const getDetails = async (userIds) => {
     console.log(userIds);
-    const userDetails = await getUsers(dispatch, userIds);
-    console.log(userDetails);
-    setUsers(userDetails);
+    if (userIds.length > 0) {
+      const userDetails = await getUsers(dispatch, userIds);
+      setUsers(userDetails);
+    } else setUsers([]);
   };
 
   const setConversation = async (id, userId) => {
