@@ -79,6 +79,13 @@ const SubHeadings = styled.div`
     font-size: 25px;
     padding: 5px;
   }
+
+  li {
+    line-height: 25px;
+    @media (max-width: 1000px) {
+      line-height: 35px;
+    }
+  }
 `;
 
 const TermsandConditions = ({ themeCurrent }) => {
