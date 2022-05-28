@@ -130,7 +130,7 @@ const Media = styled.div`
       height: 1px;
     }
   }
-  img {
+  .media {
     height: 100%;
     width: 100%;
     background-color: ${(props) => `rgba(${props.theme.mainRgba},.1)`};
@@ -289,7 +289,23 @@ const Post = ({ themeCurrent, post, setPostMod }) => {
       {!showComments && (
         <BottomSection>
           <Media showMedia={showMedia}>
-            <img src={post.postMedia} alt="" />
+            {post.mediaType === "image" ? (
+              <img className="media" src={post.postMedia} alt="" />
+            ) : (
+              <video
+                className="media"
+                width="320"
+                height="240"
+                controls
+                muted
+                autoPlay
+                loop
+              >
+                <source src={post.postMedia} type="video/webm" />
+                <source src={post.postMedia} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            )}
           </Media>
           <SideContainer showMedia={showMedia}>
             <>

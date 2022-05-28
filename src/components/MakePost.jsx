@@ -1,4 +1,8 @@
-import { faCircleNodes, faPhotoVideo } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNodes,
+  faImage,
+  faVideo,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -107,6 +111,7 @@ const BottomContainer = styled.div`
     display: none;
   }
   label {
+    margin-right: 10px;
   }
   p {
     max-width: 200px;
@@ -143,6 +148,7 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
   const isFetching = useSelector((state) => state.posts.isFetching);
   const [postData, setPostData] = useState({ userId: _id });
   const [file, setFile] = useState({});
+  const [mediaType, setMediaType] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(postStart());
@@ -185,13 +191,17 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
               async (downloadURL) => {
                 console.log("File available at", downloadURL);
 
-                setPostData((p) => ({ ...p, postMedia: downloadURL }));
+                setPostData((p) => ({
+                  ...p,
+                  postMedia: downloadURL,
+                  mediaType,
+                }));
               }
             );
           }
         );
       } else {
-        setPostData((p) => ({ ...p, postMedia: "null" }));
+        setPostData((p) => ({ ...p, postMedia: "null", mediaType }));
       }
       // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     } catch (error) {
@@ -240,15 +250,35 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
           </TopContainer>
           <span />
           <BottomContainer className="bottomContainer">
-            <input
-              type="file"
-              name="media"
-              id="media"
-              onChange={(e) => setFile(e.target.files[0])}
-            />
-            <label htmlFor="media">
-              <FontAwesomeIcon icon={faPhotoVideo} /> Photo or Video
-            </label>
+            <p>
+              <input
+                type="file"
+                name="media"
+                id="photo"
+                accept="image/*"
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                  setMediaType("image");
+                }}
+              />
+              <label htmlFor="photo">
+                <FontAwesomeIcon icon={faImage} /> Photo/GIF
+              </label>
+
+              <input
+                type="file"
+                name="media"
+                id="video"
+                accept="video/*"
+                onChange={(e) => {
+                  setFile(e.target.files[0]);
+                  setMediaType("video");
+                }}
+              />
+              <label htmlFor="video">
+                <FontAwesomeIcon icon={faVideo} /> Video
+              </label>
+            </p>
             {file.name && <p>"{file.name}"</p>}
             <button type="submit">Post</button>
           </BottomContainer>
