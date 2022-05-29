@@ -309,7 +309,9 @@ const EditProfile = ({ user }) => {
       console.log(error.message);
     }
   };
-  const submit = async (downloadURL = null) => {
+  const submit = async (e, downloadURL = null) => {
+    e.preventDefault();
+
     downloadURL
       ? await publicRequest.put(`/users/${user._id}`, {
           ...userData,
@@ -325,7 +327,7 @@ const EditProfile = ({ user }) => {
           loginSuccess({ ...user, ...userData, profilePicture: downloadURL })
         )
       : dispatch(loginSuccess({ ...user, ...userData }));
-    nav(`/profile/${user._id}`, { replace: true });
+    nav(`/user/${user.username}`, { replace: true });
   };
 
   return (
@@ -338,7 +340,7 @@ const EditProfile = ({ user }) => {
         </h2>
 
         <FormContainer>
-          <form onSubmit={(e) => (preview ? onSubmit(e) : submit())}>
+          <form onSubmit={(e) => (preview ? onSubmit(e) : submit(e))}>
             <label htmlFor="profilePicture" className="profilePicture">
               <input
                 type="file"
@@ -390,10 +392,10 @@ const EditProfile = ({ user }) => {
                 />
               </label>
             </div>
-            <label htmlFor="bio">
+            <label htmlFor="description">
               <textarea
                 type="text"
-                name="bio"
+                name="description"
                 placeholder={
                   user.description ? user.description : "Enter your Bio..."
                 }

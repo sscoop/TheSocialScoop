@@ -78,6 +78,7 @@ const TopContainer = styled.div`
     height: 70px;
     width: 70px;
     border-radius: 50%;
+    object-fit: cover;
     @media (max-width: 1000px) {
       height: 55px;
       width: 55px;
