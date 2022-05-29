@@ -78,7 +78,7 @@ const Search = ({ themeCurrent, name, userId }) => {
     const showResults = async () => {
       if (!query) return setUsers({});
       const { data } = await publicRequest.get(`users/${query}`);
-
+      console.log("data", data);
       setUsers(data);
     };
     showResults();

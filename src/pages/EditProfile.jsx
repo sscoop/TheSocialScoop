@@ -12,7 +12,7 @@ import app from "../firebase";
 import { publicRequest } from "../requestMethods";
 import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
 
 const MainContainer = styled.div`
@@ -225,12 +225,14 @@ const FormContainer = styled.div`
 `;
 
 const EditProfile = ({ user }) => {
+  const currentUser = useSelector((state) => state.user.currentUser);
   const [userData, setUserData] = useState();
   const [file, setFile] = useState({});
   const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
   const dispatch = useDispatch();
-
+  console.log(currentUser);
+  console.log(userData);
   const handleChange = (e) => {
     if (e.target.value !== "")
       setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -313,12 +315,12 @@ const EditProfile = ({ user }) => {
     e.preventDefault();
 
     downloadURL
-      ? await publicRequest.put(`/users/${user._id}`, {
+      ? await publicRequest.put(`/users/${currentUser._id}`, {
           ...userData,
           profilePicture: downloadURL,
           _id: user._id,
         })
-      : await publicRequest.put(`/users/${user._id}`, {
+      : await publicRequest.put(`/users/${currentUser._id}`, {
           ...userData,
           _id: user._id,
         });
