@@ -163,7 +163,7 @@ const Chat = ({
     try {
       const { data } = await publicRequest.post(`message/`, messageData);
 
-      setMessages([...messages, data]);
+      setMessages([...messages, messageData]);
       setNewMessage("");
     } catch (error) {
       console.log(error);
