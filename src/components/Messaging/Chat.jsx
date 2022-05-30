@@ -161,7 +161,7 @@ const Chat = ({
     });
 
     try {
-      const { data } = await publicRequest.post(`message/`, messageData);
+      await publicRequest.post(`message/`, messageData);
 
       setMessages([...messages, messageData]);
       setNewMessage("");
