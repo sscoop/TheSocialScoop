@@ -9,6 +9,8 @@ import TopBar from "./components/TopBar";
 import Login from "./pages/Login";
 import Search from "./pages/Search";
 import bgDark from "./assets/bgDark.jpg";
+import bgDarkM from "./assets/bgDarkMobile.jpg";
+import bgLightM from "./assets/bgLightMobile.jpg";
 import bgLight from "./assets/bgLight.jpg";
 import SignUp from "./pages/SignUp";
 import Settings from "./pages/Settings";
@@ -35,6 +37,12 @@ const Main = styled.div`
   background-size: 100vw 100vh;
   @media (max-width: 1000px) {
     height: ${`${window.innerHeight}px`};
+  }
+  @media (max-width: 470px) {
+    background: ${(props) =>
+      props.themeColor === "dark" ? ` url(${bgDarkM})` : ` url(${bgLightM})`};
+    /* object-fit: cover; */
+    background-size: 100vw ${`${window.innerHeight}px`};
   }
 `;
 const MainConatiner = styled.div`
