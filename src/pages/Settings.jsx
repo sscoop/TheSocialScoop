@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -344,6 +344,7 @@ const Settings = ({ user, themeCurrent }) => {
   const prefersDarkTheme = useSelector(
     (state) => state.user.currentUser.prefersDarkTheme
   );
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
     <>
@@ -443,9 +444,16 @@ const Settings = ({ user, themeCurrent }) => {
 
             <div className="options">
               <button onClick={signOut}>Logout</button>
-              <button onClick={() => user && deleteUser(dispatch, user._id)}>
-                Delete Account
-              </button>
+              {!confirmDelete && (
+                <button onClick={() => user && setConfirmDelete(true)}>
+                  Delete Account
+                </button>
+              )}
+              {confirmDelete && (
+                <button onClick={() => user && deleteUser(dispatch, user._id)}>
+                  Confirm Delete
+                </button>
+              )}
             </div>
           </div>
         </LowerSection>

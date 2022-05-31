@@ -161,12 +161,15 @@ const MainContainer = styled(motion.div)`
 
         @media (max-width: 1000px) {
           margin-right: 5px;
+          width: min-content;
 
           button {
-            /* width: 100%; */
             border-radius: 30px;
             font-size: 11px;
-            padding: 10px 30px;
+            padding: 8px 30px;
+          }
+          .accept {
+            margin-bottom: 3px;
           }
         }
 
