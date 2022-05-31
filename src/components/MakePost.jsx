@@ -150,6 +150,8 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
   const [postData, setPostData] = useState({ userId: _id });
   const [file, setFile] = useState({});
   const [mediaType, setMediaType] = useState("");
+  const [progress, setProgress] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(postStart());
@@ -167,9 +169,11 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
         await uploadTask.on(
           "state_changed",
           (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+            setProgress(`Upload is ${progress}% done`);
+            // console.log("Upload is " + progress + "% done");
             switch (snapshot.state) {
               case "paused":
                 console.log("Upload is paused");
@@ -225,7 +229,10 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
       onSubmit={(e) => handleSubmit(e)}
     >
       {isFetching && (
-        <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+        <>
+          <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
+          <small>{progress}</small>
+        </>
       )}
 
       {!isFetching && (
