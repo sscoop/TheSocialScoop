@@ -13,7 +13,7 @@ import logoLight from "../assets/logoLight.png";
 import logoDarkM from "../assets/logoDarkM.png";
 import logoLightM from "../assets/logoLightM.png";
 
-const Container = styled.div`
+const Container = styled(motion.div)`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.7);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -171,7 +171,12 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
   const [search, setSearch] = useState("");
 
   return (
-    <Container themeCurrent={themeCurrent}>
+    <Container
+      themeCurrent={themeCurrent}
+      initial={{ y: -50, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+    >
       <Left to="/">
         <img
           src={

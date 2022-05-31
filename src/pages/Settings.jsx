@@ -6,6 +6,7 @@ import {
   faSun,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -14,7 +15,7 @@ import NavBar from "../components/NavBar";
 import { changeTheme, deleteUser } from "../redux/API Calls/apiCalls";
 import { logOut } from "../redux/userSlice";
 
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -347,7 +348,12 @@ const Settings = ({ user, themeCurrent }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainContainer themeCurrent={themeCurrent}>
+      <MainContainer
+        themeCurrent={themeCurrent}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <TopSection>
           <FontAwesomeIcon className="icon" icon={faGear} />
           <h2>Setting's</h2>

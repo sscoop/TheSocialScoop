@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -6,7 +7,7 @@ import NavBar from "../components/NavBar";
 // import Sidebar from "../components/Sidebar";
 import { publicRequest } from "../requestMethods";
 
-const SearchContainer = styled.div`
+const SearchContainer = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -87,7 +88,12 @@ const Search = ({ themeCurrent, name, userId }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <SearchContainer themeCurrent={themeCurrent}>
+      <SearchContainer
+        themeCurrent={themeCurrent}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <Query>
           {query
             ? `Showing Results for: ${query}`

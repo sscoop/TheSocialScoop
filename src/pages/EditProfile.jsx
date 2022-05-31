@@ -14,8 +14,9 @@ import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
+import { motion } from "framer-motion";
 
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -333,7 +334,11 @@ const EditProfile = ({ user }) => {
   return (
     <>
       <NavBar />
-      <MainContainer>
+      <MainContainer
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <h2>
           <FontAwesomeIcon icon={faHighlighter} className="icon" />
           Update Your Profile

@@ -1,10 +1,11 @@
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
 
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -94,7 +95,12 @@ const PrivacyPolicy = ({ themeCurrent }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainContainer themeCurrent={themeCurrent}>
+      <MainContainer
+        themeCurrent={themeCurrent}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <TopSection>
           <FontAwesomeIcon icon={faLock} className="icon" />
           <h2>Privacy Policy</h2>

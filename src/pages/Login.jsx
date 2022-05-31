@@ -8,8 +8,9 @@ import { login } from "../redux/API Calls/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
-const MainContainer = styled.span`
+const MainContainer = styled(motion.span)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.3)`
@@ -273,7 +274,12 @@ const Login = ({ themeCurrent }) => {
     <>
       <NavBar themeCurrent={themeCurrent} />
 
-      <MainContainer themeCurrent={themeCurrent}>
+      <MainContainer
+        themeCurrent={themeCurrent}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         {isFetching && (
           <FontAwesomeIcon className="spinner" icon={faCircleNodes} />
         )}

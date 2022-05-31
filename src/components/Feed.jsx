@@ -1,10 +1,11 @@
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getPosts } from "../redux/API Calls/postApiCalls";
 import MakePost from "./MakePost";
 import Post from "./Post";
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   width: 100%;
   z-index: 1;
   height: 91.5%;
@@ -52,7 +53,11 @@ const Feed = ({ themeCurrent }) => {
   }, [postsList, postMod]);
 
   return (
-    <MainContainer>
+    <MainContainer
+      initial={{ x: 100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+    >
       <Container>
         <MakePost themeCurrent={themeCurrent} setPostMod={setPostMod} />
         {posts.map((post) => (

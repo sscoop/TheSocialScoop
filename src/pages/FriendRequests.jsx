@@ -1,5 +1,6 @@
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import {
   unsendFollowReq,
 } from "../redux/API Calls/apiCalls";
 
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -237,7 +238,13 @@ const FriendRequests = ({ themeCurrent }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainContainer themeCurrent={themeCurrent} showRecieved={showRecieved}>
+      <MainContainer
+        themeCurrent={themeCurrent}
+        showRecieved={showRecieved}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <div className="heading">
           <h2 className="reqRecieved" onClick={() => setShowRecieved(true)}>
             Follow Requests

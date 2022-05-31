@@ -3,6 +3,7 @@ import {
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -13,7 +14,7 @@ import {
 } from "../../redux/API Calls/convoApiCalls";
 import { publicRequest } from "../../requestMethods";
 
-const UsersSectionWrapper = styled.div`
+const UsersSectionWrapper = styled(motion.div)`
   background: ${(props) =>
     props.themeCurrent === "dark"
       ? `rgba(${props.theme.bodyRgba},.85)`
@@ -209,7 +210,12 @@ const Conversations = ({ themeCurrent, users, setUsers, setOpenConvo }) => {
     setUserList(data);
   };
   return (
-    <UsersSectionWrapper themeCurrent={themeCurrent}>
+    <UsersSectionWrapper
+      themeCurrent={themeCurrent}
+      initial={{ x: 100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+    >
       <h2>Conversations</h2>
       <form
         onSubmit={(e) => showResults(e)}

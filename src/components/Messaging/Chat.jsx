@@ -1,12 +1,13 @@
 import { faCircleLeft, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { publicRequest } from "../../requestMethods";
 import Message from "./Message";
 
-const ChatSectionWrapper = styled.div`
+const ChatSectionWrapper = styled(motion.div)`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -197,7 +198,12 @@ const Chat = ({
   }, [messages]);
 
   return (
-    <ChatSectionWrapper themeCurrent={themeCurrent}>
+    <ChatSectionWrapper
+      themeCurrent={themeCurrent}
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+    >
       <div className="top-section">
         <FontAwesomeIcon
           className="backIcon"

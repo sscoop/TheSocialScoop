@@ -4,6 +4,7 @@ import {
   faPenToSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,7 +18,7 @@ import {
 } from "../redux/API Calls/profileApiCalls";
 import { publicRequest } from "../requestMethods";
 
-const MainSection = styled.div`
+const MainSection = styled(motion.div)`
   height: 98%;
   width: 100%;
   padding: 0 40px 0;
@@ -420,7 +421,12 @@ const User = ({ themeCurrent }) => {
   return (
     <>
       <NavBar themeCurrent={themeCurrent} />
-      <MainSection themeCurrent={themeCurrent}>
+      <MainSection
+        themeCurrent={themeCurrent}
+        initial={{ x: 100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+      >
         <div className="top">
           <div className="image-container">
             <img

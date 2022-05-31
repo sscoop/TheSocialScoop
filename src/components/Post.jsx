@@ -12,8 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePost, postReaction } from "../redux/API Calls/postApiCalls";
 import CommentList from "./CommentList";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
-const PostContainer = styled.div`
+const PostContainer = styled(motion.div)`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -241,6 +242,9 @@ const Post = ({ themeCurrent, post, setPostMod }) => {
       themeCurrent={themeCurrent}
       showMedia={showMedia}
       showComments={showComments}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.5 }}
     >
       <TopSection showOptions={showOptions}>
         <div

@@ -6,10 +6,11 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { motion } from "framer-motion";
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-const MainContainer = styled.div`
+const MainContainer = styled(motion.div)`
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
   border-left: 1px solid rgba(255, 255, 255, 0.5);
@@ -82,7 +83,12 @@ const IconContainer = styled(Link)`
 const NavBar = ({ themeCurrent }) => {
   const { pathname } = useLocation();
   return (
-    <MainContainer themeCurrent={themeCurrent}>
+    <MainContainer
+      themeCurrent={themeCurrent}
+      initial={{ x: -50, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ type: "spring", duration: 1.2, delay: 0.2 }}
+    >
       <IconContainer to="/">
         <FontAwesomeIcon
           className={`navIcon ${pathname === "/" ? "active" : ""}`}
