@@ -14,7 +14,7 @@ const Messages = ({ themeCurrent }) => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("https://tss-chat.herokuapp.com/", {
+    socket.current = io("https://social-scoop-socket-server.onrender.com", {
       transports: ["websocket"],
     });
 
