@@ -227,11 +227,15 @@ const FormContainer = styled.div`
 
 const EditProfile = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
-  const [userData, setUserData] = useState();
+
+  //! NO INTIAL VALUE IN STATE
+  const [userData, setUserData] = useState(currentUser); //? User gets populated but still no changes in the db data
   const [file, setFile] = useState({});
   const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
   const dispatch = useDispatch();
+
+  //! CONSOLE LOG FOR userData is undefined can be related LINE 231
   console.log(currentUser);
   console.log(userData);
   const handleChange = (e) => {
@@ -312,7 +316,8 @@ const EditProfile = ({ user }) => {
       console.log(error.message);
     }
   };
-  const submit = async (downloadURL = null) => {
+  const submit = async (e, downloadURL = null) => {
+    e.preventDefault();
     downloadURL
       ? await publicRequest.put(`/users/${currentUser._id}`, {
           ...userData,
@@ -328,6 +333,7 @@ const EditProfile = ({ user }) => {
           loginSuccess({ ...user, ...userData, profilePicture: downloadURL })
         )
       : dispatch(loginSuccess({ ...user, ...userData }));
+
     nav(`/user/${user.username}`, { replace: true });
   };
 
