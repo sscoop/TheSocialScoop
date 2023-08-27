@@ -229,7 +229,7 @@ const EditProfile = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
   //! NO INTIAL VALUE IN STATE
-  const [userData, setUserData] = useState(currentUser); //? User gets populated but still no changes in the db data
+  const [userData, setUserData] = useState(); //? User gets populated but still no changes in the db data
   const [file, setFile] = useState({});
   const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
