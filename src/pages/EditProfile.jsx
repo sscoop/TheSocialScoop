@@ -228,14 +228,12 @@ const FormContainer = styled.div`
 const EditProfile = ({ user }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  //! NO INTIAL VALUE IN STATE
-  const [userData, setUserData] = useState(); //? User gets populated but still no changes in the db data
+  const [userData, setUserData] = useState({});
   const [file, setFile] = useState({});
   const [preview, setPreview] = useState(undefined);
   const nav = useNavigate();
   const dispatch = useDispatch();
 
-  //! CONSOLE LOG FOR userData is undefined can be related LINE 231
   console.log(currentUser);
   console.log(userData);
   const handleChange = (e) => {
