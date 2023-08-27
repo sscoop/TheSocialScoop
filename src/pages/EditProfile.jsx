@@ -238,7 +238,7 @@ const EditProfile = ({ user }) => {
   console.log(userData);
   const handleChange = (e) => {
     if (e.target.value !== "")
-      setUserData({ ...userData, [e.target.name]: e.target.value });
+      setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     else {
       switch (e.target.name) {
         case "name":
