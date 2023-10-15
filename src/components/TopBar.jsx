@@ -218,8 +218,8 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
           </motion.span>
         </span>
         <div className="profile">
-          <Link to={`/user/${user?.username}`}>
-            {user && (
+          {user ? (
+            <Link to={`/user/${user?.username}`}>
               <img
                 src={
                   user.profilePicture
@@ -228,14 +228,17 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
                 }
                 alt=""
               />
-            )}
-            {!user && (
-              <img
-                src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
-                alt=""
-              />
-            )}
-          </Link>
+            </Link>
+          ) : (
+            <Link>
+              {!user && (
+                <img
+                  src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
+                  alt=""
+                />
+              )}
+            </Link>
+          )}
         </div>
       </Right>
     </Container>
