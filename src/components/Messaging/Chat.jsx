@@ -149,6 +149,8 @@ const Chat = ({
   const sendMessage = async (e) => {
     e.preventDefault();
 
+    if (newMessage.length === 0) return;
+
     const messageData = {
       message: newMessage,
       senderId: currentUser._id,
@@ -194,7 +196,7 @@ const Chat = ({
   }, [openConvo]);
 
   useEffect(() => {
-    scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (

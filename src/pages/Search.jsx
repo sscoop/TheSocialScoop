@@ -97,7 +97,7 @@ const Search = ({ themeCurrent, name, userId }) => {
         <Query>
           {query
             ? `Showing Results for: ${query}`
-            : `Hey! ${name} feeling alone? Find some friends now!!`}
+            : `Hey! ${name} feeling alone? Find some friends now!`}
         </Query>
         <Results>
           {Object.keys(users).length ? (

@@ -92,11 +92,13 @@ const Comment = ({ comment, post, setPostMod }) => {
         {comment.username}
       </h5>
       <p>{comment.comment}</p>
-      <FontAwesomeIcon
-        className="commentOption"
-        icon={faEllipsisV}
-        onClick={() => setShowOptions((p) => !p)}
-      />
+      {(comment.username === username || username === post.username) && (
+        <FontAwesomeIcon
+          className="commentOption"
+          icon={faEllipsisV}
+          onClick={() => setShowOptions((p) => !p)}
+        />
+      )}
       <ul className="options" ref={optionRef}>
         <li
           onClick={deleteComment}
