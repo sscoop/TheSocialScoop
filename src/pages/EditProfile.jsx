@@ -315,6 +315,7 @@ const EditProfile = ({ user }) => {
     }
   };
   const submit = async (e, downloadURL = null) => {
+    console.log("");
     e.preventDefault();
     downloadURL
       ? await publicRequest.put(`/users/${currentUser._id}`, {
