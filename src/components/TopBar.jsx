@@ -230,7 +230,7 @@ const TopBar = ({ themeCurrent, setThemeDark, user }) => {
               />
             </Link>
           ) : (
-            <Link>
+            <Link to={`#`}>
               {!user && (
                 <img
                   src="https://www.freeiconspng.com/thumbs/login-icon/user-login-icon-14.png"
