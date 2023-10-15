@@ -304,7 +304,7 @@ const EditProfile = ({ user }) => {
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
             console.log("File available at", downloadURL);
             setUserData((p) => ({ ...p, profilePicture: downloadURL }));
-            submit(downloadURL);
+            submit(e, downloadURL);
           });
         }
       );
@@ -315,7 +315,6 @@ const EditProfile = ({ user }) => {
     }
   };
   const submit = async (e, downloadURL = null) => {
-    console.log("");
     e.preventDefault();
     downloadURL
       ? await publicRequest.put(`/users/${currentUser._id}`, {
